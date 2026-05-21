@@ -1,0 +1,50 @@
+@use 'sass:color';
+@use './variables' as *;
+
+@mixin mobile {
+	@media (max-width: $mobile-max) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media (min-width: $tablet-min) and (max-width: $tablet-max) {
+		@content;
+	}
+}
+
+@mixin large-tablet {
+	@media (min-width: $large-tablet-min) and (max-width: $large-tablet-max) {
+		@content;
+	}
+}
+
+@mixin laptop {
+	@media (min-width: $laptop-min) and (max-width: $laptop-max) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: $desktop-min) {
+		@content;
+	}
+}
+
+@function to-rgb($color) {
+	@return #{color.channel($color, 'red', $space: rgb)}
+		#{color.channel($color, 'green', $space: rgb)}
+		#{color.channel($color, 'blue', $space: rgb)};
+}
+
+@mixin create-color-vars($name, $color) {
+	--#{$name}: #{$color};
+	--#{$name}-rgb: #{to-rgb($color)};
+}
+
+@mixin container {
+	width: 100%;
+	max-width: 1440px;
+	margin-inline: auto;
+	padding-inline: clamp(1rem, 5vw, 4rem);
+}

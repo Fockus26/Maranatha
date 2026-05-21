@@ -1,0 +1,34 @@
+@use '../abstracts/mixins' as *;
+
+:root {
+	// BRAND
+	@include create-color-vars('color-brand', #000519);
+
+	@include create-color-vars('color-accent', #0e7ab8);
+
+	@include create-color-vars('color-complementary', #5e117e);
+
+	@include create-color-vars('color-complementary-soft', #faebff);
+
+	// SURFACES
+	@include create-color-vars('color-background', #ffffff);
+
+	@include create-color-vars('color-surface', #f8fafc);
+
+	@include create-color-vars('color-surface-secondary', #faebff);
+
+	// TEXT
+	@include create-color-vars('color-text', #000519);
+
+	@include create-color-vars('color-text-muted', #64748b);
+
+	// BORDERS
+	@include create-color-vars('color-border', #dbe4f0);
+
+	// FEEDBACK
+	@include create-color-vars('color-success', #16a34a);
+
+	@include create-color-vars('color-warning', #f59e0b);
+
+	@include create-color-vars('color-danger', #dc2626);
+}

@@ -1,0 +1,10 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.notFound {
+	@include container;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: $spacing-md;
+}

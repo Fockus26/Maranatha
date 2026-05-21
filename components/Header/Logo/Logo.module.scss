@@ -1,0 +1,9 @@
+@use '../../../styles/abstracts/variables' as *;
+
+.logo {
+	width: clamp(50px, 7vw, 85px);
+
+	.image {
+		color: $color-brand;
+	}
+}

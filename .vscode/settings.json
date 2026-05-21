@@ -1,0 +1,44 @@
+{
+	"editor.formatOnSave": true,
+
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always"
+	},
+
+	"eslint.useFlatConfig": true,
+
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+
+	"typescript.preferences.preferTypeOnlyAutoImports": true,
+
+	"todo-tree.general.tags": ["TODO", "FIX"],
+
+	"todo-tree.highlights.enabled": true,
+
+	"todo-tree.highlights.customHighlight": {
+		"TODO": {
+			"icon": "check",
+			"type": "whole-line",
+			"foreground": "#ffffff",
+			"background": "#2563eb",
+			"iconColour": "#2563eb",
+			"fontWeight": "bold",
+			"borderRadius": "8px",
+			"gutterIcon": true
+		},
+
+		"FIX": {
+			"icon": "flame",
+			"type": "whole-line",
+			"foreground": "#ffffff",
+			"background": "#dc2626",
+			"iconColour": "#dc2626",
+			"fontWeight": "bold",
+			"borderRadius": "8px",
+			"gutterIcon": true
+		}
+	},
+
+	"todo-tree.tree.hideTreeWhenEmpty": true,
+	"todo-tree.tree.showCountsInTree": true
+}

@@ -1,0 +1,17 @@
+@use '../../../styles/abstracts/variables' as *;
+
+.legalLinks {
+	width: 100%;
+
+	li a {
+		width: 100%;
+		border-radius: $radius-md;
+		padding: $spacing-sm;
+		transition: $transition-fast;
+
+		&:hover {
+			background-color: rgb($color-accent-rgb / 10%);
+			color: $color-accent;
+		}
+	}
+}

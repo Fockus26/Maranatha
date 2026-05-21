@@ -1,0 +1,34 @@
+@use '../abstracts/mixins' as *;
+
+[data-theme='dark'] {
+	// BRAND
+	@include create-color-vars('color-brand', #ffffff);
+
+	@include create-color-vars('color-accent', #38bdf8);
+
+	@include create-color-vars('color-complementary', #c084fc);
+
+	@include create-color-vars('color-complementary-soft', #2a1033);
+
+	// SURFACES
+	@include create-color-vars('color-background', #000519);
+
+	@include create-color-vars('color-surface', #071029);
+
+	@include create-color-vars('color-surface-secondary', #12051d);
+
+	// TEXT
+	@include create-color-vars('color-text', #f8fafc);
+
+	@include create-color-vars('color-text-muted', #94a3b8);
+
+	// BORDERS
+	@include create-color-vars('color-border', #1e293b);
+
+	// FEEDBACK
+	@include create-color-vars('color-success', #22c55e);
+
+	@include create-color-vars('color-warning', #fbbf24);
+
+	@include create-color-vars('color-danger', #ef4444);
+}

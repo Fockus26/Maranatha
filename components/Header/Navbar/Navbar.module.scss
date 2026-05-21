@@ -1,0 +1,42 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.navbar {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: $spacing-xl;
+	width: 100%;
+
+	.icon {
+		display: none;
+	}
+
+	.donateButton {
+		text-wrap: nowrap;
+	}
+
+	.donateButton,
+	a {
+		text-align: center;
+	}
+
+	.menu {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: $spacing-md;
+		width: 100%;
+	}
+
+	@include mobile {
+		.menu {
+			display: none;
+		}
+
+		.icon {
+			display: inline-flex;
+		}
+	}
+}
