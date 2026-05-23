@@ -4,7 +4,7 @@
 @use './base/reset';
 @use './base/globals';
 
-@import "tailwindcss";
+@use "tailwindcss";
 
 @theme {
 	--color-brand: #000519;
@@ -33,5 +33,3 @@
 	opacity: 1;
 	transform: translateY(0);
 }
-
-
