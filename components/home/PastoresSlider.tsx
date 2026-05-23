@@ -12,23 +12,23 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		const observerOptions = {
-			root: null,
-			rootMargin: '0px',
-			threshold: 0.05,
-		}
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('active')
+					} else {
+						entry.target.classList.remove('active')
+					}
+				})
+			},
+			{ threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
+		)
 
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('revealed')
-					observer.unobserve(entry.target)
-				}
-			})
-		}, observerOptions)
-
-		const revealElements = containerRef.current?.querySelectorAll('.reveal')
-		revealElements?.forEach((el) => observer.observe(el))
+		const left = containerRef.current?.querySelector('.slide-left')
+		const right = containerRef.current?.querySelector('.slide-right')
+		if (left) observer.observe(left)
+		if (right) observer.observe(right)
 
 		return () => observer.disconnect()
 	}, [currentIndex, data])
@@ -44,12 +44,12 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 	const current = (data.items[currentIndex] ?? data.items[0]) as PastorItem
 
 	return (
-		<section ref={containerRef} className="py-24 bg-surface-container-low w-full overflow-hidden">
+		<section ref={containerRef} className="py-24 w-full overflow-hidden">
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-					
+
 					{current && (
-						<div className="lg:col-span-5 flex justify-center relative reveal">
+						<div className="lg:col-span-5 flex justify-center relative slide-left">
 							<div className="relative w-full max-w-[360px] md:max-w-[400px] z-10">
 								<div
 									className="absolute -bottom-8 -left-8 w-48 h-48 bg-complementary/10 -z-10 pointer-events-none"
@@ -57,7 +57,7 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 										clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
 									}}
 								/>
-								
+
 								<div className="aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
 									<img
 										src={current.image}
@@ -70,7 +70,7 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 					)}
 
 					{current && (
-						<div className="lg:col-span-7 space-y-6 flex flex-col justify-center reveal">
+						<div className="lg:col-span-7 space-y-6 flex flex-col justify-center slide-right">
 							<span className="text-secondary font-bold tracking-[0.2em] text-xs md:text-sm uppercase block">
 								{data.sectionLabel}
 							</span>

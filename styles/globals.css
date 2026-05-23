@@ -97,3 +97,21 @@ table {
   opacity: 1;
   transform: translateY(0);
 }
+
+.slide-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.slide-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.slide-left.active,
+.slide-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}

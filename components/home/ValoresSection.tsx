@@ -21,7 +21,7 @@ export default function ValoresSection({ data }: Props): ReactElement {
 					}
 				})
 			},
-			{ threshold: 0.3, rootMargin: '0px 0px -100px 0px' }
+			{ threshold: 0.3, rootMargin: '0px 0px -40px 0px' }
 		)
 
 		const cards = containerRef.current?.querySelectorAll('.valor-card')
