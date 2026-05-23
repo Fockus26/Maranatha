@@ -1,8 +1,6 @@
-@use '../../../styles/abstracts/variables' as *;
-
 .dropdown {
 	width: 100%;
-	border-radius: $radius-md;
+	border-radius: 8px;
 	overflow: hidden;
 
 	.trigger {
@@ -18,20 +16,20 @@
 
 	.icon {
 		position: absolute;
-		right: $spacing-md;
+		right: 1rem;
 		top: 50%;
 	}
 
 	ul {
 		position: static;
 		width: 100%;
-		background-color: rgb($color-accent-rgb / 10%);
+		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
 
 		li {
 			width: 100%;
 
 			a:hover {
-				background-color: rgb($color-accent-rgb / 15%);
+				background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
 			}
 		}
 	}

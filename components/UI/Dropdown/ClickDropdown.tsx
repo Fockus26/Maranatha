@@ -6,7 +6,7 @@ import { NavArrowDown } from 'iconoir-react'
 
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 
-import classes from './ClickDropdown.module.scss'
+import classes from './ClickDropdown.module.css'
 
 interface Props {
 	onSelect?: () => void

@@ -1,6 +1,3 @@
-@use '../../styles/abstracts/mixins' as *;
-@use '../../styles/abstracts/variables' as *;
-
 .notFound {
 	@include container;
 	display: flex;

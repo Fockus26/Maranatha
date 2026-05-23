@@ -9,7 +9,7 @@ import ContactoSection from '@/components/home/ContactoSection'
 
 export default function HomePage() {
 	return (
-		<main className="overflow-x-hidden p-0 m-0 bg-background">
+		<main className="bg-background mt-[-70px]">
 			<HeroSlider data={homeData.hero} />
 			<ValoresSection data={homeData.valores} />
 			<PastoresSlider data={homeData.pastores} />

@@ -9,7 +9,7 @@ import { HoverDropdown } from '@/components/UI/Dropdown/HoverDropdown'
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 import { useMenu } from '@/hooks/useMenu'
 
-import classes from './Navbar.module.scss'
+import classes from './Navbar.module.css'
 
 export const Navbar = (): ReactElement => {
 	const { toggleMenu } = useMenu()

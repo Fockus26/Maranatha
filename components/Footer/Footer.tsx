@@ -9,7 +9,7 @@ import { LogoSvg } from '@/components/Icons/LogoSvg'
 import { Button } from '@/components/UI/Button/Button'
 
 import eecLogo from '../../assets/images/dark-eec-logo.png'
-import classes from './Footer.module.scss'
+import classes from './Footer.module.css'
 
 export const Footer = (): ReactElement => {
 	return (

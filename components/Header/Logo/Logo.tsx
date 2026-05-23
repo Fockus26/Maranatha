@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { LogoSvg } from '@/components/Icons/LogoSvg'
 import { Link } from '@/i18n/navigation'
 
-import classes from './Logo.module.scss'
+import classes from './Logo.module.css'
 
 export const Logo = (): ReactElement => {
 	return (

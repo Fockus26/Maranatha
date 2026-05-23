@@ -34,7 +34,6 @@ export default function ContactoSection({ data }: Props): ReactElement {
 
 	return (
 		<section ref={containerRef} className="w-full bg-background pb-24">
-			{/* Part 1: Full-width grayscale map background */}
 			<div className="relative h-[300px] w-full overflow-hidden">
 				<img
 					src={data.mapImage}
@@ -44,13 +43,11 @@ export default function ContactoSection({ data }: Props): ReactElement {
 				<div className="absolute inset-0 bg-brand/5 pointer-events-none" />
 			</div>
 
-			{/* Part 2: White card overlapping map */}
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 relative z-20">
 				<div className="bg-white rounded-3xl shadow-2xl -mt-20 p-8 md:p-12 lg:p-16 border border-secondary-fixed-dim/15 reveal">
 					
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 						
-						{/* Left Column: Conéctate, Horarios */}
 						<div className="lg:col-span-5 space-y-6">
 							<h2 className="text-primary-container text-4xl md:text-5xl font-bold tracking-tight">
 								{data.sectionTitle}
@@ -58,7 +55,6 @@ export default function ContactoSection({ data }: Props): ReactElement {
 							
 							<div className="w-12 h-1 bg-secondary rounded-full" />
 
-							{/* Online Service Hours Block */}
 							<div className="space-y-2 pt-2">
 								<span className="block text-secondary font-bold tracking-widest text-xs uppercase">
 									{data.onlineLabel}
@@ -68,7 +64,6 @@ export default function ContactoSection({ data }: Props): ReactElement {
 								</p>
 							</div>
 
-							{/* In-Person Service Hours */}
 							<div className="space-y-2 pt-2">
 								<span className="block text-secondary font-bold tracking-widest text-xs uppercase">
 									{data.presencialLabel}
@@ -78,7 +73,6 @@ export default function ContactoSection({ data }: Props): ReactElement {
 								</h3>
 							</div>
 
-							{/* Address */}
 							<p className="italic text-on-surface-variant text-sm pt-4 border-t border-secondary-fixed-dim/20 flex items-start gap-2">
 								<span className="material-symbols-outlined text-secondary text-lg flex-shrink-0">
 									pin_drop
@@ -87,7 +81,6 @@ export default function ContactoSection({ data }: Props): ReactElement {
 							</p>
 						</div>
 
-						{/* Right Column: 2x2 Grid of Contact Info */}
 						<div className="lg:col-span-7 flex flex-col justify-center">
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-10">
 								{data.info.map((cell, idx) => (
@@ -95,14 +88,12 @@ export default function ContactoSection({ data }: Props): ReactElement {
 										key={idx}
 										className="flex gap-4 p-4 rounded-2xl hover:bg-surface-container-low transition-colors duration-300 border border-transparent hover:border-secondary-fixed-dim/20"
 									>
-										{/* Material symbol icon */}
 										<div className="flex-shrink-0 text-secondary">
 											<span className="material-symbols-outlined text-[32px] font-light">
 												{cell.icon}
 											</span>
 										</div>
 
-										{/* Content */}
 										<div className="space-y-1">
 											<h4 className="font-bold text-primary-container text-sm uppercase tracking-wide">
 												{cell.title}

@@ -36,12 +36,9 @@ export default function InstagramSection({ data }: Props): ReactElement {
 		<section ref={containerRef} className="py-24 bg-tertiary-fixed/20 w-full overflow-hidden">
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
 				
-				{/* Header Section (2 columns) */}
 				<div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8 reveal">
 					
-					{/* Left: Instagram SVG, Handle, Subtitle */}
 					<div className="flex items-center gap-5">
-						{/* SVG Instagram box */}
 						<div className="flex items-center justify-center w-16 h-16 rounded-[20px] bg-white shadow-md flex-shrink-0">
 							<svg
 								width="36"
@@ -66,7 +63,6 @@ export default function InstagramSection({ data }: Props): ReactElement {
 							</svg>
 						</div>
 						
-						{/* Handle and Title */}
 						<div className="space-y-1">
 							<h3 className="text-primary-container text-xl md:text-2xl font-bold tracking-tight">
 								{data.handle}
@@ -77,7 +73,6 @@ export default function InstagramSection({ data }: Props): ReactElement {
 						</div>
 					</div>
 
-					{/* Right: Button "Síguenos en Instagram" */}
 					<div className="flex-shrink-0">
 						<button
 							className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-bold rounded-full group cursor-pointer transition-all duration-300 transform active:scale-95 shadow-md hover:shadow-lg"
@@ -95,21 +90,18 @@ export default function InstagramSection({ data }: Props): ReactElement {
 
 				</div>
 
-				{/* Grid of 4 Columns */}
 				<div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
 					{data.posts.map((post, idx) => (
 						<div
 							key={idx}
 							className="reveal aspect-square w-full rounded-2xl overflow-hidden shadow-md relative group cursor-pointer border border-white/40"
 						>
-							{/* Square Image */}
 							<img
 								src={post.image}
 								alt={post.alt}
 								className="w-full h-full object-cover transition-transform duration-700 ease-in-out transform group-hover:scale-110"
 							/>
 
-							{/* Overlay */}
 							<div className="absolute inset-0 bg-[#121b30]/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
 								<span className="material-symbols-outlined text-4xl text-white animate-bounce select-none">
 									favorite

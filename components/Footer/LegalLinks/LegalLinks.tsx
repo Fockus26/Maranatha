@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 
-import classes from './LegalLinks.module.scss'
+import classes from './LegalLinks.module.css'
 
 export const LegalLinks = (): ReactElement => {
 	return (

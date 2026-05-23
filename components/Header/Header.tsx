@@ -6,7 +6,7 @@ import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { Logo } from '@/components/Header/Logo/Logo'
 import { Navbar } from '@/components/Header/Navbar/Navbar'
 
-import classes from './Header.module.scss'
+import classes from './Header.module.css'
 
 export const Header = (): ReactElement => {
 	const { scrollY } = useScroll()

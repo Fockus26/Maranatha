@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { ClickDropdown } from '@/components/UI/Dropdown/ClickDropdown'
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 
-import classes from './NavigationLinks.module.scss'
+import classes from './NavigationLinks.module.css'
 
 export const NavigationLinks = (): ReactElement => {
 	return (

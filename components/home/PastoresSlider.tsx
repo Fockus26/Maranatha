@@ -48,11 +48,9 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 					
-					{/* Left Column: Picture and decorative background */}
 					{current && (
 						<div className="lg:col-span-5 flex justify-center relative reveal">
 							<div className="relative w-full max-w-[360px] md:max-w-[400px] z-10">
-								{/* Triangulo decorativo using clip-path */}
 								<div
 									className="absolute -bottom-8 -left-8 w-48 h-48 bg-complementary/10 -z-10 pointer-events-none"
 									style={{
@@ -60,7 +58,6 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 									}}
 								/>
 								
-								{/* Photo with shadow and border-radius */}
 								<div className="aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
 									<img
 										src={current.image}
@@ -72,30 +69,24 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 						</div>
 					)}
 
-					{/* Right Column: Information */}
 					{current && (
 						<div className="lg:col-span-7 space-y-6 flex flex-col justify-center reveal">
-							{/* Label superior */}
 							<span className="text-secondary font-bold tracking-[0.2em] text-xs md:text-sm uppercase block">
 								{data.sectionLabel}
 							</span>
 
-							{/* Large title */}
 							<h2 className="text-primary-container text-4xl md:text-5xl font-bold tracking-tight leading-none">
 								{data.sectionTitle}
 							</h2>
 
-							{/* Nombre del pastor */}
 							<h3 className="text-complementary text-xl md:text-2xl font-bold">
 								{current.name} — <span className="text-sm font-medium text-on-surface-variant/80">{current.role}</span>
 							</h3>
 
-							{/* Paragraph descriptive */}
 							<p className="text-on-surface-variant text-base md:text-lg font-normal leading-relaxed min-h-[140px]">
 								{current.description}
 							</p>
 
-							{/* Two circular buttons (visible only if there is more than 1 pastor) */}
 							{data.items.length > 1 && (
 								<div className="flex items-center gap-4 pt-4">
 									<button

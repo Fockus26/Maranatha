@@ -29,7 +29,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					entry.target.classList.add('revealed')
+					entry.target.classList.add('active')
 					observer.unobserve(entry.target)
 				}
 			})
@@ -39,7 +39,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 		revealElements?.forEach((el) => observer.observe(el))
 
 		return () => observer.disconnect()
-	}, [activeSlide]) // Re-run when slide changes so the newly visible slide content triggers reveal animation!
+	}, [activeSlide])
 
 	return (
 		<section ref={containerRef} className="relative h-screen w-full overflow-hidden bg-brand">
@@ -47,7 +47,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 			{data.slides.map((slide, idx) => (
 				<div
 					key={idx}
-					className={`absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+					className={`absolute inset-0 h-full w-full transition-opacity duration-2000 ease-in-out ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
 						}`}
 				>
 					{/* Background Image focused to the right */}
@@ -66,8 +66,8 @@ export default function HeroSlider({ data }: Props): ReactElement {
 
 					{/* Content Left Side */}
 					<div className="absolute inset-0 flex items-center z-20">
-						<div className="max-w-[1440px] mx-auto w-full px-6 md:px-12 lg:px-24">
-							<div className="max-w-[650px] space-y-6 text-left reveal">
+						<div className="max-w-[1440px] !px-16 mx-auto w-full px-6 md:px-12 lg:px-24">
+							<div className="max-w-[650px] space-y-6 text-left reveal ">
 								{/* Badge */}
 								<span className="inline-block text-secondary-fixed-dim font-bold tracking-[0.25em] text-xs md:text-sm uppercase">
 									{slide.badge}
@@ -84,10 +84,10 @@ export default function HeroSlider({ data }: Props): ReactElement {
 								</p>
 
 								{/* Action Button */}
-								<div className="pt-2">
+								<div className="pt-4 ">
 									<a
 										href={slide.buttonHref}
-										className="inline-block px-8 py-4 rounded-full bg-secondary hover:bg-secondary/85 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-secondary/20"
+										className="inline-block px-8 py-4 rounded-full bg-accent hover:bg-accent/85 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-accent/20"
 									>
 										{slide.buttonText}
 									</a>
@@ -106,8 +106,8 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						onClick={() => setActiveSlide(idx)}
 						aria-label={`Ir al slide ${idx + 1}`}
 						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${idx === activeSlide
-								? 'bg-[#0e7ab8] w-8 active-dot'
-								: 'bg-white/30 w-2.5 hover:bg-white/50'
+							? 'bg-[#0e7ab8] w-8 active-dot'
+							: 'bg-white/30 w-2.5 hover:bg-white/50'
 							}`}
 					/>
 				))}
