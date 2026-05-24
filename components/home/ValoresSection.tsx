@@ -16,12 +16,11 @@ export default function ValoresSection({ data }: Props): ReactElement {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						entry.target.classList.add('active')
-					} else {
-						entry.target.classList.remove('active')
+						observer.unobserve(entry.target)
 					}
 				})
 			},
-			{ threshold: 0.3, rootMargin: '0px 0px -40px 0px' }
+			{ threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
 		)
 
 		const cards = containerRef.current?.querySelectorAll('.valor-card')
@@ -41,26 +40,36 @@ export default function ValoresSection({ data }: Props): ReactElement {
 					<div className="w-16 h-1 bg-accent mx-auto mt-4 rounded-full" />
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 					{data.items.map((val, idx) => (
 						<div
 							key={idx}
-							className="valor-card flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-border hover:shadow-md hover:-translate-y-1"
-							style={{ transitionDelay: `${idx * 100}ms` }}
+							className="valor-card group relative min-h-[420px] rounded-2xl overflow-hidden cursor-default hover:scale-[1.02] transition-all duration-500"
+							style={{ transitionDelay: `${idx * 150}ms` }}
 						>
-							<div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 text-accent mb-6">
-								<span className="material-symbols-outlined text-3xl font-light">
-									{val.icon}
-								</span>
+							{/* Imagen de fondo */}
+							<div
+								className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+								style={{ backgroundImage: `url(${val.image})` }}
+							/>
+
+							{/* Overlay */}
+							<div className="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/50 to-transparent" />
+
+							{/* Contenido */}
+							<div className="absolute bottom-0 left-0 right-0 p-8 space-y-3">
+								<div className="flex items-center justify-center w-11 h-11 rounded-full bg-accent/80 text-white mb-2">
+									<span className="material-symbols-outlined text-2xl">
+										{val.icon}
+									</span>
+								</div>
+								<h3 className="text-white text-xl font-bold tracking-wide">
+									{val.title}
+								</h3>
+								<p className="text-white/75 text-sm leading-relaxed max-w-sm">
+									{val.description}
+								</p>
 							</div>
-
-							<h3 className="text-primary-container font-semibold tracking-wide text-lg mb-3">
-								{val.title}
-							</h3>
-
-							<p className="text-on-surface-variant text-sm leading-relaxed">
-								{val.description}
-							</p>
 						</div>
 					))}
 				</div>

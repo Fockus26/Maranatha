@@ -17,8 +17,7 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						entry.target.classList.add('active')
-					} else {
-						entry.target.classList.remove('active')
+						observer.unobserve(entry.target)
 					}
 				})
 			},
@@ -44,7 +43,7 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 	const current = (data.items[currentIndex] ?? data.items[0]) as PastorItem
 
 	return (
-		<section ref={containerRef} className="py-24 w-full overflow-hidden">
+		<section ref={containerRef} className="pt-8 pb-32 w-full overflow-hidden">
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 

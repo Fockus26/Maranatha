@@ -87,6 +87,17 @@ table {
   outline-offset: 4px;
 }
 
+.hero-slide-content {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-slide-content.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .valor-card {
   opacity: 0;
   transform: translateY(40px);
@@ -114,4 +125,15 @@ table {
 .slide-right.active {
   opacity: 1;
   transform: translateX(0);
+}
+
+.evento-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.evento-card.active {
+  opacity: 1;
+  transform: translateY(0);
 }

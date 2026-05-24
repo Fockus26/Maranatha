@@ -16,6 +16,7 @@ export interface ValorItem {
 	icon: string
 	title: string
 	description: string
+	image: string
 	delay: number
 }
 
@@ -59,6 +60,10 @@ export interface EventoItem {
 	date: string
 	image: string
 	delay: number
+	bg: string
+	text: string
+	muted: string
+	tag: string
 }
 
 export interface EventosData {
@@ -131,10 +136,10 @@ export const homeData: HomeData = {
 	valores: {
 		sectionTitle: 'Nuestros valores fundamentales',
 		items: [
-			{ icon: 'auto_awesome', title: 'Tradición', description: 'Honramos las raíces de nuestra fe con reverencia y profundidad teológica.', delay: 100 },
-			{ icon: 'groups', title: 'Comunidad', description: 'Construimos vínculos reales que trascienden las paredes de nuestro templo.', delay: 200 },
-			{ icon: 'volunteer_activism', title: 'Servicio', description: 'Impactamos nuestro entorno a través del amor práctico y la generosidad.', delay: 300 },
-			{ icon: 'lightbulb', title: 'Innovación', description: 'Utilizamos herramientas modernas para comunicar el mensaje eterno de Dios.', delay: 400 },
+			{ icon: 'auto_awesome', title: 'Tradición', description: 'Honramos las raíces de nuestra fe con reverencia y profundidad teológica.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 100 },
+			{ icon: 'groups', title: 'Comunidad', description: 'Construimos vínculos reales que trascienden las paredes de nuestro templo.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 200 },
+			{ icon: 'volunteer_activism', title: 'Servicio', description: 'Impactamos nuestro entorno a través del amor práctico y la generosidad.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 300 },
+			{ icon: 'lightbulb', title: 'Innovación', description: 'Utilizamos herramientas modernas para comunicar el mensaje eterno de Dios.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 400 },
 		],
 	},
 	pastores: {
@@ -168,9 +173,38 @@ export const homeData: HomeData = {
 		sectionTag: 'Nuestra Agenda',
 		sectionDescription: 'Mantente conectado con nuestras actividades semanales y eventos especiales diseñados para toda la familia.',
 		items: [
-			{ category: 'Jóvenes', title: 'Noche de Conexión', description: 'Un espacio para compartir, aprender y crecer juntos en un ambiente relajado.', date: 'Vie, 24 Mayo • 19:30', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 100 },
-			{ category: 'Familias', title: 'Día del Parque Maranatha', description: 'Juegos, comida y compañerismo para todas las edades al aire libre.', date: 'Dom, 02 Junio • 11:00', image: 'https://images.unsplash.com/photo-1469571486040-7a3084c73d11?auto=format&fit=crop&q=80&w=600&h=800', delay: 200 },
-			{ category: 'Discipulado', title: 'Taller de Vida Interior', description: 'Descubre herramientas prácticas para fortalecer tu relación diaria con Dios.', date: 'Sáb, 15 Junio • 09:00', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600&h=800', delay: 300 },
+			{
+				category: 'Jóvenes', title: 'Noche de Conexión',
+				description: 'Un espacio para compartir, aprender y crecer juntos en un ambiente relajado.',
+				date: 'Vie, 24 Mayo • 19:30',
+				image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800',
+				delay: 100,
+				bg: 'bg-primary-container', text: 'text-white', muted: 'text-white/60', tag: 'bg-accent/20 text-accent'
+			},
+			{
+				category: 'Familias', title: 'Día del Parque Maranatha',
+				description: 'Juegos, comida y compañerismo para todas las edades al aire libre.',
+				date: 'Dom, 02 Junio • 11:00',
+				image: 'https://images.unsplash.com/photo-1469571486040-7a3084c73d11?auto=format&fit=crop&q=80&w=600&h=800',
+				delay: 200,
+				bg: 'bg-surface', text: 'text-primary-container', muted: 'text-on-surface-variant', tag: 'bg-accent/10 text-accent'
+			},
+			{
+				category: 'Discipulado', title: 'Taller de Vida Interior',
+				description: 'Descubre herramientas prácticas para fortalecer tu relación diaria con Dios.',
+				date: 'Sáb, 15 Junio • 09:00',
+				image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600&h=800',
+				delay: 300,
+				bg: 'bg-accent/10', text: 'text-primary-container', muted: 'text-on-surface-variant', tag: 'bg-primary-container/10 text-primary-container'
+			},
+			{
+				category: 'Jóvenes', title: 'Noche de Conexión',
+				description: 'Un espacio para compartir, aprender y crecer juntos en un ambiente relajado.',
+				date: 'Vie, 24 Mayo • 19:30',
+				image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800',
+				delay: 100,
+				bg: 'bg-primary-container', text: 'text-white', muted: 'text-white/60', tag: 'bg-accent/20 text-accent'
+			},
 		],
 	},
 	instagram: {
