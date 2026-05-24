@@ -43,28 +43,29 @@ export default function PastoresSlider({ data }: Props): ReactElement {
 	const current = (data.items[currentIndex] ?? data.items[0]) as PastorItem
 
 	return (
-		<section ref={containerRef} className="pt-8 pb-32 w-full overflow-hidden">
+		<section ref={containerRef} className="pt-16 pb-32 w-full">
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
 					{current && (
-						<div className="lg:col-span-5 flex justify-center relative slide-left">
-							<div className="relative w-full max-w-[360px] md:max-w-[400px] z-10">
-								<div
-									className="absolute -bottom-8 -left-8 w-48 h-48 bg-complementary/10 -z-10 pointer-events-none"
-									style={{
-										clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-									}}
-								/>
+						<div className="lg:col-span-5 relative slide-left flex items-end">
 
-								<div className="aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-									<img
-										src={current.image}
-										alt={current.name}
-										className="w-full h-full object-cover transition-all duration-700 ease-in-out transform hover:scale-105"
-									/>
-								</div>
-							</div>
+							{/* Cuadro fondo — más atrás y desplazado */}
+							<div className="absolute bottom-0 left-4 w-[85%] h-[85%] bg-accent/15 rounded-2xl -z-20 pointer-events-none" />
+
+							{/* Cuadro medio — desplazado un poco */}
+							<div className="absolute bottom-4 left-8 w-[85%] h-[85%] bg-accent/25 rounded-2xl -z-10 pointer-events-none" />
+
+							{/* Imagen grande suelta */}
+							<img
+								src={current.image}
+								alt={current.name}
+								className="relative w-[1000px] h-auto object-contain object-bottom z-10"
+								style={{
+									filter: 'drop-shadow(0 20px 40px rgba(14, 122, 184, 0.25))',
+								}}
+							/>
+
 						</div>
 					)}
 

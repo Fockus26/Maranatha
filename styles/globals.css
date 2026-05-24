@@ -41,8 +41,13 @@ video,
 canvas,
 svg {
   display: block;
-  max-width: 100%;
   height: auto;
+}
+
+@layer base {
+  img {
+    max-width: none;
+  }
 }
 
 input,

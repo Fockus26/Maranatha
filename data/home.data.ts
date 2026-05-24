@@ -150,7 +150,7 @@ export const homeData: HomeData = {
 				name: 'Juan y María Delgado',
 				role: 'Pastores Principales',
 				description: 'Con más de 20 años de ministerio, los pastores Delgado han guido a Maranatha con una visión de integridad y amor. Su pasión es ver vidas transformadas por la gracia de Dios y familias fortalecidas en la verdad bíblica.',
-				image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800',
+				image: '/images/pastores-foto.png',
 			},
 		],
 	},
