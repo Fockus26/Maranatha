@@ -75,6 +75,7 @@ export interface EventosData {
 export interface InstagramPost {
 	image: string
 	alt: string
+	url: string
 }
 
 export interface InstagramData {
@@ -82,6 +83,7 @@ export interface InstagramData {
 	subtitle: string
 	followText: string
 	posts: InstagramPost[]
+	facebookPosts: InstagramPost[]
 }
 
 export interface ContactoInfo {
@@ -212,10 +214,16 @@ export const homeData: HomeData = {
 		subtitle: 'Nuestra vida diaria en imágenes',
 		followText: 'Síguenos en Instagram',
 		posts: [
-			{ image: 'https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&q=80&w=400&h=400', alt: 'Post de Instagram 1' },
-			{ image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=400&h=400', alt: 'Post de Instagram 2' },
-			{ image: 'https://images.unsplash.com/photo-1438029071396-1e831a7fa6d8?auto=format&fit=crop&q=80&w=400&h=400', alt: 'Post de Instagram 3' },
-			{ image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=400&h=400', alt: 'Post de Instagram 4' },
+			{ image: '/images/instagram.jpg', alt: 'Post de Instagram 1', url: 'https://www.instagram.com/maranathasancristobal/' },
+			{ image: '/images/instagram.jpg', alt: 'Post de Instagram 2', url: 'https://www.instagram.com/maranathasancristobal/' },
+			{ image: '/images/instagram.jpg', alt: 'Post de Instagram 3', url: 'https://www.instagram.com/maranathasancristobal/' },
+			{ image: '/images/instagram.jpg', alt: 'Post de Instagram 4', url: 'https://www.instagram.com/maranathasancristobal/' },
+		],
+		facebookPosts: [
+			{ image: '/images/instagram.jpg', alt: 'Post FB 1', url: 'https://www.facebook.com/Iglesiamaranathasc/' },
+			{ image: '/images/instagram.jpg', alt: 'Post FB 2', url: 'https://www.facebook.com/Iglesiamaranathasc/' },
+			{ image: '/images/instagram.jpg', alt: 'Post FB 3', url: 'https://www.facebook.com/Iglesiamaranathasc/' },
+			{ image: '/images/instagram.jpg', alt: 'Post FB 4', url: 'https://www.facebook.com/Iglesiamaranathasc/' },
 		],
 	},
 	contacto: {
