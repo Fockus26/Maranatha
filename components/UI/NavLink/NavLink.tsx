@@ -6,7 +6,7 @@ import type { ComponentProps, ReactElement, ReactNode } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
 
-import classes from './NavLink.module.scss'
+import classes from './NavLink.module.css'
 
 const MotionLink = motion.create(Link)
 

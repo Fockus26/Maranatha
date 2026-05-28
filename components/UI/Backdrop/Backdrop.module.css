@@ -1,9 +1,7 @@
-@use '../../../styles/abstracts/variables' as *;
-
 .backdrop {
 	position: fixed;
 	inset: 0;
 	background-color: rgba(0, 0, 0, 0.4);
-	z-index: $z-lg;
+	z-index: 1030;
 	backdrop-filter: blur(4px);
 }

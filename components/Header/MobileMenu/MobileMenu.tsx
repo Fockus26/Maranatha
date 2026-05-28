@@ -8,7 +8,7 @@ import { ClickDropdown } from '@/components/UI/Dropdown/ClickDropdown'
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 import { useMenu } from '@/hooks/useMenu'
 
-import classes from './MobileMenu.module.scss'
+import classes from './MobileMenu.module.css'
 
 export const MobileMenu = (): ReactElement | null => {
 	const [mounted, setMounted] = useState(false)
@@ -32,7 +32,7 @@ export const MobileMenu = (): ReactElement | null => {
 	}
 
 	return createPortal(
-		<ul className={clsx(classes.menu, { [classes.isOpen]: isOpen })}>
+		<ul className={clsx(classes.menu, classes.isOpen)}>
 			<li>
 				<NavLink href="/about" onClick={closeMenu} variant="vertical">
 					¿Quienes Somos?

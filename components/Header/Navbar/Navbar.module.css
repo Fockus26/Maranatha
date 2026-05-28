@@ -1,12 +1,9 @@
-@use '../../../styles/abstracts/variables' as *;
-@use '../../../styles/abstracts/mixins' as *;
-
 .navbar {
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	gap: $spacing-xl;
+	gap: 2rem;
 	width: 100%;
 
 	.icon {
@@ -26,11 +23,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-		gap: $spacing-md;
+		gap: 1rem;
 		width: 100%;
 	}
 
-	@include mobile {
+	@media (max-width: 767px) {
 		.menu {
 			display: none;
 		}

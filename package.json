@@ -3,14 +3,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --webpack",
+		"dev": "next dev",
 		"build": "next build",
-		"start": "next start --webpack",
+		"start": "next start",
 		"test": "vitest",
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
-		"scss:types": "typed-scss-modules . --exportType default",
-		"scss:types-watch": "typed-scss-modules . --watch --exportType default"
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.12.0",

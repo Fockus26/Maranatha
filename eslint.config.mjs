@@ -186,7 +186,6 @@ export default [
 			'app/**/loading.tsx',
 			'app/**/error.tsx',
 			'app/**/not-found.tsx',
-			'components/**/**.module.scss.d.ts',
 			'types/**/*.d.ts',
 		],
 

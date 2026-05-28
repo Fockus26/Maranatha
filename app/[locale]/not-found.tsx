@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-import classes from './not-found.module.scss'
+import classes from './not-found.module.css'
 
 const NotFound = (): ReactElement => {
 	return (

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 
-import classes from './Button.module.scss'
+import classes from './Button.module.css'
 
 interface Props extends ComponentProps<'button'> {
 	children: ReactNode
