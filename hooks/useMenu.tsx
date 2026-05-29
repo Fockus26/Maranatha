@@ -1,35 +1,35 @@
-import { closeMenu, openMenu, toggleMenu } from '@/store/slices/menuSlice'
+import { closeMenu, openMenu, toggleMenu } from "@/store/slices/menuSlice";
 
-import { useAppDispatch, useAppSelector } from './useRedux'
+import { useAppDispatch, useAppSelector } from "./useRedux";
 
 interface UseMenuReturn {
-	isOpen: boolean
+    isOpen: boolean;
 
-	openMenu: () => void
+    openMenu: () => void;
 
-	closeMenu: () => void
+    closeMenu: () => void;
 
-	toggleMenu: () => void
+    toggleMenu: () => void;
 }
 
 export const useMenu = (): UseMenuReturn => {
-	const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-	const isOpen = useAppSelector((state) => state.menu.isOpen)
+    const isOpen = useAppSelector((state) => state.menu.isOpen);
 
-	return {
-		isOpen,
+    return {
+        isOpen,
 
-		openMenu: (): void => {
-			dispatch(openMenu())
-		},
+        openMenu: (): void => {
+            dispatch(openMenu());
+        },
 
-		closeMenu: (): void => {
-			dispatch(closeMenu())
-		},
+        closeMenu: (): void => {
+            dispatch(closeMenu());
+        },
 
-		toggleMenu: (): void => {
-			dispatch(toggleMenu())
-		},
-	}
-}
+        toggleMenu: (): void => {
+            dispatch(toggleMenu());
+        },
+    };
+};

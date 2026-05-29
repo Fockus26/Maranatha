@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 export const useIsMobile = (): boolean => {
-	const [isMobile, setIsMobile] = useState(false)
+    const [isMobile, setIsMobile] = useState(false);
 
-	useEffect(() => {
-		const mq = window.matchMedia('(max-width: 767px)')
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 767px)");
 
-		const update = (): void => setIsMobile(mq.matches)
+        const update = (): void => setIsMobile(mq.matches);
 
-		update()
+        update();
 
-		mq.addEventListener('change', update)
+        mq.addEventListener("change", update);
 
-		return (): void => {
-			mq.removeEventListener('change', update)
-		}
-	}, [])
+        return (): void => {
+            mq.removeEventListener("change", update);
+        };
+    }, []);
 
-	return isMobile
-}
+    return isMobile;
+};

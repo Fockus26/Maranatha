@@ -1,10 +1,10 @@
 export type Styles = {
-	image: string
-	logo: string
-}
+    image: string;
+    logo: string;
+};
 
-export type ClassNames = keyof Styles
+export type ClassNames = keyof Styles;
 
-declare const styles: Styles
+declare const styles: Styles;
 
-export default styles
+export default styles;

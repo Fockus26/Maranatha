@@ -1,64 +1,86 @@
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from "next/server";
 
-import {
-	createProject,
-	getAllProjects,
-	getProjectsByCategory,
-} from '@/lib/services/project.service'
-import {
-	projectCategorySchema,
-	projectSchema,
-} from '@/lib/validations/project.validation'
+import { createProject, getAllProjects } from "@/lib/services/project.service";
+import { getProjectCategoryBySlug } from "@/lib/utils/project.utils";
+import { projectListQuerySchema, projectSchema } from "@/lib/validations/project.validation";
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
-	const { searchParams } = new URL(request.url)
+    const { searchParams } = new URL(request.url);
 
-	const category = searchParams.get('category')
+    const queryParams = Object.fromEntries(searchParams.entries());
 
-	if (category) {
-		const parsedCategory = projectCategorySchema.safeParse(category)
+    const parsedQuery = projectListQuerySchema.safeParse(queryParams);
 
-		if (!parsedCategory.success) {
-			return NextResponse.json(
-				{
-					message: 'Invalid category parameter',
-				},
-				{
-					status: 400,
-				},
-			)
-		}
+    if (!parsedQuery.success) {
+        return NextResponse.json(
+            {
+                message: "Invalid query parameters",
+                error: parsedQuery.error.flatten(),
+            },
+            {
+                status: 400,
+            },
+        );
+    }
 
-		const projects = await getProjectsByCategory(parsedCategory.data)
+    const { category, status, perPage, view } = parsedQuery.data;
 
-		return NextResponse.json(projects)
-	}
+    const parsedCategoryResult = category ? getProjectCategoryBySlug(category) : null;
 
-	const projects = await getAllProjects()
+    if (category && !parsedCategoryResult) {
+        return NextResponse.json(
+            {
+                message: "Invalid category",
+            },
+            {
+                status: 400,
+            },
+        );
+    }
 
-	return NextResponse.json(projects)
+    const filters = {
+        view,
+    } as const;
+
+    const projects = await getAllProjects({
+        ...filters,
+
+        ...(parsedCategoryResult && {
+            category: parsedCategoryResult,
+        }),
+
+        ...(status && {
+            status,
+        }),
+
+        ...(perPage && {
+            perPage: perPage,
+        }),
+    });
+
+    return NextResponse.json(projects);
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-	try {
-		const body = await request.json()
+    try {
+        const body = await request.json();
 
-		const validatedData = projectSchema.parse(body)
+        const validatedData = projectSchema.parse(body);
 
-		const project = await createProject(validatedData)
+        const project = await createProject(validatedData);
 
-		return NextResponse.json(project, {
-			status: 201,
-		})
-	} catch (error) {
-		return NextResponse.json(
-			{
-				message: 'Invalid request body',
-				error,
-			},
-			{
-				status: 400,
-			},
-		)
-	}
+        return NextResponse.json(project, {
+            status: 201,
+        });
+    } catch (error) {
+        return NextResponse.json(
+            {
+                message: "Invalid request body",
+                error,
+            },
+            {
+                status: 400,
+            },
+        );
+    }
 }

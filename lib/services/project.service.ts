@@ -1,97 +1,150 @@
 import {
-	addDoc,
-	collection,
-	deleteDoc,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	updateDoc,
-	where,
-} from 'firebase/firestore'
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    type QueryConstraint,
+    query,
+    updateDoc,
+    where,
+} from "firebase/firestore";
 
-import { db } from '@/lib/firebase/firestore'
-import type { Project, ProjectCategory } from '@/types/project.types'
+import { db } from "@/lib/firebase/firestore";
 
-import type { CreateProjectDto } from '../validations/project.validation'
+import type { Project, ProjectCard, ProjectCategory, ProjectStatus } from "@/types/project.types";
 
-export const getAllProjects = async (): Promise<Project[]> => {
-	const snapshot = await getDocs(collection(db, 'projects'))
+import type { CreateProjectDto } from "../validations/project.validation";
 
-	return snapshot.docs.map((document) => ({
-		id: document.id,
-		...document.data(),
-	})) as Project[]
+interface GetProjectsFilters {
+    category?: ProjectCategory;
+    status?: ProjectStatus;
+    perPage?: number;
+    view?: "full" | "card";
 }
 
-export const getProjectsByCategory = async (
-	category: ProjectCategory,
-): Promise<Project[]> => {
-	const projectsQuery = query(
-		collection(db, 'projects'),
-		where('category', '==', category),
-	)
+export const getAllProjects = async ({
+    category,
+    status,
+    perPage,
+    view = "full",
+}: GetProjectsFilters): Promise<Project[] | ProjectCard[]> => {
+    const constraints: QueryConstraint[] = [];
 
-	const snapshot = await getDocs(projectsQuery)
+    if (category) {
+        constraints.push(where("category", "==", category));
+    }
 
-	return snapshot.docs.map((document) => ({
-		id: document.id,
-		...document.data(),
-	})) as Project[]
-}
+    if (status) {
+        constraints.push(where("status", "==", status));
+    }
+
+    if (perPage) {
+        constraints.push(limit(perPage));
+    }
+
+    const projectsQuery = query(collection(db, "projects"), ...constraints);
+
+    const snapshot = await getDocs(projectsQuery);
+
+    const projects = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...document.data(),
+    })) as Project[];
+
+    if (view === "card") {
+        return projects.map((project) => {
+            const currentPhase = project.phases.find(
+                (phase) => phase.id === project.currentPhaseId,
+            );
+
+            return {
+                id: project.id,
+
+                title: project.title,
+
+                shortDescription: project.shortDescription,
+
+                category: project.category,
+
+                image: project.image,
+
+                status: project.status,
+
+                currentPhase: {
+                    endDate: currentPhase?.endDate ?? "",
+
+                    targetAmount: currentPhase?.targetAmount ?? 0,
+
+                    currentAmount: currentPhase?.currentAmount ?? 0,
+                },
+            };
+        });
+    }
+
+    return projects;
+};
 
 export const getProjectById = async (id: string): Promise<Project | null> => {
-	const snapshot = await getDoc(doc(db, 'projects', id))
+    const snapshot = await getDoc(doc(db, "projects", id));
 
-	if (!snapshot.exists()) {
-		return null
-	}
+    if (!snapshot.exists()) {
+        return null;
+    }
 
-	return {
-		id: snapshot.id,
-		...snapshot.data(),
-	} as Project
-}
+    return {
+        id: snapshot.id,
+        ...snapshot.data(),
+    } as Project;
+};
 
-export const createProject = async (
-	data: CreateProjectDto,
-): Promise<Project> => {
-	const document = await addDoc(collection(db, 'projects'), data)
+export const createProject = async (data: CreateProjectDto): Promise<Project> => {
+    const now = new Date().toISOString();
 
-	return {
-		id: document.id,
-		...data,
-	}
-}
+    const projectData: Omit<Project, "id"> = {
+        ...data,
+        createdAt: now,
+        updatedAt: now,
+    };
+
+    const document = await addDoc(collection(db, "projects"), projectData);
+
+    return {
+        id: document.id,
+        ...projectData,
+    };
+};
 
 export const updateProject = async (
-	id: string,
-	data: Partial<CreateProjectDto>,
+    id: string,
+    data: Partial<CreateProjectDto>,
 ): Promise<Project | null> => {
-	const projectReference = doc(db, 'projects', id)
+    const projectReference = doc(db, "projects", id);
 
-	const existingProject = await getProjectById(id)
+    const existingProject = await getProjectById(id);
 
-	if (!existingProject) {
-		return null
-	}
+    if (!existingProject) {
+        return null;
+    }
 
-	await updateDoc(projectReference, data)
+    await updateDoc(projectReference, data);
 
-	return {
-		...existingProject,
-		...data,
-	}
-}
+    return {
+        ...existingProject,
+        ...data,
+    };
+};
 
 export const deleteProject = async (id: string): Promise<boolean> => {
-	const existingProject = await getProjectById(id)
+    const existingProject = await getProjectById(id);
 
-	if (!existingProject) {
-		return false
-	}
+    if (!existingProject) {
+        return false;
+    }
 
-	await deleteDoc(doc(db, 'projects', id))
+    await deleteDoc(doc(db, "projects", id));
 
-	return true
-}
+    return true;
+};
