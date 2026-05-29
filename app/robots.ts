@@ -1,19 +1,18 @@
-import type { MetadataRoute } from 'next'
-
-import { siteConfig } from '@/config/site'
+import type { MetadataRoute } from "next";
+import { siteConfig } from "@/config/site";
 
 const robots = (): MetadataRoute.Robots => {
-	return {
-		rules: {
-			userAgent: '*',
+    return {
+        rules: {
+            userAgent: "*",
 
-			allow: '/',
+            allow: "/",
 
-			disallow: ['/dashboard', '/admin', '/api'],
-		},
+            disallow: ["/dashboard", "/admin", "/api"],
+        },
 
-		sitemap: `${siteConfig.url}/sitemap.xml`,
-	}
-}
+        sitemap: `${siteConfig.url}/sitemap.xml`,
+    };
+};
 
-export default robots
+export default robots;

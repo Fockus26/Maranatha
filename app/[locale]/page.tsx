@@ -1,7 +1,7 @@
-import type { ReactElement } from 'react'
+import type { ReactElement } from "react";
 
 const HomePage = (): ReactElement => {
-	return <main></main>
-}
+    return <main></main>;
+};
 
-export default HomePage
+export default HomePage;

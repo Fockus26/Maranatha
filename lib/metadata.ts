@@ -1,71 +1,69 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { siteConfig } from '@/config/site'
+import { siteConfig } from "@/config/site";
 
 interface GenerateMetadataProps {
-	title?: string
+    title?: string;
 
-	description?: string
+    description?: string;
 
-	image?: string
+    image?: string;
 }
 
 export const generateMetadata = ({
-	title,
-	description,
-	image,
+    title,
+    description,
+    image,
 }: GenerateMetadataProps = {}): Metadata => {
-	const metadataTitle = title
-		? `${title} | ${siteConfig.shortName}`
-		: siteConfig.name
+    const metadataTitle = title ? `${title} | ${siteConfig.shortName}` : siteConfig.name;
 
-	const metadataDescription = description ?? siteConfig.description
+    const metadataDescription = description ?? siteConfig.description;
 
-	const metadataImage = image ?? siteConfig.ogImage
+    const metadataImage = image ?? siteConfig.ogImage;
 
-	return {
-		metadataBase: new URL(siteConfig.url),
+    return {
+        metadataBase: new URL(siteConfig.url),
 
-		title: metadataTitle,
+        title: metadataTitle,
 
-		description: metadataDescription,
+        description: metadataDescription,
 
-		applicationName: siteConfig.name,
+        applicationName: siteConfig.name,
 
-		keywords: siteConfig.keywords,
+        keywords: siteConfig.keywords,
 
-		creator: siteConfig.creator,
+        creator: siteConfig.creator,
 
-		openGraph: {
-			type: 'website',
+        openGraph: {
+            type: "website",
 
-			url: siteConfig.url,
+            url: siteConfig.url,
 
-			title: metadataTitle,
+            title: metadataTitle,
 
-			description: metadataDescription,
+            description: metadataDescription,
 
-			siteName: siteConfig.name,
+            siteName: siteConfig.name,
 
-			images: [
-				{
-					url: metadataImage,
+            images: [
+                {
+                    url: metadataImage,
 
-					width: 1200,
+                    width: 1200,
 
-					height: 630,
-				},
-			],
-		},
+                    height: 630,
+                },
+            ],
+        },
 
-		twitter: {
-			card: 'summary_large_image',
+        twitter: {
+            card: "summary_large_image",
 
-			title: metadataTitle,
+            title: metadataTitle,
 
-			description: metadataDescription,
+            description: metadataDescription,
 
-			images: [metadataImage],
-		},
-	}
-}
+            images: [metadataImage],
+        },
+    };
+};

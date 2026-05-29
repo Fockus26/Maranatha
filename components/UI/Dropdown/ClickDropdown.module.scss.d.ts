@@ -1,11 +1,11 @@
 export type Styles = {
-	dropdown: string
-	icon: string
-	trigger: string
-}
+    dropdown: string;
+    icon: string;
+    trigger: string;
+};
 
-export type ClassNames = keyof Styles
+export type ClassNames = keyof Styles;
 
-declare const styles: Styles
+declare const styles: Styles;
 
-export default styles
+export default styles;

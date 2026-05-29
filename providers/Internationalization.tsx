@@ -1,24 +1,20 @@
-'use client'
+"use client";
 
-import { NextIntlClientProvider as InternationalizationProvider } from 'next-intl'
-import type { ReactElement, ReactNode } from 'react'
+import { NextIntlClientProvider as InternationalizationProvider } from "next-intl";
+import type { ReactElement, ReactNode } from "react";
 
 interface Props {
-	children: ReactNode
+    children: ReactNode;
 
-	locale: string
+    locale: string;
 
-	messages: Record<string, unknown>
+    messages: Record<string, unknown>;
 }
 
-export const Internationalization = ({
-	children,
-	locale,
-	messages,
-}: Props): ReactElement => {
-	return (
-		<InternationalizationProvider locale={locale} messages={messages}>
-			{children}
-		</InternationalizationProvider>
-	)
-}
+export const Internationalization = ({ children, locale, messages }: Props): ReactElement => {
+    return (
+        <InternationalizationProvider locale={locale} messages={messages}>
+            {children}
+        </InternationalizationProvider>
+    );
+};
