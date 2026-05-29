@@ -2,7 +2,7 @@ import { Facebook, Instagram, Mail, Tiktok, Whatsapp } from "iconoir-react";
 import Link from "next/link";
 import type { ReactElement } from "react";
 
-import classes from "./SocialLinks.module.css";
+import classes from "./SocialLinks.module.scss";
 
 export const SocialLinks = (): ReactElement => {
     return (

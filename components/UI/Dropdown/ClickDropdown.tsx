@@ -6,7 +6,7 @@ import { type ReactElement, useState } from "react";
 
 import { NavLink } from "@/components/UI/NavLink/NavLink";
 
-import classes from "./ClickDropdown.module.css";
+import classes from "./ClickDropdown.module.scss";
 
 interface Props {
     onSelect?: () => void;

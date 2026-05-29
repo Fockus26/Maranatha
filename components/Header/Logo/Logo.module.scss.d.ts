@@ -1,6 +1,6 @@
 export type Styles = {
-    image: string;
-    logo: string;
+	image: string;
+	logo: string;
 };
 
 export type ClassNames = keyof Styles;

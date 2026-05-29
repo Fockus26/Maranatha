@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 
 import { useMenu } from "@/hooks/useMenu";
 
-import classes from "./Backdrop.module.css";
+import classes from "./Backdrop.module.scss";
 
 export const Backdrop = (): ReactElement | null => {
     const [mounted, setMounted] = useState(false);

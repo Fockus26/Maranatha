@@ -8,7 +8,7 @@ import { ClickDropdown } from "@/components/UI/Dropdown/ClickDropdown";
 import { NavLink } from "@/components/UI/NavLink/NavLink";
 import { useMenu } from "@/hooks/useMenu";
 
-import classes from "./MobileMenu.module.css";
+import classes from "./MobileMenu.module.scss";
 
 export const MobileMenu = (): ReactElement | null => {
     const [mounted, setMounted] = useState(false);

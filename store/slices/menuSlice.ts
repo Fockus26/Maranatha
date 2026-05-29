@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface MenuState {
-    isOpen: boolean;
-}
+import type { MenuState } from "@/types/menu.types";
 
 const initialState: MenuState = {
     isOpen: false,

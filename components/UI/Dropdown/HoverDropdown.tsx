@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { NavLink } from "@/components/UI/NavLink/NavLink";
 
-import classes from "./HoverDropdown.module.css";
+import classes from "./HoverDropdown.module.scss";
 
 export const HoverDropdown = (): ReactElement => {
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);

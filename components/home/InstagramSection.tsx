@@ -145,6 +145,8 @@ export function InstagramSection({ data }: Props): ReactElement | null {
                             }}
                         >
                             <Image
+                                width={500}
+                                height={500}
                                 src={post.image}
                                 alt={post.alt}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

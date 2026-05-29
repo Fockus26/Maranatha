@@ -142,6 +142,8 @@ export function EventosSection({ data }: Props): ReactElement {
                                 {/* Imagen centrada abajo */}
                                 <div className="w-full flex items-end justify-center mt-8 z-10">
                                     <Image
+                                        width={500}
+                                        height={500}
                                         src={ev.image}
                                         alt={ev.title}
                                         className="max-h-[220px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 group-hover:-translate-y-2 drop-shadow-2xl"

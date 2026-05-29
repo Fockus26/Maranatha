@@ -6,7 +6,7 @@ import { type ReactElement, useState } from "react";
 import { Logo } from "@/components/Header/Logo/Logo";
 import { Navbar } from "@/components/Header/Navbar/Navbar";
 
-import classes from "./Header.module.css";
+import classes from "./Header.module.scss";
 
 export const Header = (): ReactElement => {
     const { scrollY } = useScroll();

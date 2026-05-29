@@ -1,5 +1,5 @@
 export type Styles = {
-    socialLinks: string;
+	socialLinks: string;
 };
 
 export type ClassNames = keyof Styles;

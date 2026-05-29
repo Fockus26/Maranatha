@@ -15,6 +15,7 @@ import { generateMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/index";
 import { firaCode, inter } from "@/styles/fonts";
 
+import "@/styles/theme.css";
 import "@/styles/globals.css";
 
 interface Props {

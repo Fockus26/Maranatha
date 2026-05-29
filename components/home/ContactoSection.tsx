@@ -39,6 +39,8 @@ export function ContactoSection({ data }: Props): ReactElement {
         <section ref={containerRef} className="w-full bg-background pb-24">
             <div className="relative h-[300px] w-full overflow-hidden">
                 <Image
+                    width={500}
+                    height={500}
                     src={data.mapImage}
                     alt="Mapa de Ubicación"
                     className="w-full h-full object-cover filter grayscale opacity-50 contrast-125"

@@ -1,8 +1,6 @@
 export type Styles = {
-	donateButton: string;
-	icon: string;
-	menu: string;
-	navbar: string;
+	indicator: string;
+	link: string;
 };
 
 export type ClassNames = keyof Styles;

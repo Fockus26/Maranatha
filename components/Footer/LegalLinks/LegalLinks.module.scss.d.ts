@@ -1,5 +1,5 @@
 export type Styles = {
-    legalLinks: string;
+	legalLinks: string;
 };
 
 export type ClassNames = keyof Styles;

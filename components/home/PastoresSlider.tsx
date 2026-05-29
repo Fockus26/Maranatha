@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import type { PastoresData, PastorItem } from "@/data/home.data";
+import type { PastoresData, PastorItem } from "@/types/home.types";
 
 interface Props {
     data: PastoresData;
@@ -57,6 +57,8 @@ export function PastoresSlider({ data }: Props): ReactElement {
 
                             {/* Imagen grande suelta */}
                             <Image
+                                height={500}
+                                width={500}
                                 src={current.image}
                                 alt={current.name}
                                 className="relative w-[1000px] h-auto object-contain object-bottom z-10"
