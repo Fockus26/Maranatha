@@ -1,10 +1,12 @@
-<!-- TODO: Probar todos los endpoints -->
+<!-- DONE: Probar todos los endpoints -->
 
-<!-- TODO: Mejorar validacion de los endpoints -->
+<!-- DONE: Mejorar validacion de los endpoints -->
 
-<!-- TODO: Usar metodos actuales (Temporal en lugar de Date) -->
+<!-- DONE: Usar metodos actuales (Temporal en lugar de Date) -->
 
 <!-- DONE: Hacer Biome y su configuracion global -->
+
+<!-- TODO: Construir Login /dashboard -->
 
 <!-- TODO: Diseñar layout -->
 

@@ -1,5 +1,5 @@
 export type Styles = {
-	notFound: string;
+    notFound: string;
 };
 
 export type ClassNames = keyof Styles;

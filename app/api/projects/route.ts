@@ -25,9 +25,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     const { category, status, perPage, view } = parsedQuery.data;
 
-    const parsedCategoryResult = category ? getProjectCategoryBySlug(category) : null;
+    const parsedCategory = category ? getProjectCategoryBySlug(category) : null;
 
-    if (category && !parsedCategoryResult) {
+    if (category && !parsedCategory) {
         return NextResponse.json(
             {
                 message: "Invalid category",
@@ -45,8 +45,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const projects = await getAllProjects({
         ...filters,
 
-        ...(parsedCategoryResult && {
-            category: parsedCategoryResult,
+        ...(parsedCategory && {
+            category: parsedCategory,
         }),
 
         ...(status && {

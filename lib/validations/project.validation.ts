@@ -1,44 +1,78 @@
 import { z } from "zod";
+import { normalizeCategory, normalizeStatus } from "@/lib/utils/project.utils";
+import { isValidDateRange } from "@/lib/utils/utils";
 
-import { PROJECT_CATEGORY_VALUES } from "@/lib/utils/project.utils";
-
-export const projectPhaseSchema = z.object({
-    id: z.string(),
-    title: z.string().min(1),
-    description: z.string().min(1),
-    images: z.array(z.string()),
-    startDate: z.string(),
-    endDate: z.string(),
-    targetAmount: z.number().min(0),
-    currentAmount: z.number().min(0),
-});
-
+// TEAM
 export const projectTeamMemberSchema = z.object({
-    id: z.string(),
-    name: z.string().min(1),
-    role: z.string().min(1),
-    image: z.string().optional(),
+    id: z.string().min(1),
+    name: z.string().min(1).max(80),
+    role: z.string().min(1).max(80),
+    image: z.url().optional(),
 });
 
+// PHASE
+export const projectPhaseSchema = z
+    .object({
+        id: z.string().min(1),
+        title: z.string().min(1).max(120),
+        description: z.string().min(1).max(1000),
+        images: z.array(z.url()).max(10),
+        startDate: z.iso.datetime(),
+        endDate: z.iso.datetime(),
+        targetAmount: z.number().min(0),
+        currentAmount: z.number().min(0),
+    })
+    .refine((data) => isValidDateRange(data.startDate, data.endDate), {
+        message: "endDate must be greater than startDate",
+        path: ["endDate"],
+    });
+
+// PROJECT
 export const projectSchema = z.object({
-    title: z.string().min(1),
-    category: z.enum(PROJECT_CATEGORY_VALUES),
-    description: z.string().min(1),
-    shortDescription: z.string().min(1),
-    image: z.string().url(),
-    status: z.enum(["IN_PROGRESS", "COMPLETED"]),
-    team: z.array(projectTeamMemberSchema),
-    phases: z.array(projectPhaseSchema),
-    currentPhaseId: z.string(),
+    title: z.string().min(1).max(120),
+    category: z
+        .string()
+        .transform(normalizeCategory)
+        .refine((val) => val !== null, {
+            message: "Invalid category",
+        }),
+    status: z
+        .string()
+        .transform(normalizeStatus)
+        .refine((val) => val !== null, {
+            message: "Invalid status",
+        }),
+    description: z.string().min(1).max(5000),
+    shortDescription: z.string().min(1).max(200),
+    image: z.url().refine((val) => /\.(jpg|jpeg|png|webp)$/i.test(val), {
+        message: "Invalid image format",
+    }),
+    team: z.array(projectTeamMemberSchema).max(20),
+    phases: z.array(projectPhaseSchema).max(10),
+    currentPhaseId: z.string().min(1),
 });
 
+// QUERY
 export const projectListQuerySchema = z.object({
-    category: z.string().optional(),
-    status: z.enum(["IN_PROGRESS", "COMPLETED"]).optional(),
+    category: z
+        .string()
+        .optional()
+        .transform((v) => (v ? normalizeCategory(v) : undefined))
+        .refine((v) => v !== null, {
+            message: "Invalid category",
+        }),
+    status: z
+        .string()
+        .optional()
+        .transform((v) => (v ? normalizeStatus(v) : undefined))
+        .refine((v) => v !== null, {
+            message: "Invalid status",
+        }),
     perPage: z.coerce.number().min(1).max(100).optional(),
     view: z.enum(["full", "card"]).default("full"),
 });
 
+export const projectUpdateSchema = projectSchema.partial();
 export type CreateProjectDto = z.infer<typeof projectSchema>;
-
 export type ProjectListQueryDto = z.infer<typeof projectListQuerySchema>;
+export type UpdateProjectDto = z.infer<typeof projectUpdateSchema>;

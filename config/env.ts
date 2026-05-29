@@ -14,6 +14,10 @@ const envSchema = z.object({
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1),
 
     NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1),
+
+    CHANNEL_ID: z.string().min(1),
+
+    YOUTUBE_API_KEY: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

@@ -1,16 +1,14 @@
-import type { ReactElement } from 'react'
-import type { SermonesData } from '@/data/home.data'
-import { getLatestSermons } from '@/lib/api/youtube'
-import SermonesClient from './SermonesClient'
+import type { ReactElement } from "react";
+import type { SermonesData } from "@/data/home.data";
+import { getLatestSermons } from "@/lib/api/youtube";
+import { SermonesClient } from "./SermonesClient";
 
 interface Props {
-	data: SermonesData
+    data: SermonesData;
 }
 
-export default async function SermonesSection({
-	data,
-}: Props): Promise<ReactElement> {
-	const videos = await getLatestSermons(4)
+export async function SermonesSection({ data }: Props): Promise<ReactElement> {
+    const videos = await getLatestSermons(4);
 
-	return <SermonesClient data={data} videos={videos} />
+    return <SermonesClient data={data} videos={videos} />;
 }

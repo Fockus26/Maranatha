@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { deleteProject, getProjectById, updateProject } from "@/lib/services/project.service";
+import { projectUpdateSchema } from "@/lib/validations/project.validation";
 
 export async function GET(
     _: NextRequest,
@@ -39,6 +40,18 @@ export async function PUT(
     const { id } = await context.params;
 
     const body = await request.json();
+
+    const parsed = projectUpdateSchema.safeParse(body);
+
+    if (!parsed.success) {
+        return NextResponse.json(
+            {
+                message: "Invalid update payload",
+                error: parsed.error.flatten(),
+            },
+            { status: 400 },
+        );
+    }
 
     const updatedProject = await updateProject(id, body);
 

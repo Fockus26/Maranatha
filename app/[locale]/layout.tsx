@@ -15,7 +15,7 @@ import { generateMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/index";
 import { firaCode, inter } from "@/styles/fonts";
 
-import "@/styles/globals.scss";
+import "@/styles/globals.css";
 
 interface Props {
     children: ReactNode;

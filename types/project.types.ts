@@ -28,6 +28,14 @@ export const PROJECT_STATUSES = {
     },
 } as const;
 
+export const CATEGORY_KEYS = Object.keys(PROJECT_CATEGORIES) as ProjectCategory[];
+
+export const CATEGORY_VALUES = Object.values(PROJECT_CATEGORIES).map((c) => c.slug);
+
+export const STATUS_KEYS = Object.keys(PROJECT_STATUSES) as ProjectStatus[];
+
+export const STATUS_VALUES = STATUS_KEYS;
+
 export type ProjectCategory = keyof typeof PROJECT_CATEGORIES;
 
 export type ProjectStatus = keyof typeof PROJECT_STATUSES;

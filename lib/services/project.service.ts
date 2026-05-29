@@ -13,9 +13,8 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase/firestore";
-
+import { dateNow } from "@/lib/utils/utils";
 import type { Project, ProjectCard, ProjectCategory, ProjectStatus } from "@/types/project.types";
-
 import type { CreateProjectDto } from "../validations/project.validation";
 
 interface GetProjectsFilters {
@@ -49,35 +48,27 @@ export const getAllProjects = async ({
 
     const snapshot = await getDocs(projectsQuery);
 
-    const projects = snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
+    const projects = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
     })) as Project[];
 
     if (view === "card") {
         return projects.map((project) => {
-            const currentPhase = project.phases.find(
-                (phase) => phase.id === project.currentPhaseId,
-            );
+            const phases = project.phases ?? [];
+
+            const currentPhase = phases.find((phase) => phase.id === project.currentPhaseId);
 
             return {
                 id: project.id,
-
                 title: project.title,
-
                 shortDescription: project.shortDescription,
-
                 category: project.category,
-
                 image: project.image,
-
                 status: project.status,
-
                 currentPhase: {
                     endDate: currentPhase?.endDate ?? "",
-
                     targetAmount: currentPhase?.targetAmount ?? 0,
-
                     currentAmount: currentPhase?.currentAmount ?? 0,
                 },
             };
@@ -101,7 +92,7 @@ export const getProjectById = async (id: string): Promise<Project | null> => {
 };
 
 export const createProject = async (data: CreateProjectDto): Promise<Project> => {
-    const now = new Date().toISOString();
+    const now = dateNow();
 
     const projectData: Omit<Project, "id"> = {
         ...data,
@@ -128,7 +119,6 @@ export const updateProject = async (
     if (!existingProject) {
         return null;
     }
-
     await updateDoc(projectReference, data);
 
     return {

@@ -1,10 +1,10 @@
-import ContactoSection from "@/components/home/ContactoSection";
-import EventosSection from "@/components/home/EventosSection";
-import HeroSlider from "@/components/home/HeroSlider";
-import InstagramSection from "@/components/home/InstagramSection";
-import PastoresSlider from "@/components/home/PastoresSlider";
-import SermonesSection from "@/components/home/SermonesSection";
-import ValoresSection from "@/components/home/ValoresSection";
+import { ContactoSection } from "@/components/home/ContactoSection";
+import { EventosSection } from "@/components/home/EventosSection";
+import { HeroSlider } from "@/components/home/HeroSlider";
+import { InstagramSection } from "@/components/home/InstagramSection";
+import { PastoresSlider } from "@/components/home/PastoresSlider";
+import { SermonesSection } from "@/components/home/SermonesSection";
+import { ValoresSection } from "@/components/home/ValoresSection";
 import { homeData } from "@/data/home.data";
 
 export default function HomePage() {

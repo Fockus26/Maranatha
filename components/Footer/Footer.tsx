@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Donate } from "iconoir-react";
+import Image from "next/image";
 import type { ReactElement } from "react";
 
 import { LegalLinks } from "@/components/Footer/LegalLinks/LegalLinks";
@@ -8,13 +8,8 @@ import { SocialLinks } from "@/components/Footer/SocialLinks/SocialLinks";
 import { LogoSvg } from "@/components/Icons/LogoSvg";
 import { Button } from "@/components/UI/Button/Button";
 
-<<<<<<< HEAD
-import eecLogo from '../../assets/images/dark-eec-logo.png'
-import classes from './Footer.module.css'
-=======
 import eecLogo from "../../assets/images/dark-eec-logo.png";
-import classes from "./Footer.module.scss";
->>>>>>> backend/projects
+import classes from "./Footer.module.css";
 
 export const Footer = (): ReactElement => {
     return (

@@ -1,33 +1,29 @@
-const CHANNEL_ID = 'UCT2A5hFBhTJ5T0CykeCKX7w'
-const API_KEY = process.env.YOUTUBE_API_KEY
+import { env } from "@/config/env";
+import { formatDateES } from "@/lib/utils/utils";
+import type { YoutubeSearchItem, YoutubeSearchResponse, YoutubeVideo } from "@/types/youtube.types";
 
-export interface YoutubeVideo {
-    title: string
-    date: string
-    thumbnail: string
-    youtubeId: string
-    series: string
-}
+const CHANNEL_ID = env.CHANNEL_ID;
+const API_KEY = env.YOUTUBE_API_KEY;
+
+const baseUrl = "https://www.googleapis.com/youtube/v3/search";
+const params = `?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&type=video&eventType=completed`;
+const rawUrl = baseUrl + params;
 
 export async function getLatestSermons(maxResults = 4): Promise<YoutubeVideo[]> {
-    const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=${maxResults}&type=video&eventType=completed`,
-        { next: { revalidate: 3600 } }
-    )
+    const url = `${rawUrl}&maxResults=${maxResults}`;
+    const res = await fetch(url, { next: { revalidate: 3600 } });
 
-    if (!res.ok) return []
+    if (!res.ok) return [];
 
-    const data = await res.json()
+    const data: YoutubeSearchResponse = await res.json();
 
-    return data.items.map((item: any) => ({
+    const mapYoutubeItem = (item: YoutubeSearchItem): YoutubeVideo => ({
         title: item.snippet.title,
-        date: new Date(item.snippet.publishedAt).toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-        }),
+        date: formatDateES(item.snippet.publishedAt),
         thumbnail: item.snippet.thumbnails.maxres?.url ?? item.snippet.thumbnails.high.url,
         youtubeId: item.id.videoId,
-        series: item.snippet.description?.split('\n')[0]?.slice(0, 40) ?? 'Mensaje',
-    }))
+        series: item.snippet.description?.split("\n")[0]?.slice(0, 40) ?? "Mensaje",
+    });
+
+    return data.items.map(mapYoutubeItem);
 }
