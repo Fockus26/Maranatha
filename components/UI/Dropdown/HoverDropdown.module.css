@@ -13,13 +13,13 @@
 	box-shadow: 0 10px 20px rgb(0 0 0 / 0.5);
 	z-index: 1010;
 	border-radius: 0 0 20px 20px;
-	padding-block: 5vh;
+	padding-block: 2.5vw;
 	display: flex;
 	justify-content: center;
 }
 
 .spacer {
-	width: 53vh;
+	width: 23.5vw;
 	flex-shrink: 0;
 }
 
