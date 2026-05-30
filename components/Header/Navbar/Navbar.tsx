@@ -1,7 +1,6 @@
 'use client'
 
-import { type ReactElement } from 'react'
-import clsx from 'clsx'
+import { type ReactElement, useState } from 'react'
 import { Menu } from 'iconoir-react'
 
 import { Button } from '@/components/UI/Button/Button'
@@ -11,18 +10,48 @@ import { useMenu } from '@/hooks/useMenu'
 
 import classes from './Navbar.module.css'
 
-export const Navbar = (): ReactElement => {
+type Props = {
+	onDropdownChange?: (isOpen: boolean) => void
+}
+
+export const Navbar = ({ onDropdownChange }: Props): ReactElement => {
 	const { toggleMenu } = useMenu()
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+	const handleDropdownChange = (value: boolean) => {
+		setIsDropdownOpen(value)
+		onDropdownChange?.(value)
+	}
 
 	return (
-		<nav className={clsx(classes.navbar)}>
-			<ul className={clsx(classes.menu)}>
-				<li>
-					<NavLink href="/about">¿Quienes Somos?</NavLink>
+		<nav
+			className={classes.navbar}
+			onMouseLeave={() => handleDropdownChange(false)}
+		>
+			<ul className={classes.menu}>
+				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/about">Sobre Nosotros</NavLink>
 				</li>
-				<HoverDropdown />
+				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/events">Eventos</NavLink>
+				</li>
+				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/evangelio-cambia">Evangelio Cambia</NavLink>
+				</li>
+				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/jef">Jef</NavLink>
+				</li>
+				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/ofrendas">Ofrendas</NavLink>
+				</li>
+				<HoverDropdown
+					isOpen={isDropdownOpen}
+					onOpenChange={handleDropdownChange}
+				/>
 			</ul>
-			<Button className={classes.donateButton}>Quiero Ayudar</Button>
+
+			<Button className={classes.prayerButton}>Oración</Button>
+
 			<button onClick={toggleMenu} className={classes.icon}>
 				<Menu />
 			</button>
