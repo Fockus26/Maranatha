@@ -1,19 +1,32 @@
 import type { ReactElement } from 'react'
 
-import { ClickDropdown } from '@/components/UI/Dropdown/ClickDropdown'
 import { NavLink } from '@/components/UI/NavLink/NavLink'
 
-import classes from './NavigationLinks.module.css'
+import classes from './LegalLinks.module.css'
 
-export const NavigationLinks = (): ReactElement => {
+export const LegalLinks = (): ReactElement => {
 	return (
-		<ul className={classes.navigation}>
+		<ul className={classes.legalLinks}>
 			<li>
-				<NavLink href="/about" variant="vertical">
-					¿Quienes Somos?
+				<NavLink href="/legal-notice" variant="vertical">
+					Aviso Legal
 				</NavLink>
 			</li>
-			<ClickDropdown />
+			<li>
+				<NavLink href="/privacy-policy" variant="vertical">
+					Política de Privacidad
+				</NavLink>
+			</li>
+			<li>
+				<NavLink href="/cookie-policy" variant="vertical">
+					Política de Cookies
+				</NavLink>
+			</li>
+			<li>
+				<NavLink href="/terms" variant="vertical">
+					Términos y Condiciones
+				</NavLink>
+			</li>
 		</ul>
 	)
 }

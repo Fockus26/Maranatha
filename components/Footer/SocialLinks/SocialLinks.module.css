@@ -11,6 +11,7 @@
 		padding: 0.5rem;
 		border-radius: 8px;
 		width: 100%;
+		color: #ffff;
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);

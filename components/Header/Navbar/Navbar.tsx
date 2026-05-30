@@ -50,7 +50,17 @@ export const Navbar = ({ onDropdownChange }: Props): ReactElement => {
 				/>
 			</ul>
 
-			<Button className={classes.prayerButton}>Oración</Button>
+			<Button
+				className={classes.prayerButton}
+				icon={
+					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+						<path d="M17 8C8 10 5.9 16.17 3.82 19.82a1 1 0 0 0 1.55 1.22C7 19 9.43 18 12 18c3 0 4.5 1.5 7 1.5V9l-2-1z" />
+						<path d="M17 8V5a2 2 0 0 0-4 0v3" />
+					</svg>
+				}
+			>
+				Oración
+			</Button>
 
 			<button onClick={toggleMenu} className={classes.icon}>
 				<Menu />

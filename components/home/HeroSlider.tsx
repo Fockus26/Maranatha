@@ -66,7 +66,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 
 					{/* Content Left Side */}
 					<div className="absolute inset-0 flex items-center z-20">
-						<div className="max-w-[1440px] !px-16 mx-auto w-full px-6 md:px-12 lg:px-24">
+						<div className="max-w-[95vw] !px-16 mx-auto w-full px-6 md:px-12 lg:px-24">
 							<div className="max-w-[650px] space-y-6 text-left hero-slide-content">
 								{/* Badge */}
 								<span className="inline-block text-secondary-fixed-dim font-bold tracking-[0.25em] text-xs md:text-sm uppercase">
