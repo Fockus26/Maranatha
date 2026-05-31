@@ -137,12 +137,36 @@ export const homeData: HomeData = {
 		],
 	},
 	valores: {
-		sectionTitle: 'Nuestros valores fundamentales',
+		sectionTitle: 'Nuestros Pilares Fundamentales',
 		items: [
-			{ icon: 'auto_awesome', title: 'Tradición', description: 'Honramos las raíces de nuestra fe con reverencia y profundidad teológica.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 100 },
-			{ icon: 'groups', title: 'Comunidad', description: 'Construimos vínculos reales que trascienden las paredes de nuestro templo.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 200 },
-			{ icon: 'volunteer_activism', title: 'Servicio', description: 'Impactamos nuestro entorno a través del amor práctico y la generosidad.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 300 },
-			{ icon: 'lightbulb', title: 'Innovación', description: 'Utilizamos herramientas modernas para comunicar el mensaje eterno de Dios.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800', delay: 400 },
+			{
+				icon: '/iconos/orar.png',
+				title: 'Oración',
+				description: 'El fundamento de todo lo que somos; la oración mueve el corazón de Dios y transforma el nuestro cada día.',
+				image: '/images/oracion.webp',
+				delay: 100
+			},
+			{
+				icon: 'music_note',
+				title: 'Adoración',
+				description: 'Celebramos a Dios con todo lo que somos; la adoración no es un momento, es un estilo de vida diario.',
+				image: '/images/adoracion.webp',
+				delay: 200
+			},
+			{
+				icon: 'school',
+				title: 'Discipulado',
+				description: 'Crecemos juntos en la fe; cada creyente es formado y equipado para impactar su familia y entorno.',
+				image: '/images/discipulado.webp',
+				delay: 300
+			},
+			{
+				icon: 'campaign',
+				title: 'Evangelización',
+				description: 'Llevamos el evangelio más allá de nuestras paredes, porque toda persona merece escuchar las buenas nuevas.',
+				image: '/images/evangelizacion.webp',
+				delay: 400
+			},
 		],
 	},
 	pastores: {

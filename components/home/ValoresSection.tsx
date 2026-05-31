@@ -37,7 +37,7 @@ export default function ValoresSection({ data }: Props): ReactElement {
 					<h2 className="text-primary-container text-3xl md:text-4xl font-bold tracking-wider uppercase">
 						{data.sectionTitle}
 					</h2>
-					<div className="w-16 h-1 bg-accent mx-auto mt-4 rounded-full" />
+					<div className="w-16 h-1 bg-[#e8603a] mx-auto mt-4 rounded-full" />
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -58,10 +58,15 @@ export default function ValoresSection({ data }: Props): ReactElement {
 
 							{/* Contenido */}
 							<div className="absolute bottom-0 left-0 right-0 p-8 space-y-3">
-								<div className="flex items-center justify-center w-11 h-11 rounded-full bg-accent/80 text-white mb-2">
-									<span className="material-symbols-outlined text-2xl">
-										{val.icon}
-									</span>
+								{/* Icono */}
+								<div className="flex items-center justify-center w-11 h-11 rounded-full bg-[#e8603a] text-white mb-2">
+									{val.icon.startsWith('/') ? (
+										<img src={val.icon} alt={val.title} className="w-6 h-6 object-contain" />
+									) : (
+										<span className="material-symbols-outlined text-2xl">
+											{val.icon}
+										</span>
+									)}
 								</div>
 								<h3 className="text-white text-xl font-bold tracking-wide">
 									{val.title}
