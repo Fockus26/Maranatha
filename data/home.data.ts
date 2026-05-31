@@ -6,6 +6,7 @@ export interface HeroSlide {
 	buttonText: string
 	buttonHref: string
 	image: string
+
 }
 
 export interface HeroData {
@@ -118,21 +119,21 @@ export const homeData: HomeData = {
 	hero: {
 		slides: [
 			{
-				badge: 'Bienvenido a Maranatha',
-				title: 'Una luz en el profundo',
-				subtitle: 'Descubre una comunidad dedicada a la tradición, la fe y el crecimiento espiritual en el corazón de nuestra ciudad.',
-				buttonText: 'Ver Servicios',
-				buttonHref: '#servicios',
-				image: 'https://images.unsplash.com/photo-1438029071396-1e831a7fa6d8?auto=format&fit=crop&q=80&w=1600',
+				badge: 'Iglesia Maranatha San Cristóbal',
+				title: 'La Palabra que transforma',
+				subtitle: 'Porque la palabra de Dios es viva y eficaz. El evangelio de Cristo es nuestra misión, nuestra pasión y nuestra vida.',
+				buttonText: 'Conoce nuestros servicios',
+				buttonHref: '/servicios',
+				image: '/images/palabra.webp',
 			},
-			{
-				badge: 'Nuestra visión',
-				title: 'Creciendo en comunidad',
-				subtitle: 'Un espacio donde cada alma encuentra su propósito y cada corazón su hogar en la presencia de Dios.',
-				buttonText: 'Conócenos',
-				buttonHref: '#nosotros',
-				image: 'https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&q=80&w=1600',
-			},
+			// {
+			// 	badge: 'Nuestra visión',
+			// 	title: 'Creciendo en comunidad',
+			// 	subtitle: 'Un espacio donde cada alma encuentra su propósito y cada corazón su hogar en la presencia de Dios.',
+			// 	buttonText: 'Conócenos',
+			// 	buttonHref: '#nosotros',
+			// 	image: '/images/alabanza.jpg',
+			// },
 		],
 	},
 	valores: {

@@ -2,10 +2,10 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
-	padding: 0.60rem 1.4rem;
-	font-weight: 700;
-	font-size: 16px;
+	gap: 4px;
+	padding: 0.40rem 1.4rem;
+	font-weight: 600;
+	font-size: 18px;
 	background-color: #e8603a;
 	color: #ffffff;
 	border-radius: 999px;
@@ -13,12 +13,11 @@
 	cursor: pointer;
 
 	&:hover {
-		background-color: var(--color-complementary);
+		background-color: #d4522e;
+
 	}
 
-	&:active {
-		transform: scale(0.98);
-	}
+
 }
 
 .icon {

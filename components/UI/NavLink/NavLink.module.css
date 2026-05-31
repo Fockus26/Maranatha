@@ -10,8 +10,8 @@
 	color: white;
 
 	&:hover {
-		color: var(--color-accent);
-		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		color: #e8603a;
+		background-color: color-mix(in srgb, #e8603a 10%, transparent);
 	}
 
 	.indicator {
