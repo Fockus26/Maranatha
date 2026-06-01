@@ -1,3 +1,5 @@
+import type { HomeData } from "@/types/home.types";
+
 // Types
 export interface HeroSlide {
     badge: string;

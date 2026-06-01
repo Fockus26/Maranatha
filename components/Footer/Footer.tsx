@@ -1,9 +1,8 @@
 import type { ReactElement } from "react";
 
 import { LegalLinks } from "@/components/Footer/LegalLinks/LegalLinks";
-import { LogoSvg } from "@/components/Icons/LogoSvg";
 
-import classes from "./Footer.module.css";
+import classes from "./Footer.module.scss";
 
 export const Footer = (): ReactElement => {
     return (

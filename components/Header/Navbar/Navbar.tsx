@@ -1,17 +1,7 @@
 "use client";
 
-<<<<<<< HEAD
-
-import clsx from "clsx";
-import { Menu } from "iconoir-react";
-import type { ReactElement } from "react";
-
-=======
-
 import { Menu } from "iconoir-react";
 import { type ReactElement, useState } from "react";
-
->>>>>>> simon-frontend
 
 import { Button } from "@/components/UI/Button/Button";
 import { HoverDropdown } from "@/components/UI/Dropdown/HoverDropdown";
