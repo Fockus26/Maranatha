@@ -1,61 +1,68 @@
-import type { HomeData } from "@/types/home.types";
+// Types
+export interface HeroSlide {
+    badge: string;
+    title: string;
+    subtitle: string;
+    buttonText: string;
+    buttonHref: string;
+    image: string;
+}
 
 export const homeData: HomeData = {
     hero: {
         slides: [
             {
-                badge: "Bienvenido a Maranatha",
-                title: "Una luz en el profundo",
+                badge: "Iglesia Maranatha San Cristóbal",
+                title: "La Palabra que transforma",
                 subtitle:
-                    "Descubre una comunidad dedicada a la tradición, la fe y el crecimiento espiritual en el corazón de nuestra ciudad.",
-                buttonText: "Ver Servicios",
-                buttonHref: "#servicios",
-                image: "https://images.unsplash.com/photo-1438029071396-1e831a7fa6d8?auto=format&fit=crop&q=80&w=1600",
+                    "Porque la palabra de Dios es viva y eficaz. El evangelio de Cristo es nuestra misión, nuestra pasión y nuestra vida.",
+                buttonText: "Conoce nuestros servicios",
+                buttonHref: "/servicios",
+                image: "/images/palabra.webp",
             },
-            {
-                badge: "Nuestra visión",
-                title: "Creciendo en comunidad",
-                subtitle:
-                    "Un espacio donde cada alma encuentra su propósito y cada corazón su hogar en la presencia de Dios.",
-                buttonText: "Conócenos",
-                buttonHref: "#nosotros",
-                image: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&q=80&w=1600",
-            },
+            // {
+            // 	badge: 'Nuestra visión',
+            // 	title: 'Creciendo en comunidad',
+            // 	subtitle: 'Un espacio donde cada alma encuentra su propósito y cada corazón su hogar en la presencia de Dios.',
+            // 	buttonText: 'Conócenos',
+            // 	buttonHref: '#nosotros',
+            // 	image: '/images/alabanza.jpg',
+            // },
         ],
     },
     valores: {
-        sectionTitle: "Nuestros valores fundamentales",
+        sectionTitle: "Nuestros Pilares Fundamentales",
         items: [
             {
-                icon: "auto_awesome",
-                title: "Tradición",
+                icon: "/iconos/orar.png",
+                title: "Oración",
                 description:
-                    "Honramos las raíces de nuestra fe con reverencia y profundidad teológica.",
-                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800",
+                    "El fundamento de todo lo que somos; la oración mueve el corazón de Dios y transforma el nuestro cada día.",
+                image: "/images/oracion.webp",
                 delay: 100,
             },
             {
-                icon: "groups",
-                title: "Comunidad",
+                icon: "music_note",
+                title: "Adoración",
                 description:
-                    "Construimos vínculos reales que trascienden las paredes de nuestro templo.",
-                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800",
+                    "Celebramos a Dios con todo lo que somos; la adoración no es un momento, es un estilo de vida diario.",
+                image: "/images/adoracion.webp",
                 delay: 200,
             },
             {
-                icon: "volunteer_activism",
-                title: "Servicio",
+                icon: "school",
+                title: "Discipulado",
                 description:
-                    "Impactamos nuestro entorno a través del amor práctico y la generosidad.",
-                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800",
+                    "Crecemos juntos en la fe; cada creyente es formado y equipado para impactar su familia y entorno.",
+                image: "/images/discipulado.webp",
                 delay: 300,
             },
             {
-                icon: "lightbulb",
-                title: "Innovación",
+                icon: "campaign",
+                title: "Evangelización",
                 description:
-                    "Utilizamos herramientas modernas para comunicar el mensaje eterno de Dios.",
-                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800",
+                    "Llevamos el evangelio más allá de nuestras paredes, porque toda persona merece escuchar las buenas nuevas.",
+                image: "/images/evangelizacion.webp",
                 delay: 400,
             },
         ],

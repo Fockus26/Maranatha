@@ -5,11 +5,13 @@ import classes from "./Button.module.scss";
 
 interface Props extends ComponentProps<"button"> {
     children: ReactNode;
+    icon?: ReactNode;
 }
 
-export const Button = ({ children, className, type = "button" }: Props): ReactElement => {
+export const Button = ({ children, className, icon, ...props }: Props): ReactElement => {
     return (
-        <button type={type} className={clsx(className, classes.button)}>
+        <button className={clsx(className, classes.button)} {...props}>
+            {icon && <span className={classes.icon}>{icon}</span>}
             {children}
         </button>
     );

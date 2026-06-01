@@ -1,7 +1,17 @@
-.navigation {
-	width: 100%;
+.legalLinks {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 
 	li a {
-		width: 100%;
+		font-size: 13px;
+		padding: 0.4rem 0.75rem;
+		border-radius: 8px;
+		white-space: nowrap;
 	}
 }

@@ -9,7 +9,7 @@ import { homeData } from "@/data/home.data";
 
 export default function HomePage() {
     return (
-        <main className="bg-background mt-[-70px]">
+        <main className="bg-background mt-[-11.5vh]">
             <HeroSlider data={homeData.hero} />
             <ValoresSection data={homeData.valores} />
             <PastoresSlider data={homeData.pastores} />

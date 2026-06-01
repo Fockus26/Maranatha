@@ -6,6 +6,8 @@
 
 <!-- DONE: Hacer Biome y su configuracion global -->
 
+<!-- DONE: Explicar API proyectos -->
+
 <!-- TODO: Construir Login /dashboard -->
 
 <!-- TODO: Diseñar layout -->

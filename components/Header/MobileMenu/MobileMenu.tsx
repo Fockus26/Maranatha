@@ -31,11 +31,34 @@ export const MobileMenu = (): ReactElement | null => {
 
     return createPortal(
         <ul className={clsx(classes.menu, classes.isOpen)}>
-            <li>
-                <NavLink href="/about" onClick={closeMenu} variant="vertical">
-                    ¿Quienes Somos?
-                </NavLink>
-            </li>
+            <ul className={clsx(classes.menu, classes.isOpen)}>
+                <li>
+                    <NavLink href="/about" onClick={closeMenu} variant="vertical">
+                        Sobre Nosotros
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink href="/events" onClick={closeMenu} variant="vertical">
+                        Eventos
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink href="/evangelio-cambia" onClick={closeMenu} variant="vertical">
+                        Evangelio Cambia
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink href="/jef" onClick={closeMenu} variant="vertical">
+                        Jef
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink href="/ofrendas" onClick={closeMenu} variant="vertical">
+                        Ofrendas
+                    </NavLink>
+                </li>
+                <ClickDropdown onSelect={closeMenu} />
+            </ul>
             <ClickDropdown onSelect={closeMenu} />
         </ul>,
         modalsContainer,
