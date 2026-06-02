@@ -1,6 +1,10 @@
 export type Styles = {
 	button: string;
-	icon: string;
+	error: string;
+	field: string;
+	form: string;
+	input: string;
+	label: string;
 };
 
 export type ClassNames = keyof Styles;

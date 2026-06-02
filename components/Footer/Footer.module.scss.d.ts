@@ -1,8 +1,8 @@
 export type Styles = {
-	button: string;
+	copyright: string;
 	footer: string;
-	images: string;
-	title: string;
+	logo: string;
+	main: string;
 };
 
 export type ClassNames = keyof Styles;

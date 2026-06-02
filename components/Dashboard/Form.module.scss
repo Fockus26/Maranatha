@@ -1,0 +1,75 @@
+@use '../../styles/mixins' as *;
+
+.form {
+	width: 100%;
+	max-width: 440px;
+	margin: 0 auto;
+	padding: 2rem;
+	background-color: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	border-radius: 1.5rem;
+	box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+	display: grid;
+	gap: 1.5rem;
+}
+
+.field {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.label {
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: #0f172a;
+}
+
+.input {
+	width: 100%;
+	padding: 1rem 1.1rem;
+	border-radius: 1rem;
+	border: 1px solid #cbd5e1;
+	background-color: #f8fafc;
+	color: #0f172a;
+	font-size: 1rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.input:focus {
+	outline: none;
+	border-color: color(accent);
+	box-shadow: 0 0 0 4px rgba(14, 122, 184, 0.12);
+	background-color: #ffffff;
+}
+
+.error {
+	padding: 0.95rem 1rem;
+	border-radius: 1rem;
+	background-color: color(danger, 300);
+	color: color(danger);
+	border: 1px solid color(danger, 200);
+	font-size: 0.95rem;
+}
+
+.button {
+	width: 100%;
+	padding: 1rem 1.1rem;
+	border-radius: 1rem;
+	background-color: color(brand);
+	color: color(gray, 50);
+	font-weight: 700;
+	font-size: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button:hover {
+	background-color: color(brand, 600);
+	transform: translateY(-1px);
+}
+
+.button:disabled {
+	opacity: 0.75;
+	cursor: not-allowed;
+}

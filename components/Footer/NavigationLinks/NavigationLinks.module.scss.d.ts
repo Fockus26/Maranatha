@@ -1,5 +1,5 @@
 export type Styles = {
-	navigation: string;
+	legalLinks: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store";
 import { login } from "@/store/slices/authSlice";
+import styles from "./Form.module.scss";
 
 type Props = {
     onLogin?: () => void;
@@ -38,10 +39,13 @@ export const Form = ({ onLogin }: Props): ReactElement => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="auth-email">Email</label>
+        <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.field}>
+                <label className={styles.label} htmlFor="auth-email">
+                    Email
+                </label>
                 <input
+                    className={styles.input}
                     id="auth-email"
                     type="email"
                     value={email}
@@ -49,9 +53,12 @@ export const Form = ({ onLogin }: Props): ReactElement => {
                     required
                 />
             </div>
-            <div>
-                <label htmlFor="auth-password">Contraseña</label>
+            <div className={styles.field}>
+                <label className={styles.label} htmlFor="auth-password">
+                    Contraseña
+                </label>
                 <input
+                    className={styles.input}
                     id="auth-password"
                     type="password"
                     value={password}
@@ -59,8 +66,8 @@ export const Form = ({ onLogin }: Props): ReactElement => {
                     required
                 />
             </div>
-            {error && <div style={{ color: "#b00020" }}>{error}</div>}
-            <button type="submit" disabled={loading}>
+            {error && <div className={styles.error}>{error}</div>}
+            <button className={styles.button} type="submit" disabled={loading}>
                 {loading ? "Ingresando..." : "Ingresar"}
             </button>
         </form>

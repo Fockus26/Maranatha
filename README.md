@@ -8,11 +8,15 @@
 
 <!-- DONE: Explicar API proyectos -->
 
-<!-- TODO: Construir Login /dashboard -->
+<!-- DONE: Construir Login /dashboard -->
+
+<!-- TODO: Manejar Autenticacion con Firebase -->
 
 <!-- TODO: Diseñar layout -->
 
-<!-- TODO: Cuando dejo pulsado el cursor sobre un texto este tiene un fondo el cual deberia de personalizarse -->
+<!-- TODO: Crear sistema de diseño (botones, inputs) -->
 
-<!-- TODO: Cuando selecciono elementos con el tab estos tienen un borde el cual deberia de personalizarse -->
+<!-- DONE: Cuando dejo pulsado el cursor sobre un texto este tiene un fondo el cual deberia de personalizarse -->
+
+<!-- DONE: Cuando selecciono elementos con el tab estos tienen un borde el cual deberia de personalizarse -->
 

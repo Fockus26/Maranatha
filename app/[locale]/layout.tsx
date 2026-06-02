@@ -13,10 +13,10 @@ import { isRtlLocale } from "@/i18n/config";
 import { routing } from "@/i18n/routing";
 import { generateMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/index";
-import { firaCode, inter } from "@/styles/fonts";
+import { clashDisplay, dmSans } from "@/styles/fonts";
 
-import "@/styles/theme.css";
-import "@/styles/globals.css";
+import "@/styles/theme.scss";
+import "@/styles/globals.scss";
 
 interface Props {
     children: ReactNode;
@@ -44,7 +44,7 @@ const RootLayout = async ({ children, params }: Readonly<Props>): Promise<ReactE
             lang={locale}
             dir={isRtl ? "rtl" : "ltr"}
             suppressHydrationWarning
-            className={clsx(inter.variable, firaCode.variable)}
+            className={clsx(dmSans.variable, clashDisplay.variable)}
             data-scroll-behavior="smooth"
         >
             <body>

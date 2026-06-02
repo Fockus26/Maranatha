@@ -13,6 +13,9 @@
 
     "todo-tree.highlights.enabled": true,
 
+    "css.validate": true,
+    "scss.validate": false,
+
     "todo-tree.highlights.customHighlight": {
         "DONE": {
             "icon": "check",
