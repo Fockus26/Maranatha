@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase/firestore";
-import { dateNow } from "@/lib/utils/utils";
+import { dateNow } from "@/lib/utils/date";
 import type { Project, ProjectCard, ProjectCategory, ProjectStatus } from "@/types/project.types";
 import type { CreateProjectDto } from "../validations/project.validation";
 
@@ -92,7 +92,7 @@ export const getProjectById = async (id: string): Promise<Project | null> => {
 };
 
 export const createProject = async (data: CreateProjectDto): Promise<Project> => {
-    const now = dateNow();
+    const now = dateNow().toString();
 
     const projectData: Omit<Project, "id"> = {
         ...data,

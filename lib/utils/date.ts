@@ -5,7 +5,9 @@ export const isValidDateRange = (start: string, end: string) => {
     );
 };
 
-export const dateNow = () => Temporal.Now.instant().toString();
+export const dateNow = () => Temporal.Now.instant();
+
+export const dateNowMiliseconds = () => Temporal.Now.instant().epochMilliseconds;
 
 export const formatDateES = (iso: string) => {
     const instant = Temporal.Instant.from(iso);

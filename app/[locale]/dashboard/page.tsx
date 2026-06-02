@@ -1,20 +1,19 @@
 "use client";
 
-import { Dashboard } from "iconoir-react";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
+import { Dashboard } from "@/components/Dashboard/Dashboard";
 import { Form } from "@/components/Dashboard/Form";
 import type { RootState } from "@/store";
 
 const Page = (): ReactElement => {
-    const user = useSelector((s: RootState) => s.auth.user);
+    const { user, initialized, checkingAuth } = useSelector((s: RootState) => s.auth);
 
-    return (
-        <main>
-            {!user && <Form />}
-            {user && <Dashboard />}
-        </main>
-    );
+    if (!initialized || checkingAuth) {
+        return <div>Cargando...</div>;
+    }
+
+    return <main> {user ? <Dashboard /> : <Form />}</main>;
 };
 
 export default Page;

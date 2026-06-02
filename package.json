@@ -4,9 +4,9 @@
     "private": true,
 
     "scripts": {
-        "dev": "next dev --webpack",
+        "dev": "next dev",
         "build": "next build",
-        "start": "next start --webpack",
+        "start": "next start",
         "test": "vitest",
         "lint": "biome lint .",
         "lint:fix": "biome check --write .",

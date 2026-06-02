@@ -1,10 +1,10 @@
 "use client";
 
 import type { ReactElement, ReactNode } from "react";
-
-import { Internationalization } from "./Internationalization";
-import { Redux } from "./Redux";
-import { Theme } from "./Theme";
+import { Auth as AuthProvider } from "@/providers/Auth";
+import { Internationalization as InternationalizationProvider } from "./Internationalization";
+import { Redux as ReduxProvider } from "./Redux";
+import { Theme as ThemeProvider } from "./Theme";
 
 interface Props {
     children: ReactNode;
@@ -16,12 +16,14 @@ interface Props {
 
 export const Providers = ({ children, locale, messages }: Props): ReactElement => {
     return (
-        <Redux>
-            <Theme>
-                <Internationalization locale={locale} messages={messages}>
-                    {children}
-                </Internationalization>
-            </Theme>
-        </Redux>
+        <ReduxProvider>
+            <AuthProvider>
+                <ThemeProvider>
+                    <InternationalizationProvider locale={locale} messages={messages}>
+                        {children}
+                    </InternationalizationProvider>
+                </ThemeProvider>
+            </AuthProvider>
+        </ReduxProvider>
     );
 };

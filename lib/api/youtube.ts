@@ -1,9 +1,9 @@
-import { env } from "@/config/env";
-import { formatDateES } from "@/lib/utils/utils";
+import { envServer } from "@/config/env.server";
+import { formatDateES } from "@/lib/utils/date";
 import type { YoutubeSearchItem, YoutubeSearchResponse, YoutubeVideo } from "@/types/youtube.types";
 
-const CHANNEL_ID = env.CHANNEL_ID;
-const API_KEY = env.YOUTUBE_API_KEY;
+const CHANNEL_ID = envServer.CHANNEL_ID;
+const API_KEY = envServer.YOUTUBE_API_KEY;
 
 const baseUrl = "https://www.googleapis.com/youtube/v3/search";
 const params = `?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&type=video&eventType=completed`;

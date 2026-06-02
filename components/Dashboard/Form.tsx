@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store";
-import { login } from "@/store/slices/authSlice";
+import { login, loginWithGoogle } from "@/store/slices/authSlice";
 import styles from "./Form.module.scss";
 
 type Props = {
@@ -38,6 +38,22 @@ export const Form = ({ onLogin }: Props): ReactElement => {
         }
     }
 
+    const handleGoogleLogin = async () => {
+        setError(null);
+
+        const res = await dispatch(loginWithGoogle());
+
+        if (loginWithGoogle.fulfilled.match(res)) {
+            onLogin?.();
+        } else {
+            setError(
+                (res.payload as string) ||
+                    res.error.message ||
+                    "Error al iniciar sesión con Google",
+            );
+        }
+    };
+
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.field}>
@@ -69,6 +85,9 @@ export const Form = ({ onLogin }: Props): ReactElement => {
             {error && <div className={styles.error}>{error}</div>}
             <button className={styles.button} type="submit" disabled={loading}>
                 {loading ? "Ingresando..." : "Ingresar"}
+            </button>
+            <button type="button" onClick={handleGoogleLogin}>
+                Continuar con Google
             </button>
         </form>
     );

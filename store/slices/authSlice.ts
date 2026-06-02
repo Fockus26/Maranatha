@@ -1,7 +1,11 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+    login as authLogin,
+    loginWithGoogle as authLoginWithGoogle,
+    logout as authLogout,
+} from "@/lib/services/auth.service";
 import type { AuthState, User } from "@/types/auth.types";
-import { login as authLogin } from "../../lib/services/auth.service";
 
 export const login = createAsyncThunk(
     "auth/login",
@@ -15,32 +19,50 @@ export const login = createAsyncThunk(
     },
 );
 
-const initialState: AuthState = { user: null, loading: false, error: null };
+export const loginWithGoogle = createAsyncThunk("auth/google", async (_, { rejectWithValue }) => {
+    try {
+        return await authLoginWithGoogle();
+    } catch (err) {
+        return rejectWithValue((err as Error).message);
+    }
+});
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+    await authLogout();
+});
+
+const initialState: AuthState = {
+    user: null,
+    loading: false,
+    initialized: false,
+    checkingAuth: false,
+    error: null,
+};
 
 const slice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        logout(state) {
-            state.user = null;
+        setUser(state, action: PayloadAction<User | null>) {
+            state.user = action.payload;
+        },
+        setInitialized(state, action: PayloadAction<boolean>) {
+            state.initialized = action.payload;
+        },
+        setCheckingAuth(state, action) {
+            state.checkingAuth = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(login.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+            .addCase(login.fulfilled, (state) => {
                 state.loading = false;
-                state.user = action.payload;
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(loginWithGoogle.fulfilled, (state) => {
                 state.loading = false;
-                state.error = (action.payload as string) || action.error.message || "Login failed";
             });
     },
 });
 
 export const authReducer = slice.reducer;
-export const { logout } = slice.actions;
+export const { setUser, setInitialized, setCheckingAuth } = slice.actions;
