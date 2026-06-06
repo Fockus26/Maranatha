@@ -1,14 +1,14 @@
 {
-    "recommendations": [
-        "formulahendry.auto-rename-tag",
-        "usernamehw.errorlens",
-        "PKief.material-icon-theme",
-        "christian-kohler.path-intellisense",
-        "YoavBls.pretty-ts-errors",
-        "meganrogge.template-string-converter",
-        "gruntfuggly.todo-tree",
-        "biomejs.biome",
-        "oven.bun-vscode",
-        "vitest.explorer"
-    ]
+	"recommendations": [
+		"formulahendry.auto-rename-tag",
+		"usernamehw.errorlens",
+		"PKief.material-icon-theme",
+		"christian-kohler.path-intellisense",
+		"YoavBls.pretty-ts-errors",
+		"meganrogge.template-string-converter",
+		"gruntfuggly.todo-tree",
+		"biomejs.biome",
+		"oven.bun-vscode",
+		"vitest.explorer"
+	]
 }

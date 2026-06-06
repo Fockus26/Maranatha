@@ -3,41 +3,41 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 
 const manifest = (): MetadataRoute.Manifest => {
-    return {
-        name: siteConfig.name,
+	return {
+		name: siteConfig.name,
 
-        short_name: siteConfig.shortName,
+		short_name: siteConfig.shortName,
 
-        description: siteConfig.description,
+		description: siteConfig.description,
 
-        start_url: "/",
+		start_url: "/",
 
-        display: "standalone",
+		display: "standalone",
 
-        background_color: "#ffffff",
+		background_color: "#ffffff",
 
-        theme_color: "#111827",
+		theme_color: "#111827",
 
-        lang: siteConfig.lang,
+		lang: siteConfig.lang,
 
-        icons: [
-            {
-                src: "/icon.png",
+		icons: [
+			{
+				src: "/icon.png",
 
-                sizes: "512x512",
+				sizes: "512x512",
 
-                type: "image/png",
-            },
+				type: "image/png",
+			},
 
-            {
-                src: "/apple-icon.png",
+			{
+				src: "/apple-icon.png",
 
-                sizes: "180x180",
+				sizes: "180x180",
 
-                type: "image/png",
-            },
-        ],
-    };
+				type: "image/png",
+			},
+		],
+	};
 };
 
 export default manifest;

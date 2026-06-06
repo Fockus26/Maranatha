@@ -1,32 +1,32 @@
 export interface YoutubeSearchResponse {
-    items: YoutubeSearchItem[];
+	items: YoutubeSearchItem[];
 }
 
 export interface YoutubeSearchItem {
-    id: {
-        videoId: string;
-    };
+	id: {
+		videoId: string;
+	};
 
-    snippet: {
-        title: string;
-        description: string;
-        publishedAt: string;
+	snippet: {
+		title: string;
+		description: string;
+		publishedAt: string;
 
-        thumbnails: {
-            high: {
-                url: string;
-            };
-            maxres?: {
-                url: string;
-            };
-        };
-    };
+		thumbnails: {
+			high: {
+				url: string;
+			};
+			maxres?: {
+				url: string;
+			};
+		};
+	};
 }
 
 export interface YoutubeVideo {
-    title: string;
-    date: string;
-    thumbnail: string;
-    youtubeId: string;
-    series: string;
+	title: string;
+	date: string;
+	thumbnail: string;
+	youtubeId: string;
+	series: string;
 }

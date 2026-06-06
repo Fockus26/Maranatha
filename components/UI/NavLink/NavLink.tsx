@@ -11,55 +11,55 @@ import classes from "./NavLink.module.scss";
 const MotionLink = motion.create(Link);
 
 type Props = {
-    children: ReactNode;
-    variant?: "horizontal" | "vertical";
+	children: ReactNode;
+	variant?: "horizontal" | "vertical";
 } & ComponentProps<typeof Link>;
 
 export const NavLink = ({
-    href,
-    children,
-    variant = "horizontal",
-    className,
-    onClick,
+	href,
+	children,
+	variant = "horizontal",
+	className,
+	onClick,
 }: Props): ReactElement => {
-    const pathname = usePathname();
+	const pathname = usePathname();
 
-    const isActive = pathname === href;
+	const isActive = pathname === href;
 
-    return (
-        <MotionLink href={href} className={clsx(classes.link, className)} onClick={onClick}>
-            {children}
+	return (
+		<MotionLink href={href} className={clsx(classes.link, className)} onClick={onClick}>
+			{children}
 
-            {/* NAVBAR PRINCIPAL */}
-            {variant === "horizontal" && isActive && (
-                <motion.span layoutId="navbar-indicator" className={classes.indicator} />
-            )}
+			{/* NAVBAR PRINCIPAL */}
+			{variant === "horizontal" && isActive && (
+				<motion.span layoutId="navbar-indicator" className={classes.indicator} />
+			)}
 
-            {/* DROPDOWN */}
-            {variant === "vertical" && (
-                <motion.span
-                    className={classes.indicator}
-                    initial={{
-                        scaleX: 0,
-                        transformOrigin: "left",
-                    }}
-                    animate={
-                        isActive
-                            ? {
-                                  scaleX: 1,
-                                  transformOrigin: "left",
-                              }
-                            : {
-                                  scaleX: 0,
-                                  transformOrigin: "right",
-                              }
-                    }
-                    transition={{
-                        duration: 0.25,
-                        ease: "easeInOut",
-                    }}
-                />
-            )}
-        </MotionLink>
-    );
+			{/* DROPDOWN */}
+			{variant === "vertical" && (
+				<motion.span
+					className={classes.indicator}
+					initial={{
+						scaleX: 0,
+						transformOrigin: "left",
+					}}
+					animate={
+						isActive
+							? {
+									scaleX: 1,
+									transformOrigin: "left",
+								}
+							: {
+									scaleX: 0,
+									transformOrigin: "right",
+								}
+					}
+					transition={{
+						duration: 0.25,
+						ease: "easeInOut",
+					}}
+				/>
+			)}
+		</MotionLink>
+	);
 };

@@ -10,11 +10,13 @@
 
 <!-- DONE: Construir Login /dashboard -->
 
-<!-- TODO: Manejar Autenticacion con Firebase -->
+<!-- DONE: Manejar Autenticacion con Firebase -->
 
 <!-- TODO: Diseñar layout -->
 
-<!-- TODO: Crear sistema de diseño (botones, inputs) -->
+<!-- TODO: Crear contenido messages y utilizarlo -->
+
+<!-- TODO: Crear sistema de diseño (botones, inputs, paleta de colores, containers) -->
 
 <!-- DONE: Cuando dejo pulsado el cursor sobre un texto este tiene un fondo el cual deberia de personalizarse -->
 

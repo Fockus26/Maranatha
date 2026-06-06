@@ -10,20 +10,20 @@ const params = `?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&
 const rawUrl = baseUrl + params;
 
 export async function getLatestSermons(maxResults = 4): Promise<YoutubeVideo[]> {
-    const url = `${rawUrl}&maxResults=${maxResults}`;
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+	const url = `${rawUrl}&maxResults=${maxResults}`;
+	const res = await fetch(url, { next: { revalidate: 3600 } });
 
-    if (!res.ok) return [];
+	if (!res.ok) return [];
 
-    const data: YoutubeSearchResponse = await res.json();
+	const data: YoutubeSearchResponse = await res.json();
 
-    const mapYoutubeItem = (item: YoutubeSearchItem): YoutubeVideo => ({
-        title: item.snippet.title,
-        date: formatDateES(item.snippet.publishedAt),
-        thumbnail: item.snippet.thumbnails.maxres?.url ?? item.snippet.thumbnails.high.url,
-        youtubeId: item.id.videoId,
-        series: item.snippet.description?.split("\n")[0]?.slice(0, 40) ?? "Mensaje",
-    });
+	const mapYoutubeItem = (item: YoutubeSearchItem): YoutubeVideo => ({
+		title: item.snippet.title,
+		date: formatDateES(item.snippet.publishedAt),
+		thumbnail: item.snippet.thumbnails.maxres?.url ?? item.snippet.thumbnails.high.url,
+		youtubeId: item.id.videoId,
+		series: item.snippet.description?.split("\n")[0]?.slice(0, 40) ?? "Mensaje",
+	});
 
-    return data.items.map(mapYoutubeItem);
+	return data.items.map(mapYoutubeItem);
 }

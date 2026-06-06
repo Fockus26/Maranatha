@@ -3,79 +3,63 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { NavArrowDown } from "iconoir-react";
 import { type ReactElement, useState } from "react";
-
+import { Button } from "@/components/UI/Button/Button";
 import { NavLink } from "@/components/UI/NavLink/NavLink";
-
+import { headerData } from "@/data/header.data";
+import type { DropdownLinks, DropdownMessages } from "@/types/header.types";
 import classes from "./ClickDropdown.module.scss";
 
 interface Props {
-    onSelect?: () => void;
+	onSelect?: () => void;
+	messages: DropdownMessages;
 }
 
-export const ClickDropdown = ({ onSelect }: Props): ReactElement => {
-    const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+const MotionButton = motion.create(Button);
 
-    const toggleDropdown = (): void => setIsOpenDropdown((prev) => !prev);
-    const closeDropdown = (): void => {
-        setIsOpenDropdown(false);
-        onSelect?.();
-    };
+export const ClickDropdown = ({ onSelect, messages }: Props): ReactElement => {
+	const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-    return (
-        <li className={classes.dropdown}>
-            <div className={classes.trigger}>
-                <NavLink href="/projects" onClick={closeDropdown} variant="vertical">
-                    Proyectos
-                </NavLink>
+	const toggleDropdown = (): void => setIsOpenDropdown((prev) => !prev);
+	const closeDropdown = (): void => {
+		setIsOpenDropdown(false);
+		onSelect?.();
+	};
 
-                <motion.button
-                    animate={{ y: "-50%", rotate: isOpenDropdown ? 180 : 0 }}
-                    type="button"
-                    className={classes.icon}
-                    onClick={toggleDropdown}
-                    aria-label="Toggle dropdown"
-                >
-                    <NavArrowDown />
-                </motion.button>
-            </div>
+	return (
+		<li className={classes.dropdown}>
+			<div className={classes.trigger}>
+				<NavLink href="/projects" onClick={closeDropdown} variant="vertical">
+					{messages.projects}
+				</NavLink>
+				<MotionButton
+					icon={<NavArrowDown />}
+					animate={{ y: "-50%", rotate: isOpenDropdown ? 180 : 0 }}
+					type="button"
+					className={classes.icon}
+					onClick={toggleDropdown}
+				/>
+			</div>
 
-            <AnimatePresence>
-                {isOpenDropdown && (
-                    <motion.ul
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                    >
-                        <li>
-                            <NavLink
-                                onClick={closeDropdown}
-                                variant="vertical"
-                                href="/projects/el-evangelio-cambia"
-                            >
-                                El Evangelio Cambia
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                onClick={closeDropdown}
-                                variant="vertical"
-                                href="/projects/eventos-especiales"
-                            >
-                                Eventos Especiales
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                onClick={closeDropdown}
-                                variant="vertical"
-                                href="/projects/iglesia"
-                            >
-                                Iglesia
-                            </NavLink>
-                        </li>
-                    </motion.ul>
-                )}
-            </AnimatePresence>
-        </li>
-    );
+			<AnimatePresence>
+				{isOpenDropdown && (
+					<motion.ul
+						initial={{ opacity: 0, height: 0 }}
+						animate={{ opacity: 1, height: "auto" }}
+						exit={{ opacity: 0, height: 0 }}
+					>
+						{Object.entries(headerData.dropdownLinks).map(([linkKey, link]) => {
+							const key = linkKey as DropdownLinks;
+							return (
+								<li key={crypto.randomUUID()}>
+									<NavLink variant="vertical" href={link}>
+										{messages.links[key]}
+									</NavLink>
+								</li>
+							);
+						})}
+					</motion.ul>
+				)}
+			</AnimatePresence>
+		</li>
+	);
 };

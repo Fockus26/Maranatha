@@ -1,32 +1,27 @@
 import type { ReactElement } from "react";
-
 import { NavLink } from "@/components/UI/NavLink/NavLink";
+import { footerData } from "@/data/footer.data";
+import type { FooterLinks, FooterMessages } from "@/types/footer.types";
+import classes from "./legalLinks.module.scss";
 
-import classes from "./LegalLinks.module.scss";
+interface Props {
+	messages: FooterMessages;
+}
 
-export const LegalLinks = (): ReactElement => {
-    return (
-        <ul className={classes.legalLinks}>
-            <li>
-                <NavLink href="/legal-notice" variant="vertical">
-                    Aviso Legal
-                </NavLink>
-            </li>
-            <li>
-                <NavLink href="/privacy-policy" variant="vertical">
-                    Política de Privacidad
-                </NavLink>
-            </li>
-            <li>
-                <NavLink href="/cookie-policy" variant="vertical">
-                    Política de Cookies
-                </NavLink>
-            </li>
-            <li>
-                <NavLink href="/terms" variant="vertical">
-                    Términos y Condiciones
-                </NavLink>
-            </li>
-        </ul>
-    );
+export const LegalLinks = ({ messages }: Props): ReactElement => {
+	return (
+		<ul className={classes.legalLinks}>
+			{Object.entries(footerData).map(([linKey, link]) => {
+				const key = linKey as FooterLinks;
+
+				return (
+					<li key={crypto.randomUUID()}>
+						<NavLink variant="vertical" href={link}>
+							{messages.links[key]}
+						</NavLink>
+					</li>
+				);
+			})}
+		</ul>
+	);
 };

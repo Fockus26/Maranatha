@@ -1,18 +1,21 @@
 import type { ReactElement } from "react";
+import { LegalLinks } from "@/components/footer/legalLinks/legalLinks";
+import type { FooterMessages } from "@/types/footer.types";
+import classes from "./footer.module.scss";
 
-import { LegalLinks } from "@/components/Footer/LegalLinks/LegalLinks";
+interface Props {
+	messages: FooterMessages;
+}
 
-import classes from "./Footer.module.scss";
-
-export const Footer = (): ReactElement => {
-    return (
-        <footer className={classes.footer}>
-            <div className={classes.main}>
-                <LegalLinks />
-            </div>
-            <div className={classes.copyright}>
-                <p>Copyright © 2026 Maranatha San Cristóbal | Hecho con ♥ por Simón y César</p>
-            </div>
-        </footer>
-    );
+export const Footer = ({ messages }: Props): ReactElement => {
+	return (
+		<footer className={classes.footer}>
+			<div className={classes.main}>
+				<LegalLinks messages={messages} />
+			</div>
+			<div className={classes.copyright}>
+				<p>{messages.copyright}</p>
+			</div>
+		</footer>
+	);
 };

@@ -1,22 +1,26 @@
-import { ContactoSection } from "@/components/home/ContactoSection";
-import { EventosSection } from "@/components/home/EventosSection";
-import { HeroSlider } from "@/components/home/HeroSlider";
-import { InstagramSection } from "@/components/home/InstagramSection";
-import { PastoresSlider } from "@/components/home/PastoresSlider";
-import { SermonesSection } from "@/components/home/SermonesSection";
-import { ValoresSection } from "@/components/home/ValoresSection";
-import { homeData } from "@/data/home.data";
+import { getMessages } from "next-intl/server";
+import { Contact } from "@/components/home/contact";
+import { Events } from "@/components/home/events";
+import { Hero } from "@/components/home/hero";
+import { Leaders } from "@/components/home/leaders";
+import { Sermons } from "@/components/home/sermons";
+import { SocialMedia } from "@/components/home/socialMedia";
+import { Values } from "@/components/home/values";
+import { getLatestSermons } from "@/lib/api/youtube";
 
-export default function HomePage() {
-    return (
-        <main className="bg-background mt-[-11.5vh]">
-            <HeroSlider data={homeData.hero} />
-            <ValoresSection data={homeData.valores} />
-            <PastoresSlider data={homeData.pastores} />
-            <SermonesSection data={homeData.sermones} />
-            <EventosSection data={homeData.eventos} />
-            <InstagramSection data={homeData.instagram} />
-            <ContactoSection data={homeData.contacto} />
-        </main>
-    );
+export default async function HomePage() {
+	const videos = await getLatestSermons(4);
+	const messages = (await getMessages()).home;
+
+	return (
+		<main className="bg-background mt-[-11.5vh]">
+			<Hero messages={messages.hero} />
+			<Values messages={messages.values} />
+			<Leaders messages={messages.leaders} />
+			<Sermons messages={messages.sermons} videos={videos} />
+			<Events messages={messages.events} />
+			<SocialMedia messages={messages.socialMedia} />
+			<Contact messages={messages.contact} />
+		</main>
+	);
 }

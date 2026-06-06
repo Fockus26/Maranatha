@@ -4,17 +4,17 @@ import { NextIntlClientProvider as InternationalizationProvider } from "next-int
 import type { ReactElement, ReactNode } from "react";
 
 interface Props {
-    children: ReactNode;
+	children: ReactNode;
 
-    locale: string;
+	locale: string;
 
-    messages: Record<string, unknown>;
+	messages: Record<string, unknown>;
 }
 
 export const Internationalization = ({ children, locale, messages }: Props): ReactElement => {
-    return (
-        <InternationalizationProvider locale={locale} messages={messages}>
-            {children}
-        </InternationalizationProvider>
-    );
+	return (
+		<InternationalizationProvider locale={locale} messages={messages}>
+			{children}
+		</InternationalizationProvider>
+	);
 };
