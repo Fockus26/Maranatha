@@ -8,7 +8,7 @@ import type { ReactElement, ReactNode } from "react";
 import { Footer } from "@/components/footer/footer";
 import { Header } from "@/components/header/header";
 import { MobileMenu } from "@/components/header/mobileMenu/mobileMenu";
-import { Backdrop } from "@/components/UI/Backdrop/Backdrop";
+import { Backdrop } from "@/components/UI/backdrop/backdrop";
 import { isRtlLocale } from "@/i18n/config";
 import { routing } from "@/i18n/routing";
 import { generateMetadata } from "@/lib/metadata";
@@ -36,7 +36,6 @@ const RootLayout = async ({ children, params }: Readonly<Props>): Promise<ReactE
 	}
 
 	const messages = await getMessages();
-
 	const isRtl = isRtlLocale(locale);
 
 	return (

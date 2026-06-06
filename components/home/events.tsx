@@ -3,7 +3,7 @@
 import { ArrowRight, Calendar } from "iconoir-react";
 import Image from "next/image";
 import { type ReactElement, useEffect, useRef } from "react";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { eventsData } from "@/data/pages/home/events.data";
 import type { EventsMessages } from "@/types/pages/home/events.types";
 

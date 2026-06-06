@@ -1,10 +1,7 @@
-import type { NotFoundMessages } from "@/types/messages.types";
+import { getMessages } from "next-intl/server";
 
-interface Props {
-	messages: NotFoundMessages;
-}
-
-async function NotFound({ messages }: Props) {
+async function NotFound() {
+	const messages = (await getMessages()).notFound;
 	return (
 		<main>
 			<h2>{messages.title}</h2>

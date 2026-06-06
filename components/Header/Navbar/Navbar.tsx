@@ -2,9 +2,9 @@
 
 import { Menu } from "iconoir-react";
 import { type ReactElement, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
-import { HoverDropdown } from "@/components/UI/Dropdown/HoverDropdown";
-import { NavLink } from "@/components/UI/NavLink/NavLink";
+import { Button } from "@/components/ui/button/button";
+import { HoverDropdown } from "@/components/ui/dropdown/hoverDropdown";
+import { NavLink } from "@/components/ui/navLink/navLink";
 import { headerData } from "@/data/header.data";
 import { useMenu } from "@/hooks/useMenu";
 import type { NavbarLinks, NavbarMessages } from "@/types/header.types";

@@ -3,11 +3,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { NavArrowDown } from "iconoir-react";
 import { type ReactElement, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
-import { NavLink } from "@/components/UI/NavLink/NavLink";
+import { Button } from "@/components/ui/button/button";
+import { NavLink } from "@/components/ui/navLink/navLink";
 import { headerData } from "@/data/header.data";
 import type { DropdownLinks, DropdownMessages } from "@/types/header.types";
-import classes from "./ClickDropdown.module.scss";
+import classes from "./clickDropdown.module.scss";
 
 interface Props {
 	onSelect?: () => void;

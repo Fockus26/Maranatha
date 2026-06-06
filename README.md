@@ -12,9 +12,9 @@
 
 <!-- DONE: Manejar Autenticacion con Firebase -->
 
-<!-- TODO: Diseñar layout -->
+<!-- DONE: Diseñar layout -->
 
-<!-- TODO: Crear contenido messages y utilizarlo -->
+<!-- DONE: Crear contenido messages y utilizarlo -->
 
 <!-- TODO: Crear sistema de diseño (botones, inputs, paleta de colores, containers) -->
 

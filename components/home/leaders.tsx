@@ -3,7 +3,7 @@
 import { ArrowLeft, ArrowRight } from "iconoir-react";
 import Image from "next/image";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { leadersData } from "@/data/pages/home/leaders.data";
 import type { LeadersMessages } from "@/types/pages/home/leaders.types";
 

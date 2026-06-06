@@ -1,6 +1,23 @@
-@use "sass:map";
-@use "variables" as *;
+@function color($name) {
+	@return var(--app-color-#{$name});
+}
 
-@function color($palette, $tone: 500) {
-	@return map.get(map.get($colors, $palette), $tone);
+@mixin color-scheme($name) {
+	background-color: color($name);
+	color: color(#{$name}-foreground);
+}
+
+@mixin interactive-color($name) {
+	background-color: color($name);
+	color: color(#{$name}-foreground);
+
+	&:hover {
+		background-color: color(#{$name}-hover);
+	}
+}
+
+@mixin state($name) {
+	background-color: color(#{$name}-soft);
+	color: color($name);
+	border: 1px solid color($name);
 }

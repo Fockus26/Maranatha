@@ -6,7 +6,7 @@ import { Donate } from "iconoir-react";
 import { type ReactElement, useState } from "react";
 import { Logo } from "@/components/header/logo/logo";
 import { Navbar } from "@/components/header/navbar/navbar";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import logoImage from "@/public/images/Logo-Maranatha.webp";
 import type { HeaderMessages } from "@/types/messages.types";
 import classes from "./header.module.scss";

@@ -3,9 +3,9 @@
 import { Xmark } from "iconoir-react";
 import { type ReactElement, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { useMenu } from "@/hooks/useMenu";
-import classes from "./Backdrop.module.scss";
+import classes from "./backdrop.module.scss";
 
 export const Backdrop = (): ReactElement | null => {
 	const [mounted, setMounted] = useState(false);

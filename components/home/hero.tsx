@@ -2,7 +2,7 @@
 
 import { DotsGrid3x3 } from "iconoir-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { heroData } from "@/data/pages/home/hero.data";
 import type { HeroMessages } from "@/types/pages/home/hero.types";
 

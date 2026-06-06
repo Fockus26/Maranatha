@@ -45,9 +45,9 @@
 .error {
 	padding: 0.95rem 1rem;
 	border-radius: 1rem;
-	background-color: color(danger, 300);
-	color: color(danger);
-	border: 1px solid color(danger, 200);
+	background-color: color(error);
+	color: color(error);
+	border: 1px solid color(error);
 	font-size: 0.95rem;
 }
 
@@ -55,8 +55,8 @@
 	width: 100%;
 	padding: 1rem 1.1rem;
 	border-radius: 1rem;
-	background-color: color(brand);
-	color: color(gray, 50);
+	background-color: color(primary);
+	color: color(text);
 	font-weight: 700;
 	font-size: 1rem;
 	text-transform: uppercase;
@@ -65,7 +65,7 @@
 }
 
 .button:hover {
-	background-color: color(brand, 600);
+	background-color: color(primary);
 	transform: translateY(-1px);
 }
 

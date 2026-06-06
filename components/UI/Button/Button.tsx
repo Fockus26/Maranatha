@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 
-import classes from "./Button.module.scss";
+import classes from "./button.module.scss";
 
 type ButtonContent =
 	| {

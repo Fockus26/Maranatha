@@ -3,8 +3,8 @@
 import clsx from "clsx";
 import { type ReactElement, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ClickDropdown } from "@/components/UI/Dropdown/ClickDropdown";
-import { NavLink } from "@/components/UI/NavLink/NavLink";
+import { ClickDropdown } from "@/components/ui/dropdown/clickDropdown";
+import { NavLink } from "@/components/ui/navLink/navLink";
 import { headerData } from "@/data/header.data";
 import { useMenu } from "@/hooks/useMenu";
 import type { NavbarLinks, NavbarMessages } from "@/types/header.types";

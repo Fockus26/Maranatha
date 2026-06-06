@@ -2,10 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import type { ReactElement } from "react";
-import { NavLink } from "@/components/UI/NavLink/NavLink";
+import { NavLink } from "@/components/ui/navLink/navLink";
 import { headerData } from "@/data/header.data";
 import type { DropdownLinks, DropdownMessages } from "@/types/header.types";
-import classes from "./HoverDropdown.module.scss";
+import classes from "./hoverDropdown.module.scss";
 
 type Props = {
 	isOpen: boolean;

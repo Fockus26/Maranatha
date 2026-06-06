@@ -2,7 +2,7 @@
 
 import { Calendar, Xmark } from "iconoir-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { sermonsData } from "@/data/pages/home/sermons.data";
 import type { SermonsMessages } from "@/types/pages/home/sermons.types";
 import type { YoutubeVideo } from "@/types/youtube.types";

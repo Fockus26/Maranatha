@@ -3,7 +3,7 @@
 import { OpenInBrowser, Star } from "iconoir-react";
 import Image from "next/image";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/UI/Button/Button";
+import { Button } from "@/components/ui/button/button";
 import { socialMediaData } from "@/data/pages/home/socialMedia.data";
 import type {
 	Networks,
