@@ -13,7 +13,9 @@ export default function HeroSlider({ data }: Props): ReactElement {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setActiveSlide((prev) => (prev === data.slides.length - 1 ? 0 : prev + 1))
+			setActiveSlide((prev) =>
+				prev === data.slides.length - 1 ? 0 : prev + 1,
+			)
 		}, 6000)
 
 		return () => clearInterval(interval)
@@ -35,20 +37,28 @@ export default function HeroSlider({ data }: Props): ReactElement {
 			})
 		}, observerOptions)
 
-		const revealElements = containerRef.current?.querySelectorAll('.hero-slide-content')
+		const revealElements = containerRef.current?.querySelectorAll(
+			'.hero-slide-content',
+		)
 		revealElements?.forEach((el) => observer.observe(el))
 
 		return () => observer.disconnect()
 	}, [activeSlide])
 
 	return (
-		<section ref={containerRef} className="relative h-[45vw] w-full overflow-hidden bg-brand">
+		<section
+			ref={containerRef}
+			className="relative h-[45vw] w-full overflow-hidden bg-brand"
+		>
 			{/* Slides */}
 			{data.slides.map((slide, idx) => (
 				<div
 					key={idx}
-					className={`absolute inset-0 h-full w-full transition-opacity duration-2000 ease-in-out ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-						}`}
+					className={`absolute inset-0 h-full w-full transition-opacity duration-2000 ease-in-out ${
+						idx === activeSlide
+							? 'opacity-100 z-10'
+							: 'opacity-0 z-0'
+					}`}
 				>
 					{/* Background Image focused to the right */}
 					<div
@@ -60,7 +70,8 @@ export default function HeroSlider({ data }: Props): ReactElement {
 					<div
 						className="absolute inset-0 h-full w-full"
 						style={{
-							background: "linear-gradient(90deg, #000519 0%, #000519d9 40%, rgba(0, 5, 25, 0) 100%)",
+							background:
+								'linear-gradient(90deg, #000519 0%, #000519d9 40%, rgba(0, 5, 25, 0) 100%)',
 						}}
 					/>
 
@@ -85,13 +96,26 @@ export default function HeroSlider({ data }: Props): ReactElement {
 
 								{/* Action Button */}
 								<div className="pt-4 ">
-									<a href={slide.buttonHref}
+									<a
+										href={slide.buttonHref}
 										className="!text-white !text-3xl inline-flex items-center gap-3 !font-medium transition-all duration-300 group"
-										style={{ borderBottom: '1.5px solid #e8603a', paddingBottom: '4px' }}
+										style={{
+											borderBottom: '1.5px solid #e8603a',
+											paddingBottom: '4px',
+										}}
 									>
-
 										{slide.buttonText}
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:translate-x-1">
+										<svg
+											width="18"
+											height="18"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="white"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											className="transition-transform duration-300 group-hover:translate-x-1"
+										>
 											<path d="M5 12h14M12 5l7 7-7 7" />
 										</svg>
 									</a>
@@ -100,8 +124,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						</div>
 					</div>
 				</div>
-			))
-			}
+			))}
 
 			{/* Navigation Dots in Bottom Left */}
 			<div className="absolute bottom-12 left-6 md:left-12 lg:left-24 z-30 flex items-center gap-3">
@@ -110,13 +133,14 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						key={idx}
 						onClick={() => setActiveSlide(idx)}
 						aria-label={`Ir al slide ${idx + 1}`}
-						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${idx === activeSlide
-							? 'bg-[#0e7ab8] w-8 active-dot'
-							: 'bg-white/30 w-2.5 hover:bg-white/50'
-							}`}
+						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
+							idx === activeSlide
+								? 'bg-[#0e7ab8] w-8 active-dot'
+								: 'bg-white/30 w-2.5 hover:bg-white/50'
+						}`}
 					/>
 				))}
 			</div>
-		</section >
+		</section>
 	)
 }
