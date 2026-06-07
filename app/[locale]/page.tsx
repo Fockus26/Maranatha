@@ -13,7 +13,7 @@ export default async function HomePage() {
 	const messages = (await getMessages()).home;
 
 	return (
-		<main className="bg-background mt-[-11.5vh]">
+		<main className="bg-background">
 			<Hero messages={messages.hero} />
 			<Values messages={messages.values} />
 			<Leaders messages={messages.leaders} />

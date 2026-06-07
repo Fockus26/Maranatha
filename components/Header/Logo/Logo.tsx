@@ -11,8 +11,8 @@ interface Props extends Omit<ImageProps, "src" | "alt"> {
 
 export const Logo = ({ href, alt, src, ...props }: Props): ReactElement => {
 	return (
-		<Link href={href} className={classes.logo}>
-			<Image src={src} {...props} alt={alt} />
+		<Link href={href}>
+			<Image src={src} {...props} alt={alt} className={classes.logo} />
 		</Link>
 	);
 };

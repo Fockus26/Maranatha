@@ -1,8 +1,6 @@
 "use client";
 
-import { DotsGrid3x3 } from "iconoir-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button/button";
 import { heroData } from "@/data/pages/home/hero.data";
 import type { HeroMessages } from "@/types/pages/home/hero.types";
 
@@ -47,7 +45,7 @@ export function Hero({ messages }: Props): ReactElement {
 	}, []);
 
 	return (
-		<section ref={containerRef} className="relative h-[45vw] w-full overflow-hidden bg-brand">
+		<section ref={containerRef} className="relative h-screen w-full overflow-hidden bg-brand">
 			{/* Slides */}
 			{heroData.map((slide, index) => (
 				<div
@@ -120,22 +118,6 @@ export function Hero({ messages }: Props): ReactElement {
 					</div>
 				</div>
 			))}
-
-			{/* Navigation Dots in Bottom Left */}
-			<div className="absolute bottom-12 left-6 md:left-12 lg:left-24 z-30 flex items-center gap-3">
-				{heroData.map((_, index) => (
-					<Button
-						key={crypto.randomUUID()}
-						icon={<DotsGrid3x3 />}
-						onClick={() => setActiveSlide(index)}
-						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
-							index === activeSlide
-								? "bg-[#0e7ab8] w-8 active-dot"
-								: "bg-white/30 w-2.5 hover:bg-white/50"
-						}`}
-					/>
-				))}
-			</div>
 		</section>
 	);
 }
