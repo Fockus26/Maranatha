@@ -101,7 +101,7 @@ table {
 	transform: translateX(0);
 }
 
-.valor-card {
+.value-card {
 	opacity: 0;
 	transform: translateY(40px);
 	transition:
@@ -109,7 +109,7 @@ table {
 		transform 0.5s ease;
 }
 
-.valor-card.active {
+.value-card.active {
 	opacity: 1;
 	transform: translateY(0);
 }
@@ -136,7 +136,7 @@ table {
 	transform: translateX(0);
 }
 
-.evento-card {
+.event-card {
 	opacity: 0;
 	transform: translateY(30px);
 	transition:
@@ -144,7 +144,7 @@ table {
 		transform 0.6s ease;
 }
 
-.evento-card.active {
+.event-card.active {
 	opacity: 1;
 	transform: translateY(0);
 }

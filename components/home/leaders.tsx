@@ -5,6 +5,7 @@ import Image from "next/image";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button/button";
 import { leadersData } from "@/data/pages/home/leaders.data";
+import { logger } from "@/lib/logger/client";
 import type { LeadersMessages } from "@/types/pages/home/leaders.types";
 
 interface Props {
@@ -15,6 +16,7 @@ export function Leaders({ messages }: Props): ReactElement {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [visible, setVisible] = useState(true);
 
+	logger.info(leadersData);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
