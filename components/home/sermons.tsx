@@ -89,6 +89,7 @@ export function Sermons({ videos, messages }: Props): ReactElement {
 						<Button
 							key={crypto.randomUUID()}
 							className="reveal flex flex-col group cursor-pointer"
+							style={{ backgroundColor: "transparent", alignItems: "normal" }}
 							onClick={() =>
 								setActiveVideo(`https://www.youtube.com/embed/${sermon.youtubeId}`)
 							}
@@ -103,7 +104,7 @@ export function Sermons({ videos, messages }: Props): ReactElement {
 								/>
 							</div>
 
-							<h4 className="text-base font-semibold line-clamp-2 leading-snug text-white group-hover:text-secondary-fixed-dim transition-colors duration-300">
+							<h4 className="text-left font-semibold line-clamp-2 leading-snug text-white group-hover:text-secondary-fixed-dim transition-colors duration-300">
 								{messages.secondary[index]?.title}
 							</h4>
 

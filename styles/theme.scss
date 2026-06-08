@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@import "tailwindcss";
 
 // Dark Mode per attribute
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

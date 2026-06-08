@@ -82,9 +82,9 @@ export function Leaders({ messages }: Props): ReactElement {
 								{messages.title}
 							</h2>
 
-							<h3 className="text-complementary text-xl md:text-2xl font-bold">
+							<h3 className="text-secondary text-xl md:text-2xl font-bold">
 								{messages.items[currentIndex]?.name} —{" "}
-								<span className="text-sm font-medium text-on-surface-variant/80">
+								<span className="text-white text-sm font-medium text-on-surface-variant/80">
 									{messages.items[currentIndex]?.role}
 								</span>
 							</h3>

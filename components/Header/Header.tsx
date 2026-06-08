@@ -46,7 +46,9 @@ export const Header = ({ messages }: Props): ReactElement => {
 		>
 			<Logo href="/" alt={messages.imageAlt} src={logoImage} />
 			<Navbar messages={messages.navbar} onDropdownChange={setDropdownOpen} />
-			<Button icon={<Donate />}>{messages.button}</Button>
+			<Button style={{ backgroundColor: "var(--color-accent)" }} icon={<Donate />}>
+				{messages.button}
+			</Button>
 		</motion.header>
 	);
 };

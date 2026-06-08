@@ -41,8 +41,7 @@ export function Events({ messages }: Props): ReactElement {
 				{/* Header */}
 				<div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
 					<div className="max-w-[700px] space-y-4">
-						<div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-tertiary-fixed text-complementary text-xs font-semibold tracking-wide border border-complementary/10">
-							<span className="w-1.5 h-1.5 rounded-full bg-complementary animate-pulse" />
+						<div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-secondary text-xs font-bold tracking-wide border-2">
 							{messages.label}
 						</div>
 						<h2 className="text-primary-container text-3xl md:text-4xl font-bold tracking-tight">
@@ -55,7 +54,11 @@ export function Events({ messages }: Props): ReactElement {
 					<div className="hidden md:block">
 						<Button
 							icon={<ArrowRight />}
-							className="flex items-center gap-2 group text-accent font-semibold text-sm transition-all duration-300 hover:text-accent/85"
+							style={{
+								backgroundColor: "transparent",
+								color: "var(--color-secondary)",
+							}}
+							className="flex items-center gap-2 group text-primary font-semibold text-sm transition-all duration-300 hover:text-accent/85"
 						>
 							{messages.buttons.viewCalendar}
 						</Button>
@@ -97,10 +100,16 @@ export function Events({ messages }: Props): ReactElement {
 
 									{/* Botones estilo Apple */}
 									<div className="flex items-center justify-center gap-3 pt-2">
-										<Button className="bg-accent text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-accent/85 transition-all duration-300">
+										<Button
+											className="bg-primary text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-primary/85 transition-all duration-300"
+											style={{ backgroundColor: "var(--color-background)" }}
+										>
 											{messages.buttons.moreInfo}
 										</Button>
-										<Button className="border border-accent text-accent rounded-full px-6 py-2 text-sm font-semibold hover:bg-accent/10 transition-all duration-300">
+										<Button
+											className="border border-primary text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-primary/10 transition-all duration-300"
+											style={{ backgroundColor: "var(--color-background)" }}
+										>
 											{messages.buttons.register}
 										</Button>
 									</div>
@@ -125,7 +134,7 @@ export function Events({ messages }: Props): ReactElement {
 				<div className="mt-8 text-center md:hidden">
 					<Button
 						icon={<ArrowRight />}
-						className="inline-flex items-center gap-2 text-accent font-semibold text-sm"
+						className="inline-flex items-center gap-2 text-primary font-semibold text-sm"
 					>
 						{messages.buttons.viewCalendar}
 					</Button>

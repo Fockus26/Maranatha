@@ -1,19 +1,22 @@
+@use "../../../styles/mixins" as *;
+
 .legalLinks {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 1rem;
 
 	li a {
+		color: color(text);
 		width: 100%;
 		border-radius: 8px;
 		padding: 0.5rem;
 		transition: 150ms ease-in-out;
 
 		&:hover {
-			background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
-			color: var(--color-accent);
+			color: color(background);
+			background-color: color(secondary);
 		}
 	}
 }

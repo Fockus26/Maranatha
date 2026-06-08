@@ -1,3 +1,4 @@
+import type { StaticImageData } from "next/image";
 import type { ComponentType, SVGProps } from "react";
 
 export type Networks = "instagram" | "facebook";
@@ -17,7 +18,7 @@ export interface SocialMediaMessages {
 }
 
 export interface SocialMediaItem {
-	image: string;
+	image: StaticImageData;
 	url: string;
 }
 

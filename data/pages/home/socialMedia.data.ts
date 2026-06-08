@@ -1,5 +1,6 @@
 import { FacebookIcon } from "@/components/icons/facebookIcon";
 import { InstagramIcon } from "@/components/icons/instagramIcon";
+import instagramPost from "@/public/images/instagram.jpg";
 import type { SocialMediaData } from "@/types/pages/home/socialMedia.types";
 
 export const socialMediaData: SocialMediaData = {
@@ -12,19 +13,19 @@ export const socialMediaData: SocialMediaData = {
 		icon: InstagramIcon,
 		items: [
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.instagram.com/maranathasancristobal/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.instagram.com/maranathasancristobal/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.instagram.com/maranathasancristobal/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.instagram.com/maranathasancristobal/",
 			},
 		],
@@ -38,19 +39,19 @@ export const socialMediaData: SocialMediaData = {
 		icon: FacebookIcon,
 		items: [
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.facebook.com/Iglesiamaranathasc/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.facebook.com/Iglesiamaranathasc/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.facebook.com/Iglesiamaranathasc/",
 			},
 			{
-				image: "/images/instagram.jpg",
+				image: instagramPost,
 				url: "https://www.facebook.com/Iglesiamaranathasc/",
 			},
 		],

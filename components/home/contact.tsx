@@ -51,7 +51,7 @@ export function Contact({ messages }: Props): ReactElement {
 			</div>
 
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 relative z-20">
-				<div className="bg-white rounded-3xl shadow-2xl -mt-20 p-8 md:p-12 lg:p-16 border border-secondary-fixed-dim/15 reveal">
+				<div className="bg-background rounded-3xl shadow-2xl -mt-20 p-8 md:p-12 lg:p-16 border-3 border-secondary-fixed-dim/15 reveal">
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 						<div className="lg:col-span-5 space-y-6">
 							<h2 className="text-primary-container text-4xl md:text-5xl font-bold tracking-tight">

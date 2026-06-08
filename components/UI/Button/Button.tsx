@@ -17,7 +17,7 @@ type Props = ComponentProps<"button"> & ButtonContent;
 
 export const Button = ({ children, className, icon, ...props }: Props): ReactElement => {
 	return (
-		<button className={clsx(className, classes.button)} {...props}>
+		<button className={clsx(classes.button, className)} {...props}>
 			{icon && <span className={classes.icon}>{icon}</span>}
 			{children}
 		</button>

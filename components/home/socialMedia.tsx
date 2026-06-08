@@ -66,11 +66,9 @@ export function SocialMedia({ messages }: Props): ReactElement | null {
 										icon={<Icon />}
 										key={crypto.randomUUID()}
 										onClick={() => setActiveNetworkId(networkKey as Networks)}
-										className={`flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 ${
-											activeNetworkId === networkKey
-												? "bg-primary text-on-surface shadow-sm"
-												: "text-gray-400"
-										}`}
+										className={
+											"flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-background font-semibold transition-all duration-300"
+										}
 									>
 										{network.label}
 									</Button>
