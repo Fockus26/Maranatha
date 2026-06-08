@@ -4,4 +4,7 @@ export const leadersData: LeadersData = [
 	{
 		image: "/images/pastores-foto.png",
 	},
+	{
+		image: "/images/pastores-foto2.png",
+	},
 ];
