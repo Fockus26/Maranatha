@@ -30,19 +30,13 @@ export const Navbar = ({ onDropdownChange }: Props): ReactElement => {
 		>
 			<ul className={classes.menu}>
 				<li onMouseEnter={() => handleDropdownChange(false)}>
+					<NavLink href="/">Inicio</NavLink>
+				</li>
+				<li onMouseEnter={() => handleDropdownChange(false)}>
 					<NavLink href="/about">Sobre Nosotros</NavLink>
 				</li>
 				<li onMouseEnter={() => handleDropdownChange(false)}>
 					<NavLink href="/events">Eventos</NavLink>
-				</li>
-				<li onMouseEnter={() => handleDropdownChange(false)}>
-					<NavLink href="/evangelio-cambia">Evangelio Cambia</NavLink>
-				</li>
-				<li onMouseEnter={() => handleDropdownChange(false)}>
-					<NavLink href="/jef">Jef</NavLink>
-				</li>
-				<li onMouseEnter={() => handleDropdownChange(false)}>
-					<NavLink href="/ofrendas">Ofrendas</NavLink>
 				</li>
 				<HoverDropdown
 					isOpen={isDropdownOpen}
@@ -53,7 +47,16 @@ export const Navbar = ({ onDropdownChange }: Props): ReactElement => {
 			<Button
 				className={classes.prayerButton}
 				icon={
-					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+					<svg
+						width="17"
+						height="17"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="white"
+						strokeWidth="1.8"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
 						<path d="M17 8C8 10 5.9 16.17 3.82 19.82a1 1 0 0 0 1.55 1.22C7 19 9.43 18 12 18c3 0 4.5 1.5 7 1.5V9l-2-1z" />
 						<path d="M17 8V5a2 2 0 0 0-4 0v3" />
 					</svg>

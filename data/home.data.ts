@@ -82,12 +82,22 @@ export interface InstagramPost {
 	url: string
 }
 
+export interface RedSocialConfig {
+	id: string
+	label: string
+	handle: string
+	url: string
+	gradient: string
+	followText: string
+}
+
 export interface InstagramData {
 	handle: string
 	subtitle: string
 	followText: string
 	posts: InstagramPost[]
 	facebookPosts: InstagramPost[]
+	redes: RedSocialConfig[]
 }
 
 export interface ContactoInfo {
@@ -355,6 +365,24 @@ export const homeData: HomeData = {
 				image: '/images/instagram.jpg',
 				alt: 'Post FB 4',
 				url: 'https://www.facebook.com/Iglesiamaranathasc/',
+			},
+		],
+		redes: [
+			{
+				id: 'instagram',
+				label: 'Instagram',
+				handle: '@maranathasancristobal',
+				url: 'https://www.instagram.com/maranathasancristobal/',
+				gradient: 'linear-gradient(45deg, #F09433, #DC2743, #BC1888)',
+				followText: 'Síguenos en Instagram',
+			},
+			{
+				id: 'facebook',
+				label: 'Facebook',
+				handle: 'Iglesia Maranatha San Cristóbal',
+				url: 'https://www.facebook.com/Iglesiamaranathasc',
+				gradient: 'linear-gradient(45deg, #1877F2, #0a5fd8)',
+				followText: 'Síguenos en Facebook',
 			},
 		],
 	},

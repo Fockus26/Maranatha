@@ -22,7 +22,7 @@
 		width: 100%;
 		height: 2px;
 
-		background-color: var(--color-accent);
+		background-color: #e8603a;
 		border-radius: 9999px;
 	}
 }
