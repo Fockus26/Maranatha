@@ -39,20 +39,24 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 	}, [data])
 
 	return (
-		<section ref={containerRef} className="py-24 bg-primary-container w-full text-white">
+		<section
+			ref={containerRef}
+			className="py-24 bg-primary-container w-full text-white"
+		>
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
-
 				<div className="text-center mb-16 reveal">
 					<h2 className="text-white text-3xl md:text-4xl font-bold tracking-wider uppercase">
 						{data.sectionTitle}
 					</h2>
-					<div className="w-16 h-1 bg-accent mx-auto mt-4 rounded-full" />
+					<div className="w-16 h-1 bg-[#e8603a] mx-auto mt-4 rounded-full" />
 				</div>
 
 				{featured && (
 					<div className="mb-16 reveal">
-						<div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10" style={{ paddingTop: '56.25%' }}>
-
+						<div
+							className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+							style={{ paddingTop: '56.25%' }}
+						>
 							<iframe
 								src={`https://www.youtube.com/embed/${featured.youtubeId}?controls=1&rel=0&modestbranding=1&enablejsapi=1`}
 								title={featured.title}
@@ -64,18 +68,19 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 							<div className="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent opacity-60 pointer-events-none" />
 
 							<div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 space-y-2 z-10 pointer-events-none">
-								<span className="inline-block text-secondary-fixed-dim text-xs font-semibold tracking-wider uppercase bg-accent/20 px-3 py-1 rounded-full">
+								<span className="inline-block text-[#bd401d] text-lg font-semibold tracking-wider uppercase bg-[#e8603a]/20 px-3 py-1 rounded-full">
 									{featured.series}
 								</span>
 								<h3 className="text-xl md:text-3xl font-bold leading-tight">
 									{featured.title}
 								</h3>
 								<p className="text-white/70 text-xs md:text-sm font-light flex items-center gap-2">
-									<span className="material-symbols-outlined text-sm">calendar_today</span>
+									<span className="material-symbols-outlined text-sm">
+										calendar_today
+									</span>
 									{featured.date}
 								</p>
 							</div>
-
 						</div>
 					</div>
 				)}
@@ -85,7 +90,11 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 						<div
 							key={idx}
 							className="reveal flex flex-col group cursor-pointer"
-							onClick={() => setActiveVideo(`https://www.youtube.com/embed/${sermon.youtubeId}`)}
+							onClick={() =>
+								setActiveVideo(
+									`https://www.youtube.com/embed/${sermon.youtubeId}`,
+								)
+							}
 						>
 							<div className="relative aspect-video w-full rounded-xl overflow-hidden bg-brand shadow-md border border-white/5 mb-4">
 								<iframe
@@ -102,7 +111,7 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 							</h4>
 
 							<div className="flex items-center justify-between mt-2 text-white/50 text-xs font-light">
-								<span className="uppercase tracking-wider font-medium text-[10px] text-secondary-fixed-dim">
+								<span className="uppercase tracking-wider font-medium text-[10px] text-[#e8603a]">
 									{sermon.series}
 								</span>
 								<span>{sermon.date}</span>
@@ -110,7 +119,6 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 						</div>
 					))}
 				</div>
-
 			</div>
 
 			{activeVideo && (
@@ -121,7 +129,9 @@ export default function SermonesClient({ data, videos }: Props): ReactElement {
 							aria-label="Cerrar reproductor"
 							className="absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-20"
 						>
-							<span className="material-symbols-outlined text-2xl">close</span>
+							<span className="material-symbols-outlined text-2xl">
+								close
+							</span>
 						</button>
 
 						<div className="aspect-video w-full bg-black">
