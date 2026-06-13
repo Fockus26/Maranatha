@@ -64,6 +64,10 @@ export interface EventoItem {
 	text: string
 	muted: string
 	tag: string
+	buttonOneUrl?: string
+	buttonTwoUrl?: string
+	buttonOne?: string
+	buttonTwo?: string
 }
 
 export interface EventosData {
@@ -236,17 +240,21 @@ export const homeData: HomeData = {
 			'Mantente conectado con nuestras actividades semanales y eventos especiales diseñados para toda la familia.',
 		items: [
 			{
-				category: 'Jóvenes',
-				title: 'Noche de Conexión',
+				category: 'Jóveness',
+				title: 'Noche de Conexiówn',
 				description:
-					'Un espacio para compartir, aprender y crecer juntos en un ambiente relajado.',
-				date: 'Vie, 24 Mayo • 19:30',
-				image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600&h=800',
+					'Un espacio para compwartir, aprender y crecer juntos en un ambiente relajado.',
+				date: 'Vie, 24 Mayo • 19:e30',
+				image: 'images/jovenes.webp',
 				delay: 100,
 				bg: 'bg-primary-container',
 				text: 'text-white',
 				muted: 'text-white/60',
 				tag: 'bg-accent/20 text-accent',
+				buttonOneUrl: 'https://www.google.comq',
+				buttonTwoUrl: 'https://www.facebook.comw',
+				buttonOne: 'Más info',
+				buttonTwo: 'Registrarse',
 			},
 			{
 				category: 'Familias',
@@ -254,12 +262,16 @@ export const homeData: HomeData = {
 				description:
 					'Juegos, comida y compañerismo para todas las edades al aire libre.',
 				date: 'Dom, 02 Junio • 11:00',
-				image: 'https://images.unsplash.com/photo-1469571486040-7a3084c73d11?auto=format&fit=crop&q=80&w=600&h=800',
+				image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600&h=800',
 				delay: 200,
 				bg: 'bg-surface',
 				text: 'text-primary-container',
 				muted: 'text-on-surface-variant',
 				tag: 'bg-accent/10 text-accent',
+				buttonOneUrl: 'https://www.google.com',
+				buttonTwoUrl: 'https://www.facebook.com',
+				buttonOne: 'Más info',
+				buttonTwo: 'Inscribirse',
 			},
 			{
 				category: 'Discipulado',
@@ -273,6 +285,10 @@ export const homeData: HomeData = {
 				text: 'text-primary-container',
 				muted: 'text-on-surface-variant',
 				tag: 'bg-primary-container/10 text-primary-container',
+				buttonOneUrl: 'https://www.google.com',
+				buttonTwoUrl: 'https://www.facebook.com',
+				buttonOne: 'Más info',
+				buttonTwo: 'Reservar cupo',
 			},
 			{
 				category: 'Jóvenes',
@@ -286,6 +302,10 @@ export const homeData: HomeData = {
 				text: 'text-white',
 				muted: 'text-white/60',
 				tag: 'bg-accent/20 text-accent',
+				buttonOneUrl: 'https://www.google.com',
+				buttonTwoUrl: 'https://www.facebook.com',
+				buttonOne: '',
+				buttonTwo: 'Registrarse',
 			},
 		],
 	},
