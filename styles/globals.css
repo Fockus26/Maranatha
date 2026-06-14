@@ -41,7 +41,7 @@ video,
 canvas,
 svg {
 	display: block;
-	height: auto;
+	/* height: auto; */
 }
 
 @layer base {
@@ -61,7 +61,6 @@ button {
 	appearance: none;
 	-webkit-appearance: none;
 	border: none;
-	background: none;
 	cursor: pointer;
 }
 

@@ -135,8 +135,8 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						aria-label={`Ir al slide ${idx + 1}`}
 						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
 							idx === activeSlide
-								? 'bg-[#0e7ab8] w-8 active-dot'
-								: 'bg-white/30 w-2.5 hover:bg-white/50'
+								? 'w-8 active-dot'
+								: 'w-2.5 hover:bg-white/50'
 						}`}
 					/>
 				))}
