@@ -2,10 +2,9 @@
 
 import { ArrowLeft, ArrowRight } from "iconoir-react";
 import Image from "next/image";
-import { type ReactElement, useEffect, useRef, useState } from "react";
+import { type ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button/button";
 import { leadersData } from "@/data/pages/home/leaders.data";
-import { logger } from "@/lib/logger/client";
 import type { LeadersMessages } from "@/types/pages/home/leaders.types";
 
 interface Props {
@@ -16,7 +15,6 @@ export function Leaders({ messages }: Props): ReactElement {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [visible, setVisible] = useState(true);
 
-	logger.info(leadersData);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -47,32 +45,32 @@ export function Leaders({ messages }: Props): ReactElement {
 		startAutoSlide();
 	};
 
-	const stopAutoSlide = (): void => {
+	const stopAutoSlide = useCallback((): void => {
 		if (intervalRef.current) {
 			clearInterval(intervalRef.current);
 			intervalRef.current = null;
 		}
-	};
+	}, []);
 
-	const startAutoSlide = (): void => {
+	const startAutoSlide = useCallback((): void => {
 		stopAutoSlide();
 
 		intervalRef.current = setInterval(() => {
 			setVisible(false);
 
 			setTimeout(() => {
+				// Nota: leadersData.length debe ir en las dependencias si puede cambiar
 				setCurrentIndex((prev) => (prev === leadersData.length - 1 ? 0 : prev + 1));
-
 				setVisible(true);
 			}, 600);
 		}, 30000);
-	};
+	}, [stopAutoSlide]); // Se recrea solo si leadersData cambia de tamaño
 
 	useEffect(() => {
 		startAutoSlide();
 
 		return () => stopAutoSlide();
-	}, []);
+	}, [startAutoSlide, stopAutoSlide]);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(

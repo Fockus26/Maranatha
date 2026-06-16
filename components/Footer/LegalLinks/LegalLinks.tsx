@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { NavLink } from "@/components/ui/navLink/navLink";
 import { footerData } from "@/data/footer.data";
-import { logger } from "@/lib/logger/client";
 import type { FooterLinks, FooterMessages } from "@/types/footer.types";
 import classes from "./legalLinks.module.scss";
 
