@@ -1,23 +1,198 @@
-@function color($name) {
-	@return var(--app-color-#{$name});
+@use "variables" as *;
+@use "sass:list";
+
+@function ensureTone($tone) {
+	@if not list.index($themeTones, $tone) {
+		@error "Invalid '#{$tone}' as tone. Options: #{$themeTones}";
+	}
+
+	@return $tone;
 }
 
-@mixin color-scheme($name) {
-	background-color: color($name);
-	color: color(#{$name}-foreground);
+@function tone($tone) {
+	@return var(--app-color-#{$tone});
 }
 
-@mixin interactive-color($name) {
-	background-color: color($name);
-	color: color(#{$name}-foreground);
+@mixin button-solid($tone) {
+	$tone: ensureTone($tone);
 
-	&:hover {
-		background-color: color(#{$name}-hover);
+	background-color: color-mix(in srgb, tone($tone) 88%, black);
+	color: tone(#{$tone}-foreground);
+	border: 1px solid transparent;
+
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.15s ease;
+
+	&:not(:disabled):hover {
+		background-color: tone($tone);
 	}
 }
 
-@mixin state($name) {
-	background-color: color(#{$name}-soft);
-	color: color($name);
-	border: 1px solid color($name);
+@mixin button-soft($tone) {
+	$tone: ensureTone($tone);
+
+	background-color: tone(#{$tone}-soft);
+	color: tone($tone);
+	border: 1px solid transparent;
+
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.15s ease;
+}
+
+@mixin button-outline($tone) {
+	$tone: ensureTone($tone);
+
+	background-color: transparent;
+	color: tone($tone);
+	border: 1px solid tone($tone);
+
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease;
+
+	&:not(:disabled):hover {
+		color: tone(#{$tone}-foreground);
+		background-color: tone(#{$tone});
+	}
+}
+
+@mixin button-plain($tone: null) {
+	background-color: transparent;
+	border: 1px solid transparent;
+
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
+
+	@if $tone ==null {
+		color: tone(text-muted);
+
+		&:not(:disabled):hover {
+			color: tone(text);
+			background-color: color-mix(in srgb, tone(text) 6%, tone(surface));
+		}
+	}
+
+	@else {
+		$tone: ensureTone($tone);
+		color: tone($tone);
+
+		&:not(:disabled):hover {
+			color: tone($tone);
+			background-color: color-mix(in srgb, tone($tone) 10%, transparent);
+		}
+	}
+}
+
+@mixin card-neutral {
+	background-color: tone(surface);
+	color: tone(text);
+	border: 1px solid tone(border);
+}
+
+@mixin block-solid($tone) {
+	$tone: ensureTone($tone);
+
+	background-color: tone($tone);
+	color: tone(#{$tone}-foreground);
+	border: 1px solid transparent;
+}
+
+@mixin block-soft($tone) {
+	$tone: ensureTone($tone);
+
+	background-color: tone(#{$tone}-soft);
+	color: tone($tone);
+	border: 1px solid color-mix(in srgb, tone($tone) 18%, tone(border));
+}
+
+@mixin field-base($focus-tone: primary) {
+	$focus-tone: ensureTone($focus-tone);
+
+	background-color: tone(surface);
+	color: tone(text);
+	border: 1px solid tone(border);
+	transition: .2s ease;
+
+	&::placeholder {
+		color: tone(text-muted);
+	}
+
+	&:focus {
+		border-color: tone($focus-tone);
+		box-shadow: 0 0 0 3px tone(#{$focus-tone}-soft);
+		outline: none;
+	}
+}
+
+@mixin plain-tone($tone: null) {
+	background-color: transparent;
+	border: 1px solid transparent;
+
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
+
+	@if $tone ==null {
+		color: tone(text-muted);
+
+		&:hover {
+			color: tone(text);
+
+			background-color: color-mix(in srgb,
+					tone(text) 6%,
+					transparent);
+		}
+	}
+
+	@else {
+		$tone: ensureTone($tone);
+
+		color: tone($tone);
+
+		&:hover {
+			color: tone($tone);
+
+			background-color: color-mix(in srgb,
+					tone($tone) 10%,
+					transparent);
+		}
+	}
+}
+
+@mixin mobile {
+	@media (max-width: #{$breakpoint-mobile}) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: #{$breakpoint-tablet}) {
+		@content;
+	}
+}
+
+@mixin large-tablet {
+	@media (min-width: #{$breakpoint-tablet + 1px}) and (max-width: #{$breakpoint-large-tablet}) {
+		@content;
+	}
+}
+
+@mixin laptop {
+	@media (min-width: #{$breakpoint-large-tablet + 1px}) and (max-width: #{$breakpoint-laptop}) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: #{$breakpoint-desktop}) {
+		@content;
+	}
 }

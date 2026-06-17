@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button/button";
 import { NavLink } from "@/components/ui/navLink/navLink";
 import { headerData } from "@/data/header.data";
 import type { DropdownLinks, DropdownMessages } from "@/types/header.types";
-import classes from "./clickDropdown.module.scss";
+import styles from "./clickDropdown.module.scss";
 
 interface Props {
 	onSelect?: () => void;
@@ -26,16 +26,16 @@ export const ClickDropdown = ({ onSelect, messages }: Props): ReactElement => {
 	};
 
 	return (
-		<li className={classes.dropdown}>
-			<div className={classes.trigger}>
+		<li className={styles.dropdown}>
+			<div className={styles.trigger}>
 				<NavLink href="/projects" onClick={closeDropdown} variant="vertical">
 					{messages.projects}
 				</NavLink>
 				<MotionButton
 					icon={<NavArrowDown />}
 					animate={{ y: "-50%", rotate: isOpenDropdown ? 180 : 0 }}
-					type="button"
-					className={classes.icon}
+					variant="plain"
+					className={styles.icon}
 					onClick={toggleDropdown}
 				/>
 			</div>

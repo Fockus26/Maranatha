@@ -63,6 +63,8 @@ export function SocialMedia({ messages }: Props): ReactElement | null {
 
 								return (
 									<Button
+										variant="plain"
+										tone="primary"
 										icon={<Icon />}
 										key={crypto.randomUUID()}
 										onClick={() => setActiveNetworkId(networkKey as Networks)}
@@ -126,11 +128,7 @@ export function SocialMedia({ messages }: Props): ReactElement | null {
 						>
 							{messages.networks[activeNetworkId].follow}
 						</span>
-						<Button
-							icon={<OpenInBrowser />}
-							className="material-symbols-outlined text-sm"
-							style={{ color: activeNetwork.color }}
-						/>
+						<OpenInBrowser style={{ color: activeNetwork.color }} />
 					</a>
 				</div>
 			</div>

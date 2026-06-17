@@ -1,18 +1,25 @@
-import type { ReactElement } from "react";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/store";
-import { logout } from "@/store/slices/authSlice";
+import { type ReactElement, useState } from "react";
+import { ProjectsModule } from "@/components/dashboard/projectsModule/projectsModule";
+import { type DashboardSection, Sidebar } from "@/components/dashboard/sidebar/sidebar";
+import styles from "./dashboard.module.scss";
 
 export const Dashboard = (): ReactElement => {
-	const dispatch = useDispatch<AppDispatch>();
+	const [section, setSection] = useState<DashboardSection>("projects");
 
-	function handleLogout() {
-		dispatch(logout());
-	}
+	const content =
+		section === "projects" ? (
+			<ProjectsModule />
+		) : section === "content" ? (
+			"ContentModule"
+		) : (
+			"NoModule"
+		);
 
 	return (
-		<button type="button" onClick={handleLogout}>
-			Cerrar Sesion
-		</button>
+		<div className={styles.dashboard}>
+			<Sidebar activeSection={section} onChangeSection={setSection} />
+
+			<main className={styles.content}>{content}</main>
+		</div>
 	);
 };

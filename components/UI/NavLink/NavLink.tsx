@@ -5,20 +5,22 @@ import { motion } from "framer-motion";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 
 import { Link, usePathname } from "@/i18n/navigation";
-
-import classes from "./navLink.module.scss";
+import type { UITone } from "@/types/ui.types";
+import styles from "./navLink.module.scss";
 
 const MotionLink = motion.create(Link);
 
 type Props = {
 	children: ReactNode;
 	variant?: "horizontal" | "vertical";
+	tone?: UITone;
 } & ComponentProps<typeof Link>;
 
 export const NavLink = ({
 	href,
 	children,
 	variant = "horizontal",
+	tone,
 	className,
 	onClick,
 }: Props): ReactElement => {
@@ -27,18 +29,22 @@ export const NavLink = ({
 	const isActive = pathname === href;
 
 	return (
-		<MotionLink href={href} className={clsx(classes.link, className)} onClick={onClick}>
+		<MotionLink
+			href={href}
+			className={clsx(styles.link, tone && styles[tone], className)}
+			onClick={onClick}
+		>
 			{children}
 
 			{/* NAVBAR PRINCIPAL */}
 			{variant === "horizontal" && isActive && (
-				<motion.span layoutId="navbar-indicator" className={classes.indicator} />
+				<motion.span layoutId="navbar-indicator" className={styles.indicator} />
 			)}
 
 			{/* DROPDOWN */}
 			{variant === "vertical" && (
 				<motion.span
-					className={classes.indicator}
+					className={styles.indicator}
 					initial={{
 						scaleX: 0,
 						transformOrigin: "left",

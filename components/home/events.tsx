@@ -54,10 +54,8 @@ export function Events({ messages }: Props): ReactElement {
 					<div className="hidden md:block">
 						<Button
 							icon={<ArrowRight />}
-							style={{
-								backgroundColor: "transparent",
-								color: "var(--color-secondary)",
-							}}
+							tone="secondary"
+							variant="plain"
 							className="flex items-center gap-2 group text-primary font-semibold text-sm transition-all duration-300 hover:text-accent/85"
 						>
 							{messages.buttons.viewCalendar}
@@ -101,14 +99,14 @@ export function Events({ messages }: Props): ReactElement {
 									{/* Botones estilo Apple */}
 									<div className="flex items-center justify-center gap-3 pt-2">
 										<Button
+											variant="plain"
 											className="bg-primary text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-primary/85 transition-all duration-300"
-											style={{ backgroundColor: "var(--color-background)" }}
 										>
 											{messages.buttons.moreInfo}
 										</Button>
 										<Button
+											variant="plain"
 											className="border border-primary text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-primary/10 transition-all duration-300"
-											style={{ backgroundColor: "var(--color-background)" }}
 										>
 											{messages.buttons.register}
 										</Button>
@@ -134,6 +132,8 @@ export function Events({ messages }: Props): ReactElement {
 				<div className="mt-8 text-center md:hidden">
 					<Button
 						icon={<ArrowRight />}
+						tone="secondary"
+						variant="plain"
 						className="inline-flex items-center gap-2 text-primary font-semibold text-sm"
 					>
 						{messages.buttons.viewCalendar}

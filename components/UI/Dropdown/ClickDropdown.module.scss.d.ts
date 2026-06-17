@@ -1,7 +1,7 @@
 export type Styles = {
-	dropdown: string;
-	icon: string;
-	trigger: string;
+  'dropdown': string;
+  'icon': string;
+  'trigger': string;
 };
 
 export type ClassNames = keyof Styles;

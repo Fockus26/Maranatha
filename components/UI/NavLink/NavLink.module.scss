@@ -1,18 +1,19 @@
+@use "../../../styles/mixins" as *;
+@use "../../../styles/variables" as *;
+
 .link {
 	font-size: 1.2vw;
 	position: relative;
-	display: inline-flex;
-	justify-content: center;
-	padding: 0.5rem 1rem;
-	text-decoration: none;
-	transition: all 0.15s ease;
-	border-radius: 8px;
-	color: white;
 
-	&:hover {
-		color: #e8603a;
-		background-color: color-mix(in srgb, #e8603a 10%, transparent);
-	}
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0.5rem 1rem;
+
+	border-radius: 0.75rem;
+
+	@include plain-tone();
 
 	.indicator {
 		position: absolute;
@@ -22,7 +23,17 @@
 		width: 100%;
 		height: 2px;
 
-		background-color: var(--color-accent);
+		background-color: var(--app-color-accent);
 		border-radius: 9999px;
+	}
+}
+
+@each $tone in $themeTones {
+	.link.#{$tone} {
+		@include plain-tone($tone);
+	}
+
+	.link.#{$tone} .indicator {
+		background-color: tone($tone);
 	}
 }

@@ -5,7 +5,7 @@ import { type ReactElement, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button/button";
 import { useMenu } from "@/hooks/useMenu";
-import classes from "./backdrop.module.scss";
+import styles from "./backdrop.module.scss";
 
 export const Backdrop = (): ReactElement | null => {
 	const [mounted, setMounted] = useState(false);
@@ -41,7 +41,7 @@ export const Backdrop = (): ReactElement | null => {
 	}
 
 	return createPortal(
-		<Button icon={<Xmark />} className={classes.backdrop} onClick={closeMenu} />,
+		<Button variant="plain" icon={<Xmark />} className={styles.backdrop} onClick={closeMenu} />,
 		modalsContainer,
 	);
 };

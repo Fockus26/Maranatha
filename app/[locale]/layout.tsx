@@ -4,11 +4,6 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import type { ReactElement, ReactNode } from "react";
-
-import { Footer } from "@/components/footer/footer";
-import { Header } from "@/components/header/header";
-import { MobileMenu } from "@/components/header/mobileMenu/mobileMenu";
-import { Backdrop } from "@/components/ui/backdrop/backdrop";
 import { isRtlLocale } from "@/i18n/config";
 import { routing } from "@/i18n/routing";
 import { generateMetadata } from "@/lib/metadata";
@@ -49,11 +44,7 @@ const RootLayout = async ({ children, params }: Readonly<Props>): Promise<ReactE
 			<body>
 				<div id="modals" />
 				<Providers locale={locale} messages={messages}>
-					<Backdrop />
-					<MobileMenu messages={messages.header.navbar} />
-					<Header messages={messages.header} />
 					{children}
-					<Footer messages={messages.footer} />
 				</Providers>
 			</body>
 		</html>

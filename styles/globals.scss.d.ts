@@ -1,11 +1,12 @@
 export type Styles = {
-	active: string;
-	eventoCard: string;
-	heroSlideContent: string;
-	slideLeft: string;
-	slideRight: string;
-	socialCard: string;
-	valorCard: string;
+  'active': string;
+  'eventCard': string;
+  'field': string;
+  'heroSlideContent': string;
+  'slideLeft': string;
+  'slideRight': string;
+  'socialCard': string;
+  'valueCard': string;
 };
 
 export type ClassNames = keyof Styles;

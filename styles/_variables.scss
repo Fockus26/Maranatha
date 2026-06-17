@@ -1,14 +1,38 @@
 // Fonts
-$font-sans: (
+$fontSans: (
 	"Inter",
 	ui-sans-serif,
 	system-ui,
 	sans-serif
 );
 
-$font-heading: (
+$fontHeading: (
 	"Clash Display",
 	ui-sans-serif,
 	system-ui,
 	sans-serif
 );
+
+// Colors
+$themeTones: (
+	primary,
+	secondary,
+	accent,
+	success,
+	warning,
+	error
+);
+
+$colorPrimary: primary;
+$colorSecondary: secondary;
+$colorAccent: accent;
+$colorSuccess: success;
+$colorWarning: warning;
+$colorError: error;
+
+// Layout
+$breakpoint-mobile: 767px;
+$breakpoint-tablet: 1023px;
+$breakpoint-large-tablet: 1279px;
+$breakpoint-laptop: 1439px;
+$breakpoint-desktop: 1440px;

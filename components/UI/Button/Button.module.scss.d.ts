@@ -1,6 +1,16 @@
 export type Styles = {
-	button: string;
-	icon: string;
+  'accent': string;
+  'button': string;
+  'error': string;
+  'icon': string;
+  'outline': string;
+  'plain': string;
+  'primary': string;
+  'secondary': string;
+  'soft': string;
+  'solid': string;
+  'success': string;
+  'warning': string;
 };
 
 export type ClassNames = keyof Styles;

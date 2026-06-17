@@ -1,6 +1,12 @@
 export type Styles = {
-	indicator: string;
-	link: string;
+  'accent': string;
+  'error': string;
+  'indicator': string;
+  'link': string;
+  'primary': string;
+  'secondary': string;
+  'success': string;
+  'warning': string;
 };
 
 export type ClassNames = keyof Styles;

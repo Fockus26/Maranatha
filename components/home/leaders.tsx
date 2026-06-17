@@ -149,12 +149,16 @@ export function Leaders({ messages }: Props): ReactElement {
 								{leadersData.length > 1 && (
 									<div className="flex items-center gap-4 pt-4">
 										<Button
+											variant="plain"
+											tone="secondary"
 											icon={<ArrowLeft />}
 											onClick={prevLeader}
 											className="flex items-center justify-center w-12 h-12 rounded-full border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300 transform active:scale-90"
 										/>
 
 										<Button
+											variant="plain"
+											tone="secondary"
 											icon={<ArrowRight />}
 											onClick={nextLeader}
 											className="flex items-center justify-center w-12 h-12 rounded-full border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300 transform active:scale-90"
