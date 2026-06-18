@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
-import type { UITone, UIVariant } from "@/types/ui.types";
+import type { UIButtonVariant, UITone } from "@/types/ui.types";
 import styles from "./button.module.scss";
 
 type ButtonContent =
@@ -16,7 +16,7 @@ type ButtonContent =
 type Props = ComponentProps<"button"> &
 	ButtonContent & {
 		tone?: UITone;
-		variant?: UIVariant;
+		variant?: UIButtonVariant;
 	};
 
 export const Button = ({

@@ -1,5 +1,5 @@
 import { type ReactElement, useState } from "react";
-import { ProjectsModule } from "@/components/dashboard/projectsModule/projectsModule";
+import { Projects } from "@/components/dashboard/projects/projects";
 import { type DashboardSection, Sidebar } from "@/components/dashboard/sidebar/sidebar";
 import styles from "./dashboard.module.scss";
 
@@ -8,7 +8,7 @@ export const Dashboard = (): ReactElement => {
 
 	const content =
 		section === "projects" ? (
-			<ProjectsModule />
+			<Projects />
 		) : section === "content" ? (
 			"ContentModule"
 		) : (
@@ -18,8 +18,7 @@ export const Dashboard = (): ReactElement => {
 	return (
 		<div className={styles.dashboard}>
 			<Sidebar activeSection={section} onChangeSection={setSection} />
-
-			<main className={styles.content}>{content}</main>
+			<main>{content}</main>
 		</div>
 	);
 };

@@ -4,6 +4,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "@/components/ui/button/button";
+import { Input } from "@/components/ui/input/input";
 import type { AppDispatch } from "@/store";
 import { login, loginWithGoogle } from "@/store/slices/authSlice";
 import styles from "./form.module.scss";
@@ -68,8 +69,7 @@ export const Form = ({ onLogin }: Props): ReactElement => {
 					<label className={styles.label} htmlFor="auth-email">
 						Email
 					</label>
-					<input
-						className={styles.input}
+					<Input
 						id="auth-email"
 						type="email"
 						value={email}
@@ -81,8 +81,7 @@ export const Form = ({ onLogin }: Props): ReactElement => {
 					<label className={styles.label} htmlFor="auth-password">
 						Contraseña
 					</label>
-					<input
-						className={styles.input}
+					<Input
 						id="auth-password"
 						type="password"
 						value={password}

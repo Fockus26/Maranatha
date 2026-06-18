@@ -1,3 +1,5 @@
+@use "styles/mixins.scss" as *;
+
 .navbar {
 	position: relative;
 	display: flex;
@@ -18,7 +20,7 @@
 		width: 100%;
 	}
 
-	@media (max-width: 767px) {
+	@include mobile {
 		.menu {
 			display: none;
 		}

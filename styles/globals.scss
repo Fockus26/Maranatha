@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixins" as *;
+@use "styles/index" as *;
+
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
 
 html {
@@ -20,6 +20,7 @@ body {
 
 main {
 	margin: auto 0;
+	height: 100%;
 }
 
 h1,
@@ -99,11 +100,11 @@ table {
 
 *::-webkit-scrollbar-thumb {
 	border-radius: 100px;
-	background: tone(primary);
+	background: gradient(primary);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-	background: tone(primary-hover);
+	background: gradient-hover(primary)
 }
 
 .hero-slide-content {
@@ -178,12 +179,4 @@ table {
 .social-card.active {
 	opacity: 1;
 	transform: translateY(0);
-}
-
-.field {
-	@include field-base(primary);
-
-	width: 100%;
-	padding: 0.875rem 1rem;
-	border-radius: 0.75rem;
 }

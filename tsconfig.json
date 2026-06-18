@@ -25,9 +25,11 @@
 				"name": "next"
 			}
 		],
+		"baseUrl": ".", // It's deprecated but necessary in order to use aliases into .scss files
 		"paths": {
 			"@/*": ["./*"]
-		}
+		},
+		"ignoreDeprecations": "6.0"
 	},
 	"include": [
 		"next-env.d.ts",

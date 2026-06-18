@@ -1,8 +1,8 @@
 "use client";
 
 import clsx from "clsx";
-import { Dashboard, Edit, Folder, LogOut } from "iconoir-react";
-import type { ReactElement } from "react";
+import { Dashboard, Edit, Folder, LogOut, Menu, Xmark } from "iconoir-react";
+import { type ReactElement, useState } from "react";
 import { Button } from "@/components/ui/button/button";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { logout } from "@/store/slices/authSlice";
@@ -29,24 +29,26 @@ const items = [
 ] as const;
 
 export const Sidebar = ({ activeSection, onChangeSection }: Props): ReactElement => {
+	const [drawerOpen, setDrawerOpen] = useState(false);
+
 	const dispatch = useAppDispatch();
-	// const router = useRouter();
 
 	const handleLogout = async (): Promise<void> => {
 		await dispatch(logout());
-
-		// router.replace("/login");
 	};
 
-	return (
-		<aside className={styles.sidebar}>
+	const open = () => setDrawerOpen(true);
+	const close = () => setDrawerOpen(false);
+
+	const sidebarContent = (
+		<aside className={clsx(styles.sidebar, drawerOpen && styles.sidebarOpen)}>
 			<header className={styles.header}>
 				<div className={styles.logo}>
 					<Dashboard />
 				</div>
 
 				<div>
-					<h1 className={styles.title}>Dashboard</h1>
+					<h3 className={styles.title}>Dashboard</h3>
 					<p className={styles.subtitle}>Administrador</p>
 				</div>
 			</header>
@@ -57,7 +59,6 @@ export const Sidebar = ({ activeSection, onChangeSection }: Props): ReactElement
 						key={item.id}
 						icon={item.icon}
 						variant={activeSection === item.id ? "solid" : "outline"}
-						className={clsx(styles.navItem)}
 						onClick={() => onChangeSection(item.id)}
 					>
 						<span>{item.label}</span>
@@ -72,5 +73,26 @@ export const Sidebar = ({ activeSection, onChangeSection }: Props): ReactElement
 				<span className={styles.version}>v1.0.0</span>
 			</footer>
 		</aside>
+	);
+
+	return (
+		<>
+			{sidebarContent}
+			<div
+				className={clsx(styles.overlay, drawerOpen && styles.overlayOpen)}
+				onClick={close}
+				aria-hidden="true"
+			/>
+
+			<Button
+				className={styles.hamburger}
+				variant="gradient"
+				icon={drawerOpen ? <Xmark /> : <Menu />}
+				onClick={drawerOpen ? close : open}
+				aria-label={drawerOpen ? "Cerrar menú" : "Abrir menú"}
+				aria-expanded={drawerOpen}
+				aria-controls="sidebar"
+			/>
+		</>
 	);
 };

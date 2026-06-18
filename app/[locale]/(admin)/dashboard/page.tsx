@@ -19,7 +19,7 @@ const Page = (): ReactElement => {
 			<Form />
 		);
 
-	return <main>{content}</main>;
+	return content;
 };
 
 export default Page;

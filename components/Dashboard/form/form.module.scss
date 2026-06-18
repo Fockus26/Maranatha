@@ -1,5 +1,4 @@
-@use "../../../styles/mixins" as *;
-@use "../../../styles/variables" as *;
+@use "styles/index" as *;
 
 .container {
 	display: flex;
@@ -19,32 +18,31 @@
 }
 
 .title {
-	font-family: $fontHeading;
+	// font-family: $fontSans;
 
 	font-size: 1.75rem;
 	font-weight: 600;
 
-	color: tone(text);
+	// color: tone(text);
 }
 
 .description {
-	color: tone(text-muted);
+	// color: tone(text-muted);
 	line-height: 1.5;
 }
 
 
 .form {
-	width: min(100%, 420px);
+	width: min(90%, 420px);
 
 	display: flex;
 	flex-direction: column;
 	gap: 1.25rem;
-
 	padding: 2rem;
 
-	background-color: tone(surface);
+	// background-color: tone(surface);
 
-	border: 1px solid tone(border);
+	// border: 1px solid tone(border);
 
 	border-radius: 1rem;
 
@@ -62,19 +60,11 @@
 .label {
 	font-size: 0.875rem;
 	font-weight: 500;
-	color: tone(text-muted);
-}
-
-.input {
-	@include field-base;
-
-	height: 44px;
-	padding: 0 1rem;
-	border-radius: 0.75rem;
+	// color: tone(text-muted);
 }
 
 .error {
-	@include block-soft(error);
+	// @include block-soft(error);
 
 	text-align: center;
 
@@ -90,7 +80,7 @@
 	align-items: center;
 	gap: 1rem;
 
-	color: tone(text-muted);
+	// color: tone(text-muted);
 
 	font-size: 0.875rem;
 
@@ -99,14 +89,6 @@
 		content: "";
 		flex: 1;
 		height: 1px;
-		background-color: tone(border);
-	}
-}
-
-@media (max-width: 640px) {
-	.form {
-		width: 100%;
-		padding: 1.25rem;
-		border-radius: 1.25rem;
+		// background-color: tone(border);
 	}
 }

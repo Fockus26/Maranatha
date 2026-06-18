@@ -5,7 +5,6 @@ export type Styles = {
   'field': string;
   'form': string;
   'header': string;
-  'input': string;
   'label': string;
   'separator': string;
   'title': string;

@@ -1,18 +1,13 @@
-import Image, { type ImageProps, type StaticImageData } from "next/image";
+import Image from "next/image";
 import type { ReactElement } from "react";
 import { Link } from "@/i18n/navigation";
+import logoImage from "@/public/images/Logo-Maranatha.webp";
 import styles from "./logo.module.scss";
 
-interface Props extends Omit<ImageProps, "src" | "alt"> {
-	href: string;
-	alt: string;
-	src: StaticImageData;
-}
-
-export const Logo = ({ href, alt, src, ...props }: Props): ReactElement => {
+export const Logo = (): ReactElement => {
 	return (
-		<Link href={href}>
-			<Image src={src} {...props} alt={alt} className={styles.logo} />
+		<Link href="/">
+			<Image src={logoImage} alt={"Logo Maranatha"} className={styles.logo} />
 		</Link>
 	);
 };

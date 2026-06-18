@@ -1,5 +1,4 @@
 export type Styles = {
-  'content': string;
   'dashboard': string;
 };
 

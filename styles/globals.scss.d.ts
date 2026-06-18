@@ -1,7 +1,6 @@
 export type Styles = {
   'active': string;
   'eventCard': string;
-  'field': string;
   'heroSlideContent': string;
   'slideLeft': string;
   'slideRight': string;

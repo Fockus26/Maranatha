@@ -2,6 +2,7 @@ export type Styles = {
   'accent': string;
   'button': string;
   'error': string;
+  'gradient': string;
   'icon': string;
   'outline': string;
   'plain': string;

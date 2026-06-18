@@ -1,2 +1,4 @@
 export type UITone = "primary" | "secondary" | "accent" | "success" | "warning" | "error";
-export type UIVariant = "solid" | "soft" | "outline" | "plain";
+export type UIButtonVariant = "solid" | "soft" | "outline" | "plain" | "gradient";
+
+export type UIInputVariant = "field" | "search";
