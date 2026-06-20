@@ -2,39 +2,39 @@
 
 import clsx from "clsx";
 import { Dashboard, Edit, Folder, LogOut, Menu, Xmark } from "iconoir-react";
+import { usePathname, useRouter } from "next/navigation";
 import { type ReactElement, useState } from "react";
 import { Button } from "@/components/ui/button/button";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { logout } from "@/store/slices/authSlice";
 import styles from "./sidebar.module.scss";
 
-export type DashboardSection = "projects" | "content";
-
-type Props = {
-	activeSection: DashboardSection;
-	onChangeSection: (section: DashboardSection) => void;
-};
-
 const items = [
 	{
 		id: "projects",
 		label: "Proyectos",
+		href: "/dashboard/projects",
 		icon: <Folder />,
 	},
 	{
 		id: "content",
 		label: "Contenido",
+		href: "/dashboard/content",
 		icon: <Edit />,
 	},
 ] as const;
 
-export const Sidebar = ({ activeSection, onChangeSection }: Props): ReactElement => {
+export const Sidebar = (): ReactElement => {
 	const [drawerOpen, setDrawerOpen] = useState(false);
+
+	const pathname = usePathname();
+	const router = useRouter();
 
 	const dispatch = useAppDispatch();
 
 	const handleLogout = async (): Promise<void> => {
 		await dispatch(logout());
+		router.replace("/auth");
 	};
 
 	const open = () => setDrawerOpen(true);
@@ -54,16 +54,23 @@ export const Sidebar = ({ activeSection, onChangeSection }: Props): ReactElement
 			</header>
 
 			<nav className={styles.navigation}>
-				{items.map((item) => (
-					<Button
-						key={item.id}
-						icon={item.icon}
-						variant={activeSection === item.id ? "solid" : "outline"}
-						onClick={() => onChangeSection(item.id)}
-					>
-						<span>{item.label}</span>
-					</Button>
-				))}
+				{items.map((item) => {
+					const isActive = pathname.startsWith(item.href);
+
+					return (
+						<Button
+							key={item.id}
+							icon={item.icon}
+							variant={isActive ? "solid" : "outline"}
+							onClick={() => {
+								router.push(item.href);
+								close();
+							}}
+						>
+							<span>{item.label}</span>
+						</Button>
+					);
+				})}
 			</nav>
 
 			<footer className={styles.footer}>

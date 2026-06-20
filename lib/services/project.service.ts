@@ -24,6 +24,9 @@ interface GetProjectsFilters {
 	view?: "full" | "card";
 }
 
+const getCurrentPhase = (project: Project) =>
+	project.phases.find((phase) => phase.id === project.currentPhaseId);
+
 export const getAllProjects = async ({
 	category,
 	status,
@@ -36,11 +39,7 @@ export const getAllProjects = async ({
 		constraints.push(where("category", "==", category));
 	}
 
-	if (status) {
-		constraints.push(where("status", "==", status));
-	}
-
-	if (perPage) {
+	if (perPage && !status) {
 		constraints.push(limit(perPage));
 	}
 
@@ -48,16 +47,22 @@ export const getAllProjects = async ({
 
 	const snapshot = await getDocs(projectsQuery);
 
-	const projects = snapshot.docs.map((doc) => ({
+	let projects = snapshot.docs.map((doc) => ({
 		id: doc.id,
 		...doc.data(),
 	})) as Project[];
 
+	if (status) {
+		projects = projects.filter((project) => getCurrentPhase(project)?.status === status);
+
+		if (perPage) {
+			projects = projects.slice(0, perPage);
+		}
+	}
+
 	if (view === "card") {
 		return projects.map((project) => {
-			const phases = project.phases ?? [];
-
-			const currentPhase = phases.find((phase) => phase.id === project.currentPhaseId);
+			const currentPhase = getCurrentPhase(project);
 
 			return {
 				id: project.id,
@@ -65,8 +70,8 @@ export const getAllProjects = async ({
 				shortDescription: project.shortDescription,
 				category: project.category,
 				image: project.image,
-				status: project.status,
 				currentPhase: {
+					status: currentPhase?.status ?? "NOT_STARTED",
 					endDate: currentPhase?.endDate ?? "",
 					targetAmount: currentPhase?.targetAmount ?? 0,
 					currentAmount: currentPhase?.currentAmount ?? 0,

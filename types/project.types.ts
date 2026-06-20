@@ -2,7 +2,7 @@ export const PROJECT_CATEGORIES = {
 	IGLESIA: {
 		label: "Iglesia",
 		shortLabel: "Iglesia",
-		slug: "iglesia",
+		slug: "church",
 	},
 
 	EEC: {
@@ -19,43 +19,55 @@ export const PROJECT_CATEGORIES = {
 } as const;
 
 export const PROJECT_STATUSES = {
-	IN_PROGRESS: {
-		label: "In Progress",
-	},
+	NOT_STARTED: { label: "Próximamente" },
+	IN_PROGRESS: { label: "In Progress" },
+	COMPLETED: { label: "Completed" },
+} as const;
 
-	COMPLETED: {
-		label: "Completed",
-	},
+export const SOCIAL_MEDIA_PLATFORMS = {
+	INSTAGRAM: { label: "Instagram" },
+	FACEBOOK: { label: "Facebook" },
+	TWITTER: { label: "Twitter" },
+	WHATSAPP: { label: "WhatsApp" },
+	GMAIL: { label: "Correo" },
 } as const;
 
 export const CATEGORY_KEYS = Object.keys(PROJECT_CATEGORIES) as ProjectCategory[];
-
 export const CATEGORY_VALUES = Object.values(PROJECT_CATEGORIES).map((c) => c.slug);
 
 export const STATUS_KEYS = Object.keys(PROJECT_STATUSES) as ProjectStatus[];
 
-export const STATUS_VALUES = STATUS_KEYS;
+export const SOCIAL_MEDIA_KEYS = Object.keys(SOCIAL_MEDIA_PLATFORMS) as SocialMediaPlatform[];
 
 export type ProjectCategory = keyof typeof PROJECT_CATEGORIES;
-
 export type ProjectStatus = keyof typeof PROJECT_STATUSES;
+export type SocialMediaPlatform = keyof typeof SOCIAL_MEDIA_PLATFORMS;
 
-export interface ProjectPhase {
-	id: string;
-	title: string;
-	description: string;
-	images: string[];
-	startDate: string;
-	endDate: string;
-	targetAmount: number;
-	currentAmount: number;
+export interface SocialMediaLink {
+	platform: SocialMediaPlatform;
+	url: string;
 }
 
 export interface ProjectTeamMember {
 	id: string;
 	name: string;
 	role: string;
+	description?: string | undefined;
 	image?: string | undefined;
+	socialMedia?: SocialMediaLink[] | undefined;
+}
+
+export interface ProjectPhase {
+	id: string;
+	title: string;
+	description: string;
+	images: string[];
+	status: ProjectStatus;
+	startDate: string;
+	endDate: string;
+	targetAmount: number;
+	currentAmount: number;
+	team: ProjectTeamMember[];
 }
 
 export interface Project {
@@ -65,8 +77,7 @@ export interface Project {
 	description: string;
 	shortDescription: string;
 	image: string;
-	status: ProjectStatus;
-	team: ProjectTeamMember[];
+	startDate: string;
 	phases: ProjectPhase[];
 	currentPhaseId: string;
 	createdAt: string;
@@ -79,8 +90,8 @@ export interface ProjectCard {
 	shortDescription: string;
 	category: ProjectCategory;
 	image: string;
-	status: ProjectStatus;
 	currentPhase: {
+		status: ProjectStatus;
 		endDate: string;
 		targetAmount: number;
 		currentAmount: number;

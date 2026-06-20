@@ -1,24 +1,18 @@
-<!-- DONE: Probar todos los endpoints -->
+# Proyectos (30/6)
 
-<!-- DONE: Mejorar validacion de los endpoints -->
+## (22/6)
+<!-- TODO: Crear layout para la pagina proyecto -->
+<!-- TODO: Adaptar ese layout, pero que los campos sean editables como si estuviera vivo, es decir se muestra la pagina proyecto, pero en el modo edicion se puede cambiar al hacer click sobre los elementos -->
+<!-- TODO: Adaptar ese layout para la creacion de un proyecto, con valores preestablecidos -->
 
-<!-- DONE: Usar metodos actuales (Temporal en lugar de Date) -->
+## (23/6)
+<!-- TODO: Manejar la duplicacion de proyectos -->
+<!-- TODO: Manejar la eliminacion de uno o varios projectos -->
+<!-- TODO: Crear estado de activo / inactivo para los proyectos -->
 
-<!-- DONE: Hacer Biome y su configuracion global -->
+## (24/6)
+<!-- TODO: Agregar una opcion de filtros avanzados en donde se busquen cosas como fecha, precios, si estan activos o inactivos... -->
 
-<!-- DONE: Explicar API proyectos -->
+# Contenido
 
-<!-- DONE: Construir Login /dashboard -->
-
-<!-- DONE: Manejar Autenticacion con Firebase -->
-
-<!-- DONE: Diseñar layout -->
-
-<!-- DONE: Crear contenido messages y utilizarlo -->
-
-<!-- TODO: Crear sistema de diseño (botones, inputs, paleta de colores, containers) -->
-
-<!-- DONE: Cuando dejo pulsado el cursor sobre un texto este tiene un fondo el cual deberia de personalizarse -->
-
-<!-- DONE: Cuando selecciono elementos con el tab estos tienen un borde el cual deberia de personalizarse -->
-
+# Admin
