@@ -233,7 +233,7 @@
 	line-height: 1;
 
 	background-color: tone(#{$tone}-soft);
-	color: tone($tone);
+	color: tone(#{$tone}-hover);
 
 	border: 1px solid tone($tone);
 }

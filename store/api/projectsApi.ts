@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { ProjectCard, ProjectCategory, ProjectStatus } from "@/types/project.types";
+import type { Project, ProjectCard, ProjectCategory, ProjectStatus } from "@/types/project.types";
 
 export interface GetProjectsArgs {
 	category?: ProjectCategory;
@@ -15,6 +15,9 @@ export const projectsApi = createApi({
 	keepUnusedDataFor: 300, // 5 minutes
 
 	endpoints: (builder) => ({
+		getProjectById: builder.query<Project, string>({
+			query: (id) => `/projects/${id}`,
+		}),
 		getProjects: builder.query<ProjectCard[], GetProjectsArgs>({
 			query: ({ category, status, view = "card" }) => {
 				const params = new URLSearchParams({ view });
@@ -28,4 +31,4 @@ export const projectsApi = createApi({
 	}),
 });
 
-export const { useGetProjectsQuery } = projectsApi;
+export const { useGetProjectsQuery, useGetProjectByIdQuery } = projectsApi;

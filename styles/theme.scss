@@ -1,5 +1,3 @@
-@use "tailwindcss";
-
 // Dark Mode per attribute
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
@@ -82,45 +80,4 @@
 	--app-color-error-hover: #fecaca;
 	--app-color-error-soft: #450a0a;
 	--app-color-error-foreground: #450a0a;
-}
-
-@theme inline {
-	--font-sans: var(--app-font-sans);
-	--font-heading: var(--app-font-heading);
-
-	--color-background: var(--app-color-background);
-	--color-surface: var(--app-color-surface);
-	--color-text: var(--app-color-text);
-	--color-text-muted: var(--app-color-text-muted);
-	--color-border: var(--app-color-border);
-
-	--color-primary: var(--app-color-primary);
-	--color-primary-hover: var(--app-color-primary-hover);
-	--color-primary-soft: var(--app-color-primary-soft);
-	--color-primary-foreground: var(--app-color-primary-foreground);
-
-	--color-secondary: var(--app-color-secondary);
-	--color-secondary-hover: var(--app-color-secondary-hover);
-	--color-secondary-soft: var(--app-color-secondary-soft);
-	--color-secondary-foreground: var(--app-color-secondary-foreground);
-
-	--color-accent: var(--app-color-accent);
-	--color-accent-hover: var(--app-color-accent-hover);
-	--color-accent-soft: var(--app-color-accent-soft);
-	--color-accent-foreground: var(--app-color-accent-foreground);
-
-	--color-success: var(--app-color-success);
-	--color-success-hover: var(--app-color-success-hover);
-	--color-success-soft: var(--app-color-success-soft);
-	--color-success-foreground: var(--app-color-success-foreground);
-
-	--color-warning: var(--app-color-warning);
-	--color-warning-hover: var(--app-color-warning-hover);
-	--color-warning-soft: var(--app-color-warning-soft);
-	--color-warning-foreground: var(--app-color-warning-foreground);
-
-	--color-error: var(--app-color-error);
-	--color-error-hover: var(--app-color-error-hover);
-	--color-error-soft: var(--app-color-error-soft);
-	--color-error-foreground: var(--app-color-error-foreground);
 }
