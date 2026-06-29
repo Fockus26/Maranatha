@@ -1,63 +1,54 @@
-'use client'
+"use client";
 
-import { type ReactElement, useEffect, useRef, useState } from 'react'
-import type { HeroData } from '@/data/home.data'
+import { type ReactElement, useEffect, useRef, useState } from "react";
+import type { HeroData } from "@/data/home.data";
 
 interface Props {
-	data: HeroData
+	data: HeroData;
 }
 
 export default function HeroSlider({ data }: Props): ReactElement {
-	const [activeSlide, setActiveSlide] = useState(0)
-	const containerRef = useRef<HTMLDivElement>(null)
+	const [activeSlide, setActiveSlide] = useState(0);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setActiveSlide((prev) =>
-				prev === data.slides.length - 1 ? 0 : prev + 1,
-			)
-		}, 6000)
+			setActiveSlide((prev) => (prev === data.slides.length - 1 ? 0 : prev + 1));
+		}, 6000);
 
-		return () => clearInterval(interval)
-	}, [data.slides.length])
+		return () => clearInterval(interval);
+	}, [data.slides.length]);
 
 	useEffect(() => {
 		const observerOptions = {
 			root: null,
-			rootMargin: '0px',
+			rootMargin: "0px",
 			threshold: 0.05,
-		}
+		};
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					entry.target.classList.add('active')
-					observer.unobserve(entry.target)
+					entry.target.classList.add("active");
+					observer.unobserve(entry.target);
 				}
-			})
-		}, observerOptions)
+			});
+		}, observerOptions);
 
-		const revealElements = containerRef.current?.querySelectorAll(
-			'.hero-slide-content',
-		)
-		revealElements?.forEach((el) => observer.observe(el))
+		const revealElements = containerRef.current?.querySelectorAll(".hero-slide-content");
+		revealElements?.forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect()
-	}, [activeSlide])
+		return () => observer.disconnect();
+	}, [activeSlide]);
 
 	return (
-		<section
-			ref={containerRef}
-			className="relative h-[45vw] w-full overflow-hidden bg-brand"
-		>
+		<section ref={containerRef} className="relative h-[45vw] w-full overflow-hidden bg-brand">
 			{/* Slides */}
 			{data.slides.map((slide, idx) => (
 				<div
 					key={idx}
 					className={`absolute inset-0 h-full w-full transition-opacity duration-2000 ease-in-out ${
-						idx === activeSlide
-							? 'opacity-100 z-10'
-							: 'opacity-0 z-0'
+						idx === activeSlide ? "opacity-100 z-10" : "opacity-0 z-0"
 					}`}
 				>
 					{/* Background Image focused to the right */}
@@ -71,7 +62,7 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						className="absolute inset-0 h-full w-full"
 						style={{
 							background:
-								'linear-gradient(90deg, #000519 0%, #000519d9 40%, rgba(0, 5, 25, 0) 100%)',
+								"linear-gradient(90deg, #000519 0%, #000519d9 40%, rgba(0, 5, 25, 0) 100%)",
 						}}
 					/>
 
@@ -100,8 +91,8 @@ export default function HeroSlider({ data }: Props): ReactElement {
 										href={slide.buttonHref}
 										className="!text-white !text-3xl inline-flex items-center gap-3 !font-medium transition-all duration-300 group"
 										style={{
-											borderBottom: '1.5px solid #e8603a',
-											paddingBottom: '4px',
+											borderBottom: "1.5px solid #e8603a",
+											paddingBottom: "4px",
 										}}
 									>
 										{slide.buttonText}
@@ -134,13 +125,11 @@ export default function HeroSlider({ data }: Props): ReactElement {
 						onClick={() => setActiveSlide(idx)}
 						aria-label={`Ir al slide ${idx + 1}`}
 						className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
-							idx === activeSlide
-								? 'w-8 active-dot'
-								: 'w-2.5 hover:bg-white/50'
+							idx === activeSlide ? "w-8 active-dot" : "w-2.5 hover:bg-white/50"
 						}`}
 					/>
 				))}
 			</div>
 		</section>
-	)
+	);
 }

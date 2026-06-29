@@ -1,60 +1,60 @@
-'use client'
+"use client";
 
-import { type ReactElement, useEffect, useRef } from 'react'
-import type { EventosData } from '@/data/home.data'
+import { type ReactElement, useEffect, useRef } from "react";
+import type { EventosData } from "@/data/home.data";
 
 interface Props {
-	data: EventosData
+	data: EventosData;
 }
 
 const cellStyles = [
 	{
-		bg: 'bg-primary-container',
-		text: 'text-white',
-		muted: 'text-white/60',
-		tag: 'bg-accent/20 text-accent',
+		bg: "bg-primary-container",
+		text: "text-white",
+		muted: "text-white/60",
+		tag: "bg-accent/20 text-accent",
 	},
 	{
-		bg: 'bg-surface',
-		text: 'text-primary-container',
-		muted: 'text-on-surface-variant',
-		tag: 'bg-accent/10 text-accent',
+		bg: "bg-surface",
+		text: "text-primary-container",
+		muted: "text-on-surface-variant",
+		tag: "bg-accent/10 text-accent",
 	},
 	{
-		bg: 'bg-accent/10',
-		text: 'text-primary-container',
-		muted: 'text-on-surface-variant',
-		tag: 'bg-primary-container/10 text-primary-container',
+		bg: "bg-accent/10",
+		text: "text-primary-container",
+		muted: "text-on-surface-variant",
+		tag: "bg-primary-container/10 text-primary-container",
 	},
 	{
-		bg: 'bg-complementary/10',
-		text: 'text-primary-container',
-		muted: 'text-on-surface-variant',
-		tag: 'bg-complementary/20 text-complementary',
+		bg: "bg-complementary/10",
+		text: "text-primary-container",
+		muted: "text-on-surface-variant",
+		tag: "bg-complementary/20 text-complementary",
 	},
-]
+];
 
 export default function EventosSection({ data }: Props): ReactElement {
-	const containerRef = useRef<HTMLDivElement>(null)
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						entry.target.classList.add('active')
-						observer.unobserve(entry.target)
+						entry.target.classList.add("active");
+						observer.unobserve(entry.target);
 					}
-				})
+				});
 			},
-			{ threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
-		)
+			{ threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+		);
 
-		const cards = containerRef.current?.querySelectorAll('.evento-card')
-		cards?.forEach((el) => observer.observe(el))
+		const cards = containerRef.current?.querySelectorAll(".evento-card");
+		cards?.forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect()
-	}, [data])
+		return () => observer.disconnect();
+	}, [data]);
 
 	return (
 		<section ref={containerRef} className="py-24 bg-background w-full">
@@ -81,15 +81,13 @@ export default function EventosSection({ data }: Props): ReactElement {
 								style={{
 									transitionDelay: `${idx * 120}ms`,
 									backgroundImage: `url(${ev.image})`,
-									backgroundSize: 'cover',
-									backgroundPosition: 'center',
+									backgroundSize: "cover",
+									backgroundPosition: "center",
 								}}
 							>
 								{/* 1. Título y Subtítulo (Siempre fijos arriba) */}
 								<div className="space-y-3 z-10 w-full">
-									<h3
-										className={`text-3xl font-bold leading-tight ${ev.text}`}
-									>
+									<h3 className={`text-3xl font-bold leading-tight ${ev.text}`}>
 										{ev.title}
 									</h3>
 									<p
@@ -117,7 +115,7 @@ export default function EventosSection({ data }: Props): ReactElement {
 												href={ev.buttonTwoUrl}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#012650] cursor-pointer hover:bg-white/95 transition-all shadow-lg"
+												className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#012650]! cursor-pointer hover:bg-white/95 transition-all shadow-lg"
 											>
 												{ev.buttonTwo}
 											</a>
@@ -128,7 +126,7 @@ export default function EventosSection({ data }: Props): ReactElement {
 								{/* Overlay oscuro sutil constante para asegurar legibilidad del texto */}
 								<div className="absolute inset-0 bg-black/15 z-0" />
 							</div>
-						)
+						);
 					})}
 				</div>
 
@@ -136,12 +134,10 @@ export default function EventosSection({ data }: Props): ReactElement {
 				<div className="mt-8 text-center md:hidden">
 					<button className="inline-flex items-center gap-2 text-accent font-semibold text-sm">
 						Ver Calendario Completo
-						<span className="material-symbols-outlined text-xl">
-							arrow_right_alt
-						</span>
+						<span className="material-symbols-outlined text-xl">arrow_right_alt</span>
 					</button>
 				</div>
 			</div>
 		</section>
-	)
+	);
 }

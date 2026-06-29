@@ -1,23 +1,17 @@
-'use client'
+"use client";
 
-import { type ReactElement, useEffect, useRef, useState } from 'react'
-import type { InstagramData } from '@/data/home.data'
+import { type ReactElement, useEffect, useRef, useState } from "react";
+import type { InstagramData } from "@/data/home.data";
 
 interface Props {
-	data: InstagramData
+	data: InstagramData;
 }
 
 const iconMap: Record<string, ReactElement> = {
 	instagram: (
 		<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 			<defs>
-				<linearGradient
-					id="ig-grad"
-					x1="0%"
-					y1="100%"
-					x2="100%"
-					y2="0%"
-				>
+				<linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
 					<stop offset="0%" stopColor="#F09433" />
 					<stop offset="50%" stopColor="#DC2743" />
 					<stop offset="100%" stopColor="#BC1888" />
@@ -34,38 +28,36 @@ const iconMap: Record<string, ReactElement> = {
 			<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
 		</svg>
 	),
-}
+};
 
 export default function InstagramSection({ data }: Props): ReactElement {
-	const [activeRed, setActiveRed] = useState(data.redes[0]?.id ?? '')
-	const containerRef = useRef<HTMLDivElement>(null)
+	const [activeRed, setActiveRed] = useState(data.redes[0]?.id ?? "");
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	const redActiva =
-		data.redes.find((r) => r.id === activeRed) ?? data.redes[0]!
+	const redActiva = data.redes.find((r) => r.id === activeRed) ?? data.redes[0]!;
 
-	if (!redActiva) return <></>
+	if (!redActiva) return <></>;
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						entry.target.classList.add('active')
-						observer.unobserve(entry.target)
+						entry.target.classList.add("active");
+						observer.unobserve(entry.target);
 					}
-				})
+				});
 			},
 			{ threshold: 0.05 },
-		)
+		);
 
-		const cards = containerRef.current?.querySelectorAll('.social-card')
-		cards?.forEach((el) => observer.observe(el))
+		const cards = containerRef.current?.querySelectorAll(".social-card");
+		cards?.forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect()
-	}, [data, activeRed])
+		return () => observer.disconnect();
+	}, [data, activeRed]);
 
-	const postsActivos =
-		activeRed === data.redes[0]?.id ? data.posts : data.facebookPosts
+	const postsActivos = activeRed === data.redes[0]?.id ? data.posts : data.facebookPosts;
 
 	return (
 		<section ref={containerRef} className="py-24 bg-surface w-full">
@@ -76,11 +68,9 @@ export default function InstagramSection({ data }: Props): ReactElement {
 					<div className="flex items-center justify-between">
 						<div>
 							<p className="text-primary-container font-bold text-[2rem]">
-								{redActiva?.handle}{' '}
+								{redActiva?.handle}{" "}
 							</p>
-							<p className="text-on-surface-variant text-sm">
-								{data.subtitle}
-							</p>
+							<p className="text-on-surface-variant text-sm">{data.subtitle}</p>
 						</div>
 
 						{/* Toggle centro */}
@@ -91,8 +81,8 @@ export default function InstagramSection({ data }: Props): ReactElement {
 									onClick={() => setActiveRed(red.id)}
 									className={`flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 ${
 										activeRed === red.id
-											? 'bg-primary text-on-surface shadow-sm'
-											: 'text-gray-400'
+											? "bg-primary text-on-surface-variant shadow-sm"
+											: "text-gray-400"
 									}`}
 								>
 									{iconMap[red.id]}
@@ -113,7 +103,7 @@ export default function InstagramSection({ data }: Props): ReactElement {
 							rel="noopener noreferrer"
 							className="social-card w-full rounded-lg overflow-hidden relative group cursor-pointer"
 							style={{
-								aspectRatio: '4/5',
+								aspectRatio: "4/5",
 								transitionDelay: `${idx * 80}ms`,
 							}}
 						>
@@ -140,7 +130,7 @@ export default function InstagramSection({ data }: Props): ReactElement {
 						className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 shadow-sm hover:shadow-md"
 						style={{
 							background: `linear-gradient(white, white) padding-box, ${redActiva.gradient} border-box`,
-							border: '2px solid transparent',
+							border: "2px solid transparent",
 						}}
 					>
 						<span
@@ -152,10 +142,7 @@ export default function InstagramSection({ data }: Props): ReactElement {
 						<span
 							className="material-symbols-outlined text-sm"
 							style={{
-								color:
-									activeRed === data.redes[0]?.id
-										? '#DC2743'
-										: '#1877F2',
+								color: activeRed === data.redes[0]?.id ? "#DC2743" : "#1877F2",
 							}}
 						>
 							open_in_new
@@ -164,5 +151,5 @@ export default function InstagramSection({ data }: Props): ReactElement {
 				</div>
 			</div>
 		</section>
-	)
+	);
 }

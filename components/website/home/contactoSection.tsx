@@ -1,36 +1,36 @@
-'use client'
+"use client";
 
-import { type ReactElement, useEffect, useRef } from 'react'
-import type { ContactoData } from '@/data/home.data'
+import { type ReactElement, useEffect, useRef } from "react";
+import type { ContactoData } from "@/data/home.data";
 
 interface Props {
-	data: ContactoData
+	data: ContactoData;
 }
 
 export default function ContactoSection({ data }: Props): ReactElement {
-	const containerRef = useRef<HTMLDivElement>(null)
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const observerOptions = {
 			root: null,
-			rootMargin: '0px',
+			rootMargin: "0px",
 			threshold: 0.05,
-		}
+		};
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					entry.target.classList.add('revealed')
-					observer.unobserve(entry.target)
+					entry.target.classList.add("revealed");
+					observer.unobserve(entry.target);
 				}
-			})
-		}, observerOptions)
+			});
+		}, observerOptions);
 
-		const revealElements = containerRef.current?.querySelectorAll('.reveal')
-		revealElements?.forEach((el) => observer.observe(el))
+		const revealElements = containerRef.current?.querySelectorAll(".reveal");
+		revealElements?.forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect()
-	}, [data])
+		return () => observer.disconnect();
+	}, [data]);
 
 	return (
 		<section ref={containerRef} className="w-full bg-background pb-24">
@@ -45,14 +45,12 @@ export default function ContactoSection({ data }: Props): ReactElement {
 
 			<div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 relative z-20">
 				<div className="bg-white rounded-3xl shadow-2xl -mt-20 p-8 md:p-12 lg:p-16 border border-secondary-fixed-dim/15 reveal">
-					
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-						
 						<div className="lg:col-span-5 space-y-6">
 							<h2 className="text-primary-container text-4xl md:text-5xl font-bold tracking-tight">
 								{data.sectionTitle}
 							</h2>
-							
+
 							<div className="w-12 h-1 bg-secondary rounded-full" />
 
 							<div className="space-y-2 pt-2">
@@ -88,7 +86,7 @@ export default function ContactoSection({ data }: Props): ReactElement {
 										key={idx}
 										className="flex gap-4 p-4 rounded-2xl hover:bg-surface-container-low transition-colors duration-300 border border-transparent hover:border-secondary-fixed-dim/20"
 									>
-										<div className="flex-shrink-0 text-secondary">
+										<div className="flex-shrink-0 text-black">
 											<span className="material-symbols-outlined text-[32px] font-light">
 												{cell.icon}
 											</span>
@@ -106,11 +104,9 @@ export default function ContactoSection({ data }: Props): ReactElement {
 								))}
 							</div>
 						</div>
-
 					</div>
-
 				</div>
 			</div>
 		</section>
-	)
+	);
 }
