@@ -41,6 +41,12 @@ const RootLayout = async ({ children, params }: Readonly<Props>): Promise<ReactE
 			className={clsx(dmSans.variable, clashDisplay.variable)}
 			data-scroll-behavior="smooth"
 		>
+			<head>
+				<link
+					rel="stylesheet"
+					href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+				/>
+			</head>
 			<body>
 				<Providers locale={locale} messages={messages}>
 					{children}

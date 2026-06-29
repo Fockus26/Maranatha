@@ -4,9 +4,7 @@ import { siteConfig } from "@/config/site";
 
 interface GenerateMetadataProps {
 	title?: string;
-
 	description?: string;
-
 	image?: string;
 }
 

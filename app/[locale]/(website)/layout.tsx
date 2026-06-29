@@ -5,10 +5,14 @@ import { Header } from "@/components/website/header/header";
 import { MobileMenu } from "@/components/website/header/mobileMenu/mobileMenu";
 
 import "@/styles/globals.css";
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
 
 interface Props {
 	children: ReactNode;
 }
+
+export const metadata: Metadata = generateMetadata();
 
 const WebsiteLayout = async ({ children }: Readonly<Props>): Promise<ReactElement> => {
 	return (

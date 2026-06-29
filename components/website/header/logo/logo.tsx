@@ -8,7 +8,7 @@ import styles from "./logo.module.scss";
 export const Logo = (): ReactElement => {
 	return (
 		<Link href="/" className={styles.logo}>
-			<img src="/images/Logo-Maranatha.webp" width={55} height={55} alt="Logo" />
+			<img src="/images/logo-maranatha.webp" width={55} height={55} alt="Logo" />
 		</Link>
 	);
 };
