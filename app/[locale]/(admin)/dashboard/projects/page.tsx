@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactElement } from "react";
-import { Projects } from "@/components/projects/projects";
+import { Projects } from "@/components/admin/projects/projects";
 
 const ProjectsPage = (): ReactElement => {
 	return <Projects />;

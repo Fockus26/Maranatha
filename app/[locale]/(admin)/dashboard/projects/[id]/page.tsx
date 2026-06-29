@@ -1,4 +1,4 @@
-import { Project } from "@/components/project/project";
+import { Project } from "@/components/admin/project/project";
 
 type Props = {
 	params: Promise<{

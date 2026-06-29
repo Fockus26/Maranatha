@@ -42,7 +42,6 @@ const RootLayout = async ({ children, params }: Readonly<Props>): Promise<ReactE
 			data-scroll-behavior="smooth"
 		>
 			<body>
-				<div id="modals" />
 				<Providers locale={locale} messages={messages}>
 					{children}
 				</Providers>

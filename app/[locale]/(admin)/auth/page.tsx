@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { LoginForm } from "@/components/auth/loginForm/loginForm";
+import { LoginForm } from "@/components/admin/auth/loginForm/loginForm";
 import { Loader } from "@/components/ui/loader/loader";
 import {
 	selectAuthInitialized,

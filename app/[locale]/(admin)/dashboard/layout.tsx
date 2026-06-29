@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/components/auth/authGuard";
-import { Sidebar } from "@/components/dashboard/sidebar/sidebar";
+import { AuthGuard } from "@/components/admin/auth/authGuard";
+import { Sidebar } from "@/components/admin/dashboard/sidebar/sidebar";
 import styles from "./layout.module.scss";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
