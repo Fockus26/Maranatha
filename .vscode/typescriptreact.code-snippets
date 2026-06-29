@@ -8,8 +8,8 @@
 			"",
 			"export const ${TM_FILENAME_BASE} = ({}: Props): ReactElement => {",
 			"\treturn <$1>$0</$1>",
-			"}",
-		],
+			"}"
+		]
 	},
 	"Next Functional Page": {
 		"prefix": "nfp",
@@ -20,7 +20,7 @@
 			"\treturn <main>$0</main>",
 			"}",
 			"",
-			"export default Page",
-		],
-	},
+			"export default Page"
+		]
+	}
 }

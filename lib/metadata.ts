@@ -1,13 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { siteConfig } from '@/config/site'
+import { siteConfig } from "@/config/site";
 
 interface GenerateMetadataProps {
-	title?: string
-
-	description?: string
-
-	image?: string
+	title?: string;
+	description?: string;
+	image?: string;
 }
 
 export const generateMetadata = ({
@@ -15,13 +13,11 @@ export const generateMetadata = ({
 	description,
 	image,
 }: GenerateMetadataProps = {}): Metadata => {
-	const metadataTitle = title
-		? `${title} | ${siteConfig.shortName}`
-		: siteConfig.name
+	const metadataTitle = title ? `${title} | ${siteConfig.shortName}` : siteConfig.name;
 
-	const metadataDescription = description ?? siteConfig.description
+	const metadataDescription = description ?? siteConfig.description;
 
-	const metadataImage = image ?? siteConfig.ogImage
+	const metadataImage = image ?? siteConfig.ogImage;
 
 	return {
 		metadataBase: new URL(siteConfig.url),
@@ -37,7 +33,7 @@ export const generateMetadata = ({
 		creator: siteConfig.creator,
 
 		openGraph: {
-			type: 'website',
+			type: "website",
 
 			url: siteConfig.url,
 
@@ -59,7 +55,7 @@ export const generateMetadata = ({
 		},
 
 		twitter: {
-			card: 'summary_large_image',
+			card: "summary_large_image",
 
 			title: metadataTitle,
 
@@ -67,5 +63,5 @@ export const generateMetadata = ({
 
 			images: [metadataImage],
 		},
-	}
-}
+	};
+};

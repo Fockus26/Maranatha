@@ -1,31 +1,29 @@
-'use client'
+"use client";
 
-import type { ReactElement, ReactNode } from 'react'
-
-import { Internationalization } from './Internationalization'
-import { Redux } from './Redux'
-import { Theme } from './Theme'
+import type { ReactElement, ReactNode } from "react";
+import { Auth as AuthProvider } from "@/providers/auth";
+import { Internationalization as InternationalizationProvider } from "@/providers/internationalization";
+import { Redux as ReduxProvider } from "@/providers/redux";
+import { Theme as ThemeProvider } from "@/providers/theme";
 
 interface Props {
-	children: ReactNode
+	children: ReactNode;
 
-	locale: string
+	locale: string;
 
-	messages: Record<string, unknown>
+	messages: Record<string, unknown>;
 }
 
-export const Providers = ({
-	children,
-	locale,
-	messages,
-}: Props): ReactElement => {
+export const Providers = ({ children, locale, messages }: Props): ReactElement => {
 	return (
-		<Redux>
-			<Theme>
-				<Internationalization locale={locale} messages={messages}>
-					{children}
-				</Internationalization>
-			</Theme>
-		</Redux>
-	)
-}
+		<ReduxProvider>
+			<AuthProvider>
+				<ThemeProvider>
+					<InternationalizationProvider locale={locale} messages={messages}>
+						{children}
+					</InternationalizationProvider>
+				</ThemeProvider>
+			</AuthProvider>
+		</ReduxProvider>
+	);
+};

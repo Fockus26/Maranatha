@@ -1,14 +1,13 @@
-import type { ReactElement } from 'react'
+import { getMessages } from "next-intl/server";
 
-import classes from './not-found.module.css'
-
-const NotFound = (): ReactElement => {
+async function NotFound() {
+	const messages = (await getMessages()).notFound;
 	return (
-		<main className={classes.notFound}>
-			<h2>404 - Página no encontrada</h2>
-			<p>Lo sentimos, la página que buscas no existe o ha sido movida.</p>
+		<main>
+			<h2>{messages.title}</h2>
+			<p>{messages.description}</p>
 		</main>
-	)
+	);
 }
 
-export default NotFound
+export default NotFound;
