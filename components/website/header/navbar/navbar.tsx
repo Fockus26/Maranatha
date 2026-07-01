@@ -40,7 +40,6 @@ export const Navbar = ({ onDropdownChange }: Props): ReactElement => {
 
 			<Button
 				tone="accent"
-				className={styles.prayerButton}
 				icon={
 					<svg
 						width="17"
