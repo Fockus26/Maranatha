@@ -36,8 +36,6 @@ export default function InstagramSection({ data }: Props): ReactElement {
 
 	const redActiva = data.redes.find((r) => r.id === activeRed) ?? data.redes[0]!;
 
-	if (!redActiva) return <></>;
-
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -56,6 +54,8 @@ export default function InstagramSection({ data }: Props): ReactElement {
 
 		return () => observer.disconnect();
 	}, [data, activeRed]);
+
+	if (!redActiva) return <></>;
 
 	const postsActivos = activeRed === data.redes[0]?.id ? data.posts : data.facebookPosts;
 

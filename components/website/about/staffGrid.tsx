@@ -1,19 +1,15 @@
-'use client'
+"use client";
 
-import { type ReactElement } from 'react'
-import {
-	InstagramIcon,
-	FacebookIcon,
-	TikTokIcon,
-} from '@/components/ui/icons/socialIcons'
-import type { PastorPrincipal, LiderSenior } from '@/data/about.data'
+import type { ReactElement } from "react";
+import { FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/ui/icons/socialIcons";
+import type { LiderSenior, PastorPrincipal } from "@/data/about.data";
 
-type StaffItem = PastorPrincipal | LiderSenior
+type StaffItem = PastorPrincipal | LiderSenior;
 
 interface Props {
-	sectionTitle: string
-	sectionDescription: string
-	items: StaffItem[]
+	sectionTitle: string;
+	sectionDescription: string;
+	items: StaffItem[];
 }
 
 export default function StaffGrid({
@@ -23,12 +19,11 @@ export default function StaffGrid({
 }: Props): ReactElement {
 	const gridColsClasses =
 		{
-			1: 'max-w-md grid-cols-1',
-			2: 'max-w-4xl grid-cols-1 sm:grid-cols-2',
-			3: 'max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-			4: 'max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-		}[Math.min(items.length, 4)] ||
-		'max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+			1: "max-w-md grid-cols-1",
+			2: "max-w-4xl grid-cols-1 sm:grid-cols-2",
+			3: "max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+			4: "max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+		}[Math.min(items.length, 4)] || "max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
 	return (
 		<section className="py-20 w-full select-none">
@@ -42,34 +37,32 @@ export default function StaffGrid({
 					</p>
 				</div>
 
-				<div
-					className={`grid ${gridColsClasses} gap-8 w-full justify-center`}
-				>
+				<div className={`grid ${gridColsClasses} gap-8 w-full justify-center`}>
 					{items.map((item, idx) => {
 						const socialLinks = [
-							'instagram' in item &&
+							"instagram" in item &&
 								item.instagram && {
-									key: 'instagram',
+									key: "instagram",
 									url: item.instagram,
 									icon: <InstagramIcon />,
 								},
-							'facebook' in item &&
+							"facebook" in item &&
 								item.facebook && {
-									key: 'facebook',
+									key: "facebook",
 									url: item.facebook,
 									icon: <FacebookIcon />,
 								},
-							'tiktok' in item &&
+							"tiktok" in item &&
 								item.tiktok && {
-									key: 'tiktok',
+									key: "tiktok",
 									url: item.tiktok,
 									icon: <TikTokIcon />,
 								},
 						].filter(Boolean) as {
-							key: string
-							url: string
-							icon: ReactElement
-						}[]
+							key: string;
+							url: string;
+							icon: ReactElement;
+						}[];
 
 						return (
 							<div
@@ -77,8 +70,8 @@ export default function StaffGrid({
 								className="group relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-md bg-zinc-100 dark:bg-zinc-900 transition-all duration-500 hover:scale-[1.01] hover:shadow-xl cursor-pointer"
 								style={{
 									backgroundImage: `url(${item.image})`,
-									backgroundSize: 'cover',
-									backgroundPosition: 'center',
+									backgroundSize: "cover",
+									backgroundPosition: "center",
 								}}
 							>
 								<div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-95" />
@@ -107,18 +100,17 @@ export default function StaffGrid({
 										</div>
 									)}
 
-									{'description' in item &&
-										item.description && (
-											<p className="text-xs md:text-sm font-light text-white/75 pt-2 leading-relaxed tracking-wide border-t border-white/10 mt-2">
-												{item.description}
-											</p>
-										)}
+									{"description" in item && item.description && (
+										<p className="text-xs md:text-sm font-light text-white/75 pt-2 leading-relaxed tracking-wide border-t border-white/10 mt-2">
+											{item.description}
+										</p>
+									)}
 								</div>
 							</div>
-						)
+						);
 					})}
 				</div>
 			</div>
 		</section>
-	)
+	);
 }

@@ -61,7 +61,7 @@ export function Project({ id }: Props) {
 					<h1>{project.title}</h1>
 					<p>{project.shortDescription}</p>
 
-					<div className={styles.heroDates}>
+					<div>
 						<span>Inicio de fase: {formatDateES(startDate)}</span>
 						<span>Cierre estimado: {formatDateES(endDate)}</span>
 					</div>
@@ -70,13 +70,9 @@ export function Project({ id }: Props) {
 
 			<div className={styles.body}>
 				<section className={styles.content}>
-					{wasUpdated && (
-						<span className={styles.updatedAt}>
-							Actualizado el {formatDateES(project.updatedAt)}
-						</span>
-					)}
+					{wasUpdated && <span>Actualizado el {formatDateES(project.updatedAt)}</span>}
 
-					<p className={styles.aboutProject}>{project.description}</p>
+					<p>{project.description}</p>
 
 					<h2>{selectedPhase.title}</h2>
 					<p>{selectedPhase.description}</p>
