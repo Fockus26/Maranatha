@@ -75,3 +75,47 @@ export const typography = {
     small: 1.5,
   },
 } as const;
+
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  base: 16,
+  lg: 24,
+  xl: 32,
+  "2xl": 48,
+  "3xl": 64,
+  "4xl": 96,
+} as const;
+
+export const radius = {
+  xs: 4,   
+  sm: 6,   
+  md: 8,   
+  lg: 12,  
+  xl: 16,  
+} as const;
+
+export const shadow = {
+  sm: "0 1px 3px rgba(6, 10, 29, 0.06)",
+  md: "0 2px 8px rgba(6, 10, 29, 0.08)",
+  lg: "0 4px 16px rgba(6, 10, 29, 0.10)",
+} as const;
+
+export const breakpoints = {
+  xs: 0,
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1536,
+} as const;
+
+export const zIndex = {
+  base: 0,
+  navbar: 100,
+  sidebar: 200,
+  dropdown: 300,
+  modalBackdrop: 400,
+  modal: 410,
+  toast: 500,
+} as const;

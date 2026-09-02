@@ -1,5 +1,6 @@
 import { createTheme, type PaletteMode, type ThemeOptions } from "@mui/material/styles";
-import { primary, secondary, gray, semantic, typography } from "./tokens";
+import { primary, secondary, gray, semantic, typography, spacing, radius, shadow, breakpoints, zIndex } from "./tokens";
+
 
 function getPaletteOptions(mode: PaletteMode): ThemeOptions["palette"] {
   const isLight = mode === "light";
@@ -31,6 +32,41 @@ function getPaletteOptions(mode: PaletteMode): ThemeOptions["palette"] {
       secondary: isLight ? gray[600] : gray[300],
     },
     divider: isLight ? gray[200] : gray[700],
+  };
+}
+
+function getShapeOptions(): ThemeOptions["shape"] {
+  return {
+    borderRadius: radius.sm, 
+  };
+}
+
+function getShadowsOptions(mode: PaletteMode): ThemeOptions["shadows"] {
+  const flat = "none";
+  const sm = shadow.sm;
+  const md = shadow.md;
+  const lg = shadow.lg;
+
+  return [
+    flat,       
+    sm, sm, sm, 
+    md, md, md, md, md, 
+    lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, lg, 
+  ] as ThemeOptions["shadows"];
+}
+
+function getBreakpointsOptions(): ThemeOptions["breakpoints"] {
+  return { values: breakpoints };
+}
+
+function getZIndexOptions(): ThemeOptions["zIndex"] {
+  return {
+    mobileStepper: zIndex.base,
+    appBar: zIndex.navbar,
+    drawer: zIndex.sidebar,
+    modal: zIndex.modal,
+    snackbar: zIndex.toast,
+    tooltip: zIndex.dropdown,
   };
 }
 
@@ -87,10 +123,16 @@ function getTypographyOptions(): ThemeOptions["typography"] {
   };
 }
 
+
 export function getTheme(mode: PaletteMode) {
   const baseTheme = createTheme({
     palette: getPaletteOptions(mode),
     typography: getTypographyOptions(),
+    shape: getShapeOptions(),
+    shadows: getShadowsOptions(mode),
+    breakpoints: getBreakpointsOptions(),
+    zIndex: getZIndexOptions(),
+    spacing: (factor: number) => `${factor * 4}px`,
   });
 
   return createTheme(baseTheme, {
@@ -99,6 +141,33 @@ export function getTheme(mode: PaletteMode) {
       h2: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h2.mobile } },
       h3: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h3.mobile } },
       h4: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h4.mobile } },
+    },
+    components: {
+      MuiCard: {
+        styleOverrides: {
+          root: { borderRadius: radius.lg, boxShadow: shadow.sm },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: { borderRadius: radius.sm },
+        },
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: { borderRadius: radius.xs },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: { borderRadius: radius.xl, boxShadow: shadow.lg },
+        },
+      },
+      MuiTextField: {
+        defaultProps: {
+          slotProps: { input: { style: { borderRadius: radius.xs } } },
+        },
+      },
     },
   });
 }
