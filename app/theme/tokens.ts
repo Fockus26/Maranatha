@@ -43,3 +43,35 @@ export const semantic = {
   warning: "#F5A524",
   info: "#3B9EF5",
 } as const;
+
+export const typography = {
+  fontFamily: {
+    heading: "var(--font-heading), sans-serif",
+    body: "var(--font-body), sans-serif",
+  },
+  weight: {
+    body: 400,
+    bodyMedium: 500,
+    h4: 600,
+    h3: 600,
+    h2: 700,
+    h1: 800,
+  },
+  size: {
+    h1: { desktop: "60px", mobile: "36px" },
+    h2: { desktop: "44px", mobile: "28px" },
+    h3: { desktop: "30px", mobile: "22px" },
+    h4: { desktop: "22px", mobile: "18px" },
+    bodyLarge: "18px",
+    body: "16px",
+    small: "14px",
+  },
+  lineHeight: {
+    h1: 1.1,
+    h2: 1.15,
+    h3: 1.2,
+    h4: 1.25,
+    body: 1.6,
+    small: 1.5,
+  },
+} as const;
