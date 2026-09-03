@@ -6,6 +6,7 @@ import { SermonsGrid } from "@/components/sections/SermonsGrid"
 import { SocialLinksGrid } from "@/components/sections/SocialLinksGrid";
 import { AgendaGrid } from "@/components/sections/AgendaGrid";
 import { HistoryTimeline } from "@/components/sections/HistoryTimeline";
+import { ProjectsSection } from "@/components/sections/ProjectSection";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <SocialLinksGrid />
       <AgendaGrid />
       <HistoryTimeline />
+      <ProjectsSection />
       <Footer />
     </>
   );
