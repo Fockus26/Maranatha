@@ -1,7 +1,5 @@
-// components/layout/Navbar.tsx — reemplazar el <Toolbar> completo
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import {
   AppBar,
@@ -9,13 +7,10 @@ import {
   Container,
   Box,
   Button,
-  IconButton,
   useScrollTrigger,
   useTheme,
 } from "@mui/material";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import { useColorMode } from "@/app/theme/ThemeRegistry";
+import ThemeToggle from "@/app/components/ui/ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Áreas", href: "#areas" },
@@ -32,7 +27,6 @@ type NavbarProps = {
 
 export default function Navbar({ activeHref }: NavbarProps) {
   const theme = useTheme();
-  const { mode, toggleColorMode } = useColorMode();
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
 
   return (
@@ -103,14 +97,7 @@ export default function Navbar({ activeHref }: NavbarProps) {
 
           {/* Theme toggle + CTA */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <IconButton
-              onClick={toggleColorMode}
-              size="small"
-              aria-label={mode === "light" ? "Activar modo oscuro" : "Activar modo claro"}
-              sx={{ color: "text.secondary" }}
-            >
-              {mode === "light" ? <DarkModeOutlinedIcon fontSize="small" /> : <LightModeOutlinedIcon fontSize="small" />}
-            </IconButton>
+            <ThemeToggle />
             <Button
               component={Link}
               href="#diezmo"

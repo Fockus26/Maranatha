@@ -149,8 +149,42 @@ export function getTheme(mode: PaletteMode) {
         },
       },
       MuiButton: {
+        defaultProps: {
+          disableElevation: true,
+        },
         styleOverrides: {
-          root: { borderRadius: radius.sm },
+          root: {
+            borderRadius: radius.sm,
+            fontFamily: typography.fontFamily.body,
+            fontWeight: typography.weight.bodyMedium,
+            textTransform: "none",
+            transition: "background-color 0.15s ease, border-color 0.15s ease",
+          },
+          sizeSmall: { padding: "8px 16px", fontSize: 13 },
+          sizeMedium: { padding: "9px 18px", fontSize: 14 },
+          sizeLarge: { padding: "12px 24px", fontSize: 15 },
+          containedPrimary: {
+            "&:hover": { backgroundColor: primary[600] },
+            "&.Mui-disabled": {
+              backgroundColor: gray[200],
+              color: gray[400],
+            },
+          },
+          containedSecondary: {
+            "&:hover": { backgroundColor: secondary[600] },
+            "&.Mui-disabled": {
+              backgroundColor: gray[200],
+              color: gray[400],
+            },
+          },
+          outlined: {
+            borderWidth: "1px",
+            "&:hover": { borderWidth: "1px" },
+          },
+          text: {
+            padding: "9px 12px",
+            "&:hover": { backgroundColor: "transparent", color: secondary[500] },
+          },
         },
       },
       MuiChip: {
