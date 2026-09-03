@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { radius, spacing } from "./app/theme/tokens";
+import { radius, spacing } from "./theme/tokens";
 
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],

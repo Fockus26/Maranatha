@@ -10,7 +10,7 @@ import {
   useScrollTrigger,
   useTheme,
 } from "@mui/material";
-import ThemeToggle from "@/app/components/ui/ThemeToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Áreas", href: "#areas" },

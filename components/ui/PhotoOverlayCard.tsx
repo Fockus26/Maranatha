@@ -2,29 +2,30 @@
 
 import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { KeyboardEvent, ReactNode } from "react";
-import { primary, secondary, gray } from "@/app/theme/tokens";
+import { primary } from "@/theme/tokens";
 
-export interface ServiceAreaCardProps {
-  name: string;
-  description: string;
-  icon: ReactNode;
+export interface PhotoOverlayCardProps {
   imageUrl: string;
-  ctaLabel?: string;
+  imageAlt?: string;
+  height?: number | string;
+  topLeftSlot?: ReactNode;
+  topRightSlot?: ReactNode;
+  bottomSlot: ReactNode;
   onClick?: () => void;
 }
 
-export function ServiceAreaCard({
-  name,
-  description,
-  icon,
+export function PhotoOverlayCard({
   imageUrl,
-  ctaLabel = "Conocer más",
+  imageAlt = "",
+  height = 360,
+  topLeftSlot,
+  topRightSlot,
+  bottomSlot,
   onClick,
-}: ServiceAreaCardProps) {
+}: PhotoOverlayCardProps) {
   const theme = useTheme();
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -46,7 +47,7 @@ export function ServiceAreaCard({
       initial="rest"
       sx={{
         position: "relative",
-        height: 360,
+        height,
         borderRadius: "12px",
         overflow: "hidden",
         border: `1px solid ${theme.palette.divider}`,
@@ -59,7 +60,7 @@ export function ServiceAreaCard({
         },
       }}
     >
-      {/* Foto de fondo — next/image optimiza automáticamente */}
+      {/* Foto de fondo — cubre el 100% de la altura del card */}
       <Box
         component={motion.div}
         variants={{
@@ -71,87 +72,34 @@ export function ServiceAreaCard({
       >
         <Image
           src={imageUrl}
-          alt=""
+          alt={imageAlt}
           fill
           sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 25vw"
           style={{ objectFit: "cover" }}
         />
       </Box>
 
-      {/* Un solo overlay: gradiente navy de abajo hacia arriba */}
+      {/* Overlay: gradiente navy de abajo hacia arriba, legibilidad del texto */}
       <Box
         sx={{
           position: "absolute",
           inset: 0,
           background: `linear-gradient(to top,
             ${alpha(primary[900], 0.92)} 0%,
-            ${alpha(primary[900], 0.55)} 40%,
+            ${alpha(primary[900], 0.5)} 40%,
             ${alpha(primary[900], 0.05)} 70%)`,
         }}
       />
 
-      <Box
-        sx={{
-          position: "absolute",
-          top: 16,
-          left: 16,
-          width: 36,
-          height: 36,
-          borderRadius: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: alpha(primary[700], 0.55),
-          border: `1px solid ${alpha(gray[50], 0.25)}`,
-          color: gray[50],
-        }}
-      >
-        {icon}
-      </Box>
+      {topLeftSlot && (
+        <Box sx={{ position: "absolute", top: 16, left: 16 }}>{topLeftSlot}</Box>
+      )}
+      {topRightSlot && (
+        <Box sx={{ position: "absolute", top: 16, right: 16 }}>{topRightSlot}</Box>
+      )}
 
       <Box sx={{ position: "absolute", left: 0, right: 0, bottom: 0, p: 2.25 }}>
-        <Typography
-          component="p"
-          sx={{
-            fontFamily: "var(--font-heading)",
-            fontWeight: 700,
-            fontSize: "19px",
-            color: gray[50],
-            mb: 0.5,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {name}
-        </Typography>
-
-        <Typography
-          sx={{
-            fontFamily: "var(--font-body)",
-            fontSize: "13px",
-            color: gray[200],
-            lineHeight: 1.4,
-            mb: 1.5,
-          }}
-        >
-          {description}
-        </Typography>
-
-        <Box
-          component={motion.span}
-          variants={{
-            rest: { gap: "4px", color: secondary[300] },
-            hover: { gap: "8px", color: secondary[500] },
-          }}
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            fontFamily: "var(--font-body)",
-            fontSize: "13px",
-            fontWeight: 500,
-          }}
-        >
-          {ctaLabel} →
-        </Box>
+        {bottomSlot}
       </Box>
     </Box>
   );

@@ -3,7 +3,7 @@
 import { IconButton, type IconButtonProps } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import { useColorMode } from "@/app/theme/ThemeRegistry";
+import { useColorMode } from "@/theme/ThemeRegistry";
 
 type ThemeToggleProps = {
   size?: IconButtonProps["size"];

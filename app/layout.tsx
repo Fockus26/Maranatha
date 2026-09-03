@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { sora, ibmPlexSans } from "./theme/fonts";
-import ThemeRegistry from "./theme/ThemeRegistry";
+import { sora, ibmPlexSans } from "../theme/fonts";
+import ThemeRegistry from "../theme/ThemeRegistry";
 
 export const metadata: Metadata = {
   title: "Create Next App",
