@@ -4,6 +4,8 @@ import { ServiceAreaGrid } from "@/components/sections/ServiceAreaGrid";
 import { LeaderGrid } from "@/components/sections/LeaderGrid";
 import { SermonsGrid } from "@/components/sections/SermonsGrid"
 import { SocialLinksGrid } from "@/components/sections/SocialLinksGrid";
+import { AgendaGrid } from "@/components/sections/AgendaGrid";
+import { HistoryTimeline } from "@/components/sections/HistoryTimeline";
 
 export default function Home() {
   return (
@@ -13,6 +15,8 @@ export default function Home() {
       <LeaderGrid />
       <SermonsGrid />
       <SocialLinksGrid />
+      <AgendaGrid />
+      <HistoryTimeline />
       <Footer />
     </>
   );
