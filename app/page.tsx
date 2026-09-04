@@ -8,6 +8,10 @@ import { AgendaGrid } from "@/components/sections/AgendaGrid";
 import { HistoryTimeline } from "@/components/sections/HistoryTimeline";
 import { ProjectsSection } from "@/components/sections/ProjectSection";
 import { ProjectDetailSection } from "@/components/sections/ProjectDetailSection";
+import { TitheForm } from "@/components/ui/TitheForm";
+import { ProjectContributionForm } from "@/components/ui/ProjectContributionForm";
+import { DashboardProjectsSection } from "@/components/sections/DashboardProjectsSection";
+import { DashboardProjectForm } from "@/components/ui/DashboardProjectForm";
 
 export default function Home() {
   return (
@@ -21,7 +25,11 @@ export default function Home() {
       <HistoryTimeline />
       <ProjectsSection />
       <ProjectDetailSection />
+      {/* <TitheForm /> */}
+      {/* <ProjectContributionForm /> */}
+      <DashboardProjectsSection />
+      <DashboardProjectForm />
       <Footer />
-    </>
+    </> 
   );
 }
