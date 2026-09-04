@@ -7,6 +7,7 @@ import { SocialLinksGrid } from "@/components/sections/SocialLinksGrid";
 import { AgendaGrid } from "@/components/sections/AgendaGrid";
 import { HistoryTimeline } from "@/components/sections/HistoryTimeline";
 import { ProjectsSection } from "@/components/sections/ProjectSection";
+import { ProjectDetailSection } from "@/components/sections/ProjectDetailSection";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <AgendaGrid />
       <HistoryTimeline />
       <ProjectsSection />
+      <ProjectDetailSection />
       <Footer />
     </>
   );
