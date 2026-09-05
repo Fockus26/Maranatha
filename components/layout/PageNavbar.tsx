@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   AppBar,
   Toolbar,
@@ -15,39 +16,31 @@ import {
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenuOverlay from "./MobileMenuOverlay";
-import { HOME_ANCHOR_ITEMS, PAGE_NAV_ITEMS, TITHE_ANCHOR_ID, type MobileNavLink } from "./navItems";
-import { useActiveAnchor } from "./useActiveAnchor";
-
-const ANCHOR_IDS = HOME_ANCHOR_ITEMS.map((item) => item.id);
+import { PAGE_NAV_ITEMS, type MobileNavLink } from "./navItems";
 
 /**
- * Navbar de Home (D023): anclas a las secciones de Home con scroll-spy real
- * (`useActiveAnchor`) + enlaces de página a Historia/Proyectos + CTA Diezmo.
- * Por debajo de `md` los links se reemplazan por el ícono de hamburguesa que
- * abre `MobileMenuOverlay` (D025).
+ * Variante simplificada de `Navbar` para toda página pública que no sea Home
+ * (Historia, Proyectos, detalle de proyecto) — D023. Mismo shell (sticky,
+ * sombra al hacer scroll, ThemeToggle, CTA Diezmo, menú mobile), pero sin
+ * anclas: solo los enlaces de página, con estado activo resuelto por ruta.
  *
- * Para el resto de páginas públicas (sin secciones/anclas) usar `PageNavbar`.
+ * El CTA "Diezmo" apunta a `/#diezmo` (navega a Home y hace scroll) porque
+ * esa sección solo existe ahí.
  */
-export default function Navbar() {
+export default function PageNavbar() {
   const theme = useTheme();
+  const pathname = usePathname();
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
-  const activeAnchor = useActiveAnchor(ANCHOR_IDS);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const mobileLinks: MobileNavLink[] = [
-    ...HOME_ANCHOR_ITEMS.map((item) => ({
-      kind: "anchor" as const,
-      id: item.id,
-      label: item.label,
-      active: activeAnchor === item.id,
-    })),
-    ...PAGE_NAV_ITEMS.map((item) => ({
-      kind: "page" as const,
-      href: item.href,
-      label: item.label,
-      active: false,
-    })),
-  ];
+  const isActive = (href: string) => pathname === href || (pathname?.startsWith(`${href}/`) ?? false);
+
+  const mobileLinks: MobileNavLink[] = PAGE_NAV_ITEMS.map((item) => ({
+    kind: "page" as const,
+    href: item.href,
+    label: item.label,
+    active: isActive(item.href),
+  }));
 
   return (
     <>
@@ -89,23 +82,23 @@ export default function Navbar() {
               </Box>
             </Box>
 
-            {/* Links de escritorio: anclas + páginas */}
+            {/* Links de escritorio: solo páginas, sin anclas */}
             <Box component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
-              {HOME_ANCHOR_ITEMS.map((item) => {
-                const isActive = activeAnchor === item.id;
+              {PAGE_NAV_ITEMS.map((item) => {
+                const active = isActive(item.href);
                 return (
                   <Box
-                    key={item.id}
-                    component="a"
-                    href={`#${item.id}`}
+                    key={item.href}
+                    component={Link}
+                    href={item.href}
                     sx={{
                       fontFamily: "var(--font-body)",
                       fontWeight: 500,
                       fontSize: 13,
                       textDecoration: "none",
-                      color: isActive ? "text.primary" : "text.secondary",
+                      color: active ? "text.primary" : "text.secondary",
                       borderBottom: "2px solid",
-                      borderColor: isActive ? "secondary.main" : "transparent",
+                      borderColor: active ? "secondary.main" : "transparent",
                       pb: 0.25,
                       "&:hover": { color: "secondary.main" },
                     }}
@@ -114,26 +107,6 @@ export default function Navbar() {
                   </Box>
                 );
               })}
-              {PAGE_NAV_ITEMS.map((item) => (
-                <Box
-                  key={item.href}
-                  component={Link}
-                  href={item.href}
-                  sx={{
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 500,
-                    fontSize: 13,
-                    textDecoration: "none",
-                    color: "text.secondary",
-                    borderBottom: "2px solid",
-                    borderColor: "transparent",
-                    pb: 0.25,
-                    "&:hover": { color: "secondary.main" },
-                  }}
-                >
-                  {item.label}
-                </Box>
-              ))}
             </Box>
 
             {/* Theme toggle + CTA (escritorio) / hamburguesa (mobile) */}
@@ -142,7 +115,7 @@ export default function Navbar() {
                 <ThemeToggle />
                 <Button
                   component={Link}
-                  href={`#${TITHE_ANCHOR_ID}`}
+                  href="/#diezmo"
                   variant="contained"
                   color="secondary"
                   size="small"
@@ -167,7 +140,7 @@ export default function Navbar() {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         links={mobileLinks}
-        ctaHref={`#${TITHE_ANCHOR_ID}`}
+        ctaHref="/#diezmo"
       />
     </>
   );

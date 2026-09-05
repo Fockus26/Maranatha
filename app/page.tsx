@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ServiceAreaGrid } from "@/components/sections/ServiceAreaGrid";
@@ -17,11 +18,27 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <ServiceAreaGrid />
-      <LeaderGrid />
-      <SermonsGrid />
-      <SocialLinksGrid />
-      <AgendaGrid />
+      {/*
+        ids de ancla para la navegación del Navbar de Home (D023) — el
+        espaciado/layout final de cada sección se resuelve en fase 06
+        (SECTION_INVENTORY). Historia y Proyectos NO son anclas: son enlaces
+        de página, por eso HistoryTimeline/ProjectsSection no llevan id.
+      */}
+      <Box component="section" id="areas">
+        <ServiceAreaGrid />
+      </Box>
+      <Box component="section" id="liderazgo">
+        <LeaderGrid />
+      </Box>
+      <Box component="section" id="predicas">
+        <SermonsGrid />
+      </Box>
+      <Box component="section" id="redes">
+        <SocialLinksGrid />
+      </Box>
+      <Box component="section" id="agenda">
+        <AgendaGrid />
+      </Box>
       <HistoryTimeline />
       <ProjectsSection />
       <ProjectDetailSection />
@@ -30,6 +47,6 @@ export default function Home() {
       <DashboardProjectsSection />
       <DashboardProjectForm />
       <Footer />
-    </> 
+    </>
   );
 }
