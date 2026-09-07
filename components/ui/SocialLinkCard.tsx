@@ -12,6 +12,13 @@ export interface SocialLinkCardProps {
   href: string;
   icon: SvgIconComponent;
   ctaLabel: string;
+  /**
+   * Cuando es `true`, omite el border/radius/fondo/padding propios del
+   * card — para embeberlo dentro de otro contenedor que ya resuelve esos
+   * estilos (ej. el panel de cuenta activa en `SocialLinks.tsx`, D036).
+   * Por defecto `false`: se comporta exactamente igual que antes (D013).
+   */
+  bare?: boolean;
 }
 
 export function SocialLinkCard({
@@ -20,6 +27,7 @@ export function SocialLinkCard({
   href,
   icon: Icon,
   ctaLabel,
+  bare = false,
 }: SocialLinkCardProps) {
   const theme = useTheme();
 
@@ -29,10 +37,14 @@ export function SocialLinkCard({
         display: "flex",
         alignItems: "center",
         gap: 1.5,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: "12px",
-        p: 2,
-        backgroundColor: "background.paper",
+        ...(bare
+          ? {}
+          : {
+              border: `1px solid ${theme.palette.divider}`,
+              borderRadius: "12px",
+              p: 2,
+              backgroundColor: "background.paper",
+            }),
       }}
     >
       <Box

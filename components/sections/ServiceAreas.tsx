@@ -74,7 +74,14 @@ export function ServiceAreas() {
   return (
     <Box component="section" id="areas" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box sx={{ maxWidth: 640, mx: "auto", textAlign: "center", mb: { xs: 5, md: 7 } }}>
+        <Box
+          sx={{
+            maxWidth: 640,
+            mx: { xs: "auto", md: 0 },
+            textAlign: { xs: "center", md: "left" },
+            mb: { xs: 5, md: 7 },
+          }}
+        >
           <Typography
             component="span"
             sx={{

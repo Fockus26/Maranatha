@@ -25,6 +25,7 @@ export interface TitheFormValues {
 
 export interface TitheFormProps {
   presetAmounts?: number[];
+  width?: number;
   onSubmit: (values: TitheFormValues) => void;
 }
 
@@ -35,7 +36,7 @@ function formatCurrency(value: number) {
 const TYPE_LABEL: Record<ContributionType, string> = { diezmo: "Diezmo", ofrenda: "Ofrenda" };
 const FREQUENCY_LABEL: Record<ContributionFrequency, string> = { once: "Única vez", monthly: "Mensual" };
 
-export function TitheForm({ presetAmounts = [25, 50, 100], onSubmit }: TitheFormProps) {
+export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: TitheFormProps) {
   const theme = useTheme();
 
   const [type, setType] = useState<ContributionType>("diezmo");
@@ -57,7 +58,7 @@ export function TitheForm({ presetAmounts = [25, 50, 100], onSubmit }: TitheForm
   }
 
   return (
-    <DonationFormCard>
+    <DonationFormCard width={width}>
       <Box sx={{ textAlign: "center", pb: 4.5, mb: 4.5, borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Typography sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 800, fontSize: "32px", color: theme.palette.text.primary }}>
           {amountValid ? formatCurrency(amount) : "—"}
