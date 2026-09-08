@@ -9,9 +9,10 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { AnimatePresence, motion } from "framer-motion";
 import { radius, typography } from "@/theme/tokens";
 import { ImageUploadField } from "./ImageUploadField";
-import type { ProjectStatus } from "./ProjectCard";
+import { DateField } from "./DateField";
 
 export interface BudgetLineInput {
   id: string;
@@ -43,7 +44,18 @@ export interface DashboardProjectFormProps {
   initialValues?: Partial<DashboardProjectFormValues>;
   onSubmit: (values: DashboardProjectFormValues) => void;
   onCancel: () => void;
+  /**
+   * Cuando el form vive dentro de un modal propio (`DashboardProjectModal`),
+   * el modal ya aporta el fondo/borde/radius de la tarjeta — si el form
+   * agrega los suyos encima queda una "tarjeta dentro de otra tarjeta" con
+   * espacio de fondo visible alrededor. `bare` quita el wrapper con borde,
+   * fondo, ancho máximo y padding propios, dejando solo el contenido en
+   * columna — mismo patrón ya usado en `SocialLinkCard` (prop `bare`, D036).
+   */
+  bare?: boolean;
 }
+
+const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 function newId() {
   return typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2);
@@ -58,7 +70,37 @@ function sectionLabelSx(theme: Theme) {
   };
 }
 
-export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: DashboardProjectFormProps) {
+// Tamaño de placeholder/label/texto ingresado — antes heredaban el default de
+// MUI (16px), que se sentía grande al lado del resto de texto del form
+// (mismo ajuste ya hecho en `TitheForm.tsx`, D057). Se aplica a todos los
+// `TextField` del formulario.
+//
+// Revisión: la primera versión apuntaba solo a `.MuiInputLabel-root`, lo que
+// dejaba un hueco visible a la derecha del label cuando este "flota" hacia
+// arriba — el notch del borde (`NotchedOutline`, variante `outlined`) mide su
+// ancho con `font-size: 0.75em` relativo al tamaño de fuente del contenedor,
+// no del label en sí; al no tocar ese contenedor, el notch seguía
+// calculándose sobre el tamaño por defecto (16px) mientras el label ya
+// medía 14px, dejando el hueco de más. Poner `fontSize` a nivel raíz del
+// `TextField` (hereda por CSS a input, label Y notch) resuelve ambos a la
+// vez.
+function fieldSx() {
+  return { fontSize: "14px" };
+}
+
+// Quita las flechas nativas de incremento/decremento de los inputs
+// numéricos — mismo criterio ya aplicado al monto libre de `TitheForm.tsx`
+// (D057), el cliente tampoco las quiere acá.
+function numberFieldSx() {
+  return {
+    ...fieldSx(),
+    "& input[type=number]": { MozAppearance: "textfield" },
+    "& input[type=number]::-webkit-outer-spin-button": { WebkitAppearance: "none", margin: 0 },
+    "& input[type=number]::-webkit-inner-spin-button": { WebkitAppearance: "none", margin: 0 },
+  };
+}
+
+export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }: DashboardProjectFormProps) {
   const theme = useTheme();
 
   const [title, setTitle] = useState(initialValues?.title ?? "");
@@ -72,7 +114,6 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
   const [encargados, setEncargados] = useState<EncargadoInput[]>(initialValues?.encargados ?? []);
   const [touched, setTouched] = useState(false);
 
-  const status: ProjectStatus = goalAmount > 0 && currentAmount >= goalAmount ? "completed" : "active";
   const titleValid = title.trim().length > 0;
   const goalValid = goalAmount > 0;
   const deadlineValid = deadline.trim().length > 0;
@@ -106,18 +147,37 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
 
   return (
     <Box
-      sx={{
-        maxWidth: 640,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: `${radius.lg}px`,
-        backgroundColor: theme.palette.background.paper,
-        p: 6,
-      }}
+      sx={
+        bare
+          ? { width: "100%" }
+          : {
+              maxWidth: 640,
+              border: `1px solid ${theme.palette.divider}`,
+              borderRadius: `${radius.lg}px`,
+              backgroundColor: theme.palette.background.paper,
+              p: 6,
+            }
+      }
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 4.5 }}>
-        <TextField label="Título del proyecto" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} error={touched && !titleValid} />
+        <TextField
+          label="Título del proyecto"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          error={touched && !titleValid}
+          sx={fieldSx()}
+        />
 
-        <TextField label="Descripción" fullWidth multiline minRows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+        <TextField
+          label="Descripción"
+          fullWidth
+          multiline
+          minRows={3}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          sx={fieldSx()}
+        />
 
         <ImageUploadField
           label="Foto del proyecto"
@@ -136,42 +196,26 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
             value={goalAmount || ""}
             onChange={(e) => setGoalAmount(Number(e.target.value))}
             error={touched && !goalValid}
+            sx={numberFieldSx()}
           />
-          <TextField
-            label="Fecha de cierre"
-            type="date"
-            fullWidth
-            slotProps={{ inputLabel: { shrink: true } }}
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-            error={touched && !deadlineValid}
-          />
+          <DateField label="Fecha de cierre" value={deadline} onChange={setDeadline} error={touched && !deadlineValid} />
         </Box>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 3, alignItems: "center" }}>
-          <TextField
-            label="Monto recaudado"
-            type="number"
-            fullWidth
-            value={currentAmount || ""}
-            onChange={(e) => setCurrentAmount(Number(e.target.value))}
-            helperText="Para registrar aportes recibidos fuera del sitio"
-          />
-          <Box
-            sx={{
-              fontSize: "11px",
-              fontWeight: 500,
-              borderRadius: "20px",
-              px: 2.25,
-              py: 0.75,
-              whiteSpace: "nowrap",
-              backgroundColor: status === "completed" ? theme.palette.success.main : theme.palette.secondary.main,
-              color: status === "completed" ? theme.palette.success.contrastText : theme.palette.secondary.contrastText,
-            }}
-          >
-            {status === "completed" ? "Completado" : "Activo"}
-          </Box>
-        </Box>
+        {/*
+          Antes había un chip "Activo"/"Completado" al lado de este campo,
+          calculado en vivo a partir de meta/recaudado — el cliente pidió
+          quitarlo: no tiene sentido mostrar un estado derivado dentro del
+          formulario que lo genera. El campo vuelve a ocupar todo el ancho.
+        */}
+        <TextField
+          label="Monto recaudado"
+          type="number"
+          fullWidth
+          value={currentAmount || ""}
+          onChange={(e) => setCurrentAmount(Number(e.target.value))}
+          helperText="Para registrar aportes recibidos fuera del sitio"
+          sx={numberFieldSx()}
+        />
 
         <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
@@ -181,26 +225,43 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
             </Button>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {budget.map((line) => (
-              <Box key={line.id} sx={{ display: "grid", gridTemplateColumns: "1fr 160px auto", gap: 2 }}>
-                <TextField
-                  placeholder="Concepto"
-                  size="small"
-                  value={line.label}
-                  onChange={(e) => updateBudgetLine(line.id, { label: e.target.value })}
-                />
-                <TextField
-                  placeholder="Monto"
-                  type="number"
-                  size="small"
-                  value={line.amount || ""}
-                  onChange={(e) => updateBudgetLine(line.id, { amount: Number(e.target.value) })}
-                />
-                <IconButton size="small" onClick={() => removeBudgetLine(line.id)} sx={{ color: theme.palette.text.secondary }}>
-                  <DeleteOutlineIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            ))}
+            {/* Sin `exit` — al cliente le gustó la animación de entrada pero
+                no la de salida; sin ese prop, `AnimatePresence` desmonta el
+                item de inmediato (sin animar su desaparición) mientras que
+                el resto de líneas sigue reacomodándose suavemente gracias a
+                `layout`, que no depende de `exit`. */}
+            <AnimatePresence initial={false}>
+              {budget.map((line) => (
+                <Box
+                  key={line.id}
+                  component={motion.div}
+                  layout
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.22, ease: EASE }}
+                  sx={{ display: "grid", gridTemplateColumns: "1fr 160px auto", gap: 2 }}
+                >
+                  <TextField
+                    placeholder="Concepto"
+                    size="small"
+                    value={line.label}
+                    onChange={(e) => updateBudgetLine(line.id, { label: e.target.value })}
+                    sx={fieldSx()}
+                  />
+                  <TextField
+                    placeholder="Monto"
+                    type="number"
+                    size="small"
+                    value={line.amount || ""}
+                    onChange={(e) => updateBudgetLine(line.id, { amount: Number(e.target.value) })}
+                    sx={numberFieldSx()}
+                  />
+                  <IconButton size="small" onClick={() => removeBudgetLine(line.id)} sx={{ color: theme.palette.text.secondary }}>
+                    <DeleteOutlineIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              ))}
+            </AnimatePresence>
           </Box>
         </Box>
 
@@ -212,44 +273,55 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
             </Button>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            {encargados.map((encargado) => (
-              <Box
-                key={encargado.id}
-                sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: `${radius.md}px`, p: 3 }}
-              >
-                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
-                  <TextField
-                    label="Nombre"
-                    size="small"
-                    value={encargado.name}
-                    onChange={(e) => updateEncargado(encargado.id, { name: e.target.value })}
-                  />
-                  <TextField
-                    label="Rol"
-                    size="small"
-                    value={encargado.role}
-                    onChange={(e) => updateEncargado(encargado.id, { role: e.target.value })}
-                  />
+            <AnimatePresence initial={false}>
+              {encargados.map((encargado) => (
+                <Box
+                  key={encargado.id}
+                  component={motion.div}
+                  layout
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.22, ease: EASE }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: `${radius.md}px`, p: 3 }}
+                >
+                  <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+                    <TextField
+                      label="Nombre"
+                      size="small"
+                      value={encargado.name}
+                      onChange={(e) => updateEncargado(encargado.id, { name: e.target.value })}
+                      sx={fieldSx()}
+                    />
+                    <TextField
+                      label="Rol"
+                      size="small"
+                      value={encargado.role}
+                      onChange={(e) => updateEncargado(encargado.id, { role: e.target.value })}
+                      sx={fieldSx()}
+                    />
+                  </Box>
+                  <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 2, alignItems: "center" }}>
+                    <TextField
+                      label="URL de foto"
+                      size="small"
+                      value={encargado.imageUrl}
+                      onChange={(e) => updateEncargado(encargado.id, { imageUrl: e.target.value })}
+                      sx={fieldSx()}
+                    />
+                    <TextField
+                      label="Instagram (opcional)"
+                      size="small"
+                      value={encargado.instagramUrl}
+                      onChange={(e) => updateEncargado(encargado.id, { instagramUrl: e.target.value })}
+                      sx={fieldSx()}
+                    />
+                    <IconButton size="small" onClick={() => removeEncargado(encargado.id)} sx={{ color: theme.palette.text.secondary }}>
+                      <DeleteOutlineIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
                 </Box>
-                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 2, alignItems: "center" }}>
-                  <TextField
-                    label="URL de foto"
-                    size="small"
-                    value={encargado.imageUrl}
-                    onChange={(e) => updateEncargado(encargado.id, { imageUrl: e.target.value })}
-                  />
-                  <TextField
-                    label="Instagram (opcional)"
-                    size="small"
-                    value={encargado.instagramUrl}
-                    onChange={(e) => updateEncargado(encargado.id, { instagramUrl: e.target.value })}
-                  />
-                  <IconButton size="small" onClick={() => removeEncargado(encargado.id)} sx={{ color: theme.palette.text.secondary }}>
-                    <DeleteOutlineIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-            ))}
+              ))}
+            </AnimatePresence>
           </Box>
         </Box>
 
@@ -257,7 +329,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel }: Dash
           <Button variant="outlined" color="primary" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ color: "#FFFFFF" }}>
             Guardar
           </Button>
         </Box>

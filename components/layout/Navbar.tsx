@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
+import { motion } from "framer-motion";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenuOverlay from "./MobileMenuOverlay";
 import { HOME_ANCHOR_ITEMS, PAGE_NAV_ITEMS, type MobileNavLink } from "./navItems";
@@ -21,6 +22,7 @@ import { useActiveAnchor } from "./useActiveAnchor";
 import { useTitheModal } from "@/lib/titheModalStore";
 
 const ANCHOR_IDS = HOME_ANCHOR_ITEMS.map((item) => item.id);
+const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 /**
  * Navbar de Home (D023): anclas a las secciones de Home con scroll-spy real
@@ -83,7 +85,7 @@ export default function Navbar() {
           zIndex: theme.zIndex.appBar,
           backgroundColor: "background.default",
           color: "text.primary",
-          borderBottom: scrolled ? "none" : `1px solid ${theme.palette.divider}`,
+          borderBottom: `1px solid ${scrolled ? "transparent" : theme.palette.divider}`,
           boxShadow: scrolled ? theme.shadows[1] : "none",
           transition: theme.transitions.create(["box-shadow", "border-bottom"], {
             duration: theme.transitions.duration.shortest,
@@ -124,18 +126,40 @@ export default function Navbar() {
                     component="a"
                     href={`#${item.id}`}
                     sx={{
+                      position: "relative",
                       fontFamily: "var(--font-body)",
                       fontWeight: 500,
                       fontSize: 13,
                       textDecoration: "none",
                       color: isActive ? "text.primary" : "text.secondary",
-                      borderBottom: "2px solid",
-                      borderColor: isActive ? "secondary.main" : "transparent",
                       pb: 0.25,
                       "&:hover": { color: "secondary.main" },
                     }}
                   >
                     {item.label}
+                    {/* Antes: `borderBottom` estático que solo cambiaba de
+                        color entre anclas — el cliente pidió una animación
+                        de layout al pasar de una sección activa a otra.
+                        `layoutId` compartido (mismo criterio que
+                        `SegmentedToggle.tsx`) hace que el subrayado se
+                        deslice de una ancla a la siguiente en vez de
+                        aparecer/desaparecer de golpe. */}
+                    {isActive && (
+                      <Box
+                        component={motion.div}
+                        layoutId="navbar-active-underline"
+                        transition={{ duration: 0.25, ease: EASE }}
+                        sx={{
+                          position: "absolute",
+                          left: 0,
+                          right: 0,
+                          bottom: -2,
+                          height: "2px",
+                          borderRadius: "2px",
+                          bgcolor: "secondary.main",
+                        }}
+                      />
+                    )}
                   </Box>
                 );
               })}

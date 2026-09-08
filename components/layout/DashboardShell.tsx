@@ -1,56 +1,44 @@
 "use client";
 
 import * as React from "react";
-import { Box, Typography } from "@mui/material";
-import { DashboardSidebar, DASHBOARD_SIDEBAR_WIDTH } from "./DashboardSidebar";
+import Box from "@mui/material/Box";
+import { DashboardTopbar } from "./DashboardTopbar";
 
 export interface DashboardShellProps {
-  title: string;
   onLogout?: () => void;
   children: React.ReactNode;
 }
 
 /**
- * Layout del dashboard privado (D024): `DashboardSidebar` fijo + topbar
- * superior minimal con el título de la sección activa. El resto de
- * controles (usuario, ThemeToggle, Salir) vive en el propio sidebar para no
- * duplicarlos en el topbar.
+ * Layout del dashboard privado — Opción B ("Panel Superior"), elegida por el
+ * cliente entre 3 direcciones comparadas en `/design` tras pedir un rediseño
+ * completo del dashboard (no le convencía el diseño anterior). Reemplaza al
+ * shell de D024 (`DashboardSidebar` fijo de 260px + topbar con solo el
+ * título): ahora es solo `DashboardTopbar`, una barra navy horizontal con la
+ * navegación — sin sidebar fijo, todo el ancho queda libre para el
+ * contenido.
  *
- * Uso previsto (fase 07, cuando se creen las páginas del dashboard):
+ * A diferencia del shell anterior, este NO le pone padding al `<main>`: cada
+ * página resuelve su propia estructura porque algunas (Resumen) necesitan
+ * una banda a pantalla completa (`DashboardStatBand`) pegada al topbar, que
+ * no podría ir de borde a borde si el shell forzara un padding global; otras
+ * (Proyectos) arrancan directo con su propio padding. `DashboardSidebar.tsx`
+ * queda sin uso (esta sesión no puede eliminar archivos).
+ *
+ * Uso:
  *
  * ```tsx
- * // app/dashboard/layout.tsx
- * export default function DashboardLayout({ children }: { children: React.ReactNode }) {
- *   return <DashboardShell title="Resumen">{children}</DashboardShell>;
+ * // app/dashboard/page.tsx
+ * export default function DashboardResumenPage() {
+ *   return <DashboardShell>{...}</DashboardShell>;
  * }
  * ```
  */
-export function DashboardShell({ title, onLogout, children }: DashboardShellProps) {
+export function DashboardShell({ onLogout, children }: DashboardShellProps) {
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "background.default" }}>
-      <DashboardSidebar onLogout={onLogout} />
-      <Box sx={{ flex: 1, ml: `${DASHBOARD_SIDEBAR_WIDTH}px`, minWidth: 0 }}>
-        <Box
-          component="header"
-          sx={{
-            position: "sticky",
-            top: 0,
-            zIndex: (theme) => theme.zIndex.appBar,
-            bgcolor: "background.paper",
-            borderBottom: "1px solid",
-            borderColor: "divider",
-            px: 4,
-            py: 2.5,
-          }}
-        >
-          <Typography sx={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: 20 }}>
-            {title}
-          </Typography>
-        </Box>
-        <Box component="main" sx={{ p: 4 }}>
-          {children}
-        </Box>
-      </Box>
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <DashboardTopbar onLogout={onLogout} />
+      <Box component="main">{children}</Box>
     </Box>
   );
 }

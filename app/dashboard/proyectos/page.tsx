@@ -1,33 +1,41 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import IconButton from "@mui/material/IconButton";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AddIcon from "@mui/icons-material/Add";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { DashboardTable, type DashboardProjectRow } from "@/components/ui/DashboardTable";
-import { DashboardProjectForm, type DashboardProjectFormValues } from "@/components/ui/DashboardProjectForm";
+import { radius, typography } from "@/theme/tokens";
 import { useDashboardProjects } from "@/lib/dashboardProjectsStore";
+import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
 
 /**
- * Página "Dashboard — Proyectos" (`/dashboard/proyectos`, fase 07, D045):
- * `DashboardTable` (D022) + `DashboardProjectForm` (D023) para crear/editar,
- * abierto en un **modal** sobre la tabla — elegido por el cliente entre 3
- * opciones (modal / rutas dedicadas / vista inline en la misma página) porque
- * no requiere navegar y alcanza sobradamente para el tamaño de la lista.
+ * Página "Dashboard — Proyectos" (`/dashboard/proyectos`) — Opción B ("Panel
+ * Superior"), implementada tras el comparativo de `/design`. La tabla
+ * (`DashboardTable`, D022) no cambia de lugar — lo que cambió es el shell
+ * alrededor: ya no hay sidebar (D024), así que la página arranca con su
+ * propio encabezado (título + conteo real de activos/completados) y gana un
+ * buscador por título que filtra la tabla en el cliente — el mock de
+ * `/design` mostraba un buscador en esta página, así que se conecta a algo
+ * real en vez de dejarlo decorativo.
  *
- * `DashboardTable` ya trae su propio `ConfirmDialog` para eliminar (D021/D022)
- * — no se duplica acá.
+ * Revisión (feedback del cliente): el modal de crear/editar proyecto ya no
+ * es estado local de esta página — pasó a `DashboardProjectModal`, montado
+ * globalmente en `app/dashboard/layout.tsx` y controlado vía
+ * `useDashboardProjectModal` (D059), para que el botón "Nuevo proyecto" de
+ * Resumen también pueda abrirlo sin depender de un query param ni navegar
+ * primero acá.
  */
 
 export default function DashboardProyectosPage() {
-  const { projects, addProject, updateProject, deleteProject } = useDashboardProjects();
-  const [formOpen, setFormOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const theme = useTheme();
+  const { projects, deleteProject } = useDashboardProjects();
+  const { openCreate, openEdit } = useDashboardProjectModal();
+  const [query, setQuery] = useState("");
 
   const rows: DashboardProjectRow[] = useMemo(
     () =>
@@ -43,72 +51,94 @@ export default function DashboardProyectosPage() {
     [projects],
   );
 
-  const editingProject = editingId ? projects.find((project) => project.id === editingId) : undefined;
+  const filteredRows = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return rows;
+    return rows.filter((row) => row.title.toLowerCase().includes(normalized));
+  }, [rows, query]);
 
-  const initialValues: Partial<DashboardProjectFormValues> | undefined = editingProject
-    ? {
-        title: editingProject.title,
-        description: editingProject.description,
-        imageUrl: editingProject.imageUrl,
-        goalAmount: editingProject.goalAmount,
-        currentAmount: editingProject.currentAmount,
-        deadline: editingProject.deadline,
-        budget: editingProject.budget,
-        encargados: editingProject.encargados,
-      }
-    : undefined;
-
-  function openCreate() {
-    setEditingId(null);
-    setFormOpen(true);
-  }
-
-  function openEdit(id: string) {
-    setEditingId(id);
-    setFormOpen(true);
-  }
-
-  function closeForm() {
-    setFormOpen(false);
-    setEditingId(null);
-  }
-
-  function handleSubmit(values: DashboardProjectFormValues) {
-    if (editingId) {
-      updateProject(editingId, values);
-    } else {
-      addProject(values);
-    }
-    closeForm();
-  }
+  const activos = projects.filter((project) => project.status === "active").length;
+  const completados = projects.filter((project) => project.status === "completed").length;
 
   return (
-    <DashboardShell title="Proyectos">
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={openCreate}>
-          Nuevo proyecto
-        </Button>
-      </Box>
+    <DashboardShell>
+      <Box sx={{ px: { xs: 3, md: 5 }, pt: { xs: "32px", md: "48px" }, pb: 5 }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 4, flexWrap: "wrap", gap: 2 }}>
+          <Box>
+            <Typography sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 800, fontSize: 26, color: theme.palette.text.primary, mb: 0.5 }}>
+              Proyectos
+            </Typography>
+            <Typography sx={{ fontSize: 13, color: theme.palette.text.secondary }}>
+              {projects.length} proyectos · {activos} activos, {completados} completados
+            </Typography>
+          </Box>
+          {/* `color="primary"` + modo oscuro usa `primary.contrastText`
+              (`gray[900]`, casi negro — D0XX del theme) como color de texto,
+              que no es lo que se quiere para este botón puntual: el cliente
+              pidió texto blanco fijo sin importar el modo. */}
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+            sx={{ color: "#FFFFFF" }}
+          >
+            Nuevo proyecto
+          </Button>
+        </Box>
 
-      <DashboardTable projects={rows} onEdit={openEdit} onDelete={deleteProject} />
-
-      <Dialog open={formOpen} onClose={closeForm} maxWidth="md" fullWidth scroll="body">
-        <IconButton
-          onClick={closeForm}
-          aria-label="Cerrar"
-          sx={{ position: "absolute", top: 12, right: 12, zIndex: 1, color: "text.secondary" }}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: `${radius.sm}px`,
+            backgroundColor: theme.palette.background.paper,
+            px: 2,
+            py: 1.25,
+            width: { xs: "100%", sm: 320 },
+            mb: 3,
+            color: theme.palette.text.secondary,
+          }}
         >
-          <CloseRoundedIcon fontSize="small" />
-        </IconButton>
-        <DialogContent sx={{ p: 4, display: "flex", justifyContent: "center" }}>
-          <DashboardProjectForm
-            key={editingId ?? "new"}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            onCancel={closeForm}
+          <SearchRoundedIcon fontSize="small" />
+          <Box
+            component="input"
+            value={query}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+            placeholder="Buscar proyecto…"
+            sx={{
+              border: "none",
+              outline: "none",
+              background: "transparent",
+              fontFamily: typography.fontFamily.body,
+              fontSize: 13,
+              color: theme.palette.text.primary,
+              width: "100%",
+              "&::placeholder": { color: theme.palette.text.secondary },
+            }}
           />
-        </DialogContent>
-      </Dialog>
+        </Box>
+
+        {filteredRows.length === 0 ? (
+          <Box
+            sx={{
+              border: `1px solid ${theme.palette.divider}`,
+              borderRadius: `${radius.lg}px`,
+              backgroundColor: theme.palette.background.paper,
+              p: 5,
+              textAlign: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: 13, color: theme.palette.text.secondary }}>
+              Ningún proyecto coincide con &quot;{query}&quot;.
+            </Typography>
+          </Box>
+        ) : (
+          <DashboardTable projects={filteredRows} onEdit={openEdit} onDelete={deleteProject} />
+        )}
+      </Box>
     </DashboardShell>
   );
 }

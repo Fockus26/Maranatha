@@ -77,6 +77,14 @@ export default function ThemeRegistry({ children, initialMode }: ThemeRegistryPr
     });
   }, []);
 
+  // Publica el modo real (no el de `prefers-color-scheme`) como atributo en
+  // `<html>` — lo usa `app/globals.css` para el color del scroll
+  // personalizado, que debe coincidir con el toggle de la app y no solo con
+  // la preferencia del sistema operativo.
+  React.useEffect(() => {
+    document.documentElement.setAttribute("data-color-mode", mode);
+  }, [mode]);
+
   const theme = React.useMemo(() => getTheme(mode), [mode]);
   const contextValue = React.useMemo(() => ({ mode, toggleColorMode }), [mode, toggleColorMode]);
 

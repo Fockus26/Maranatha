@@ -34,6 +34,18 @@ import { useTitheModal } from "@/lib/titheModalStore";
  * en desktop se veía como un dialog centrado de ancho medio, y el cliente
  * lo quería a pantalla completa en cualquier tamaño. El contenido se
  * centra verticalmente dentro de esa pantalla completa.
+ *
+ * Segunda revisión (feedback directo del cliente, previo a fase 08):
+ * - Se quita el resplandor/degradado naranja que había detrás del
+ *   formulario (`radial-gradient` en la esquina superior derecha) — se
+ *   veía como un "reflejo" no intencional sobre la tarjeta del formulario.
+ * - El navy de fondo pasa de `primary[700]` (`#101B45`) a `primary[900]`
+ *   (`#060A1D`) — el cliente lo sentía "muy claro"; entre eso y el patrón
+ *   de líneas blancas semitransparentes encima, el navy se percibía menos
+ *   saturado de lo esperado.
+ * - Los acentos naranjas (eyebrow, ícono, contador de familias) pasan de
+ *   `secondary.light` (`#FCA355`, pastel) a `secondary.main` (`#F9750D`,
+ *   el naranja de marca) — mismo motivo: se veían demasiado apagados.
  */
 
 const patternPan = keyframes`
@@ -73,7 +85,7 @@ function AnimatedFamiliesCounter({ active }: { active: boolean }) {
           fontWeight: 800,
           fontSize: { xs: "36px", md: "44px" },
           lineHeight: 1,
-          color: "secondary.light",
+          color: "secondary.main",
         }}
       >
         +{value}
@@ -102,10 +114,20 @@ export function TitheModal() {
       scroll="body"
       slotProps={{
         paper: {
+          // `elevation: 0` es la parte que realmente importa acá: el Dialog
+          // de MUI monta su Paper con elevation 24 por defecto, y en modo
+          // oscuro `Paper` agrega automáticamente un overlay blanco
+          // translúcido proporcional a la elevación (para simular que las
+          // superficies "más cerca de la luz" se ven más claras) — eso era
+          // el azul "lavado" que reportó el cliente: no era el navy en sí,
+          // era ese overlay encima. En modo claro `Paper` no aplica ningún
+          // overlay, por eso ahí sí se veía bien. `elevation: 0` desactiva
+          // el overlay por completo, dejando el navy sólido sin filtrar.
+          elevation: 0,
           sx: {
             position: "relative",
             overflow: "hidden",
-            backgroundColor: "#101B45",
+            backgroundColor: "#060A1D",
             borderRadius: 0,
             m: 0,
           },
@@ -120,13 +142,6 @@ export function TitheModal() {
           backgroundImage:
             "repeating-linear-gradient(135deg, rgba(245,246,250,0.05) 0px, rgba(245,246,250,0.05) 1px, transparent 1px, transparent 40px)",
           animation: `${patternPan} 24s linear infinite`,
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background: "radial-gradient(circle at 82% 15%, rgba(249,117,13,0.10) 0%, transparent 45%)",
         }}
       />
 
@@ -178,7 +193,7 @@ export function TitheModal() {
                 height: 44,
                 borderRadius: "12px",
                 backgroundColor: "rgba(245,246,250,0.1)",
-                color: "secondary.light",
+                color: "secondary.main",
                 mb: 3,
               }}
             >
@@ -194,7 +209,7 @@ export function TitheModal() {
                 fontSize: 11,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "secondary.light",
+                color: "secondary.main",
                 mb: 1.5,
               }}
             >
