@@ -9,7 +9,9 @@ import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import { alpha, useTheme } from "@mui/material/styles";
 import { YoutubeEmbedCard } from "@/components/ui/YoutubeEmbedCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Prédicas" (fase 06) — componente + datos en un solo archivo
@@ -42,95 +44,115 @@ const SERMONS = [
 ] as const;
 
 export function Sermons() {
+  const theme = useTheme();
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   return (
     <Box component="section" id="predicas" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 7 },
             }}
           >
-            Prédicas
-          </Typography>
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
+            >
+              Prédicas
+            </Typography>
 
-          <Typography
-            component="h2"
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Vive cada mensaje, donde estés
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              Revive nuestros últimos servicios y prédicas directamente desde nuestro canal de YouTube.
+            </Typography>
+          </Box>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <Box
             sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
+              gap: "24px",
+              mb: { xs: 5, md: 6 },
             }}
           >
-            Vive cada mensaje, donde estés
-          </Typography>
+            {SERMONS.map((sermon) => (
+              <YoutubeEmbedCard
+                key={sermon.videoId}
+                videoId={sermon.videoId}
+                title={sermon.title}
+                publishedAt={sermon.publishedAt}
+                onPlay={setActiveVideoId}
+              />
+            ))}
+          </Box>
 
-          <Typography
-            sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
-            }}
-          >
-            Revive nuestros últimos servicios y prédicas directamente desde nuestro canal de YouTube.
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
-            gap: "24px",
-            mb: { xs: 5, md: 6 },
-          }}
-        >
-          {SERMONS.map((sermon) => (
-            <YoutubeEmbedCard
-              key={sermon.videoId}
-              videoId={sermon.videoId}
-              title={sermon.title}
-              publishedAt={sermon.publishedAt}
-              onPlay={setActiveVideoId}
-            />
-          ))}
-        </Box>
-
-        <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-start" } }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            component="a"
-            href={YOUTUBE_CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            startIcon={<YouTubeIcon />}
-          >
-            Ver canal de YouTube
-          </Button>
-        </Box>
+          <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-start" } }}>
+            {/* Mismo tratamiento que "Ver proyecto" (ProjectCard/ProjectSidebar)
+                y "Seguir" (SocialLinkCard): neutro en reposo, acento navy al
+                interactuar — copiando el patrón del CTA del Hero (D028) pero
+                con azul en vez de naranja (fase 07, ronda de feedback
+                siguiente a D050). Reemplaza el pill redondeado distintivo de
+                D048 — el cliente pidió unificar este botón con los demás en
+                vez de mantenerle una firma visual propia. */}
+            <Button
+              variant="outlined"
+              size="large"
+              component="a"
+              href={YOUTUBE_CHANNEL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<YouTubeIcon />}
+              sx={{
+                borderColor: "divider",
+                color: "text.secondary",
+                "&:hover": {
+                  borderColor: "primary.main",
+                  color: "primary.main",
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                },
+              }}
+            >
+              Ver canal de YouTube
+            </Button>
+          </Box>
+        </Reveal>
       </Container>
 
       <Dialog

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import { radius, typography } from "@/theme/tokens";
+import { primary, radius, typography } from "@/theme/tokens";
 
 export type ProjectStatus = "active" | "completed";
 
@@ -48,6 +48,13 @@ export function ProjectCard({
     backgroundPosition: "center",
   };
 
+  // Chip "Activo" (rama sin foto, layout `horizontal` del listado): navy
+  // fijo en vez de `theme.palette.primary.main`, mismo motivo que el chip de
+  // `ProjectSidebar.tsx` — `primary.main` se ve "lavado" en modo oscuro y no
+  // resaltaba lo suficiente (feedback directo del cliente); en modo oscuro
+  // sube un peldaño en la escala (`primary[600]`) + borde sutil para marcar
+  // el borde del chip. La rama `inverted` (sobre foto, con overlay navy) no
+  // tiene este problema — se queda con el fondo blanco de siempre.
   const StatusChip = ({ inverted }: { inverted: boolean }) => (
     <Box
       sx={{
@@ -63,12 +70,15 @@ export function ProjectCard({
           ? theme.palette.success.main
           : inverted
             ? alpha(theme.palette.common.white, 0.92)
-            : theme.palette.primary.main,
+            : theme.palette.mode === "dark"
+              ? primary[600]
+              : primary[700],
         color: isCompleted
           ? theme.palette.success.contrastText
           : inverted
             ? theme.palette.primary.main
-            : theme.palette.primary.contrastText,
+            : "#F5F6FA",
+        border: !isCompleted && !inverted ? `1px solid ${alpha("#F5F6FA", 0.14)}` : "none",
       }}
     >
       {isCompleted ? "Completado" : "Activo"}
@@ -99,12 +109,29 @@ export function ProjectCard({
     </>
   );
 
+  // "Ver proyecto" (completado): antes un outlined `color="primary"` plano
+  // (D048 lo señaló como "el mismo botón repetido" en Proyectos/Historia/
+  // Prédicas). Ahora imita el CTA del Hero — neutro en reposo, y al
+  // interactuar toma color, aquí azul en vez del naranja del Hero (fase 07).
+  // "Aportar" (activo) no cambia: sigue siendo el CTA de alta prioridad
+  // contained/secondary reservado por D011.
   const CtaButton = ({ sx = {} }: { sx?: object }) => (
     <Button
       onClick={onCtaClick}
       variant={isCompleted ? "outlined" : "contained"}
       color={isCompleted ? "primary" : "secondary"}
-      sx={sx}
+      sx={{
+        ...(isCompleted && {
+          borderColor: theme.palette.divider,
+          color: theme.palette.text.secondary,
+          "&:hover": {
+            borderColor: theme.palette.primary.main,
+            color: theme.palette.primary.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
+          },
+        }),
+        ...sx,
+      }}
     >
       {resolvedCtaLabel}
     </Button>

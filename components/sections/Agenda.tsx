@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
+import { motion } from "framer-motion";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Agenda" (fase 06) — componente + datos en un solo archivo
@@ -34,6 +35,20 @@ import EventRoundedIcon from "@mui/icons-material/EventRounded";
  * (lift + sombra + borde naranja), sumándole ahora un fondo sutil
  * (`action.hover`, el token estándar de MUI para este propósito) — pero
  * ya NO imita el navy sólido de ningún estado "destacado".
+ *
+ * Revisión (fase 07, rework de animación expandir/contraer): el enfoque
+ * anterior (montar/desmontar tiles con `AnimatePresence` + `layout`) se
+ * sentía abrupto — al abrir aparecía de golpe y al cerrar los tiles se
+ * desvanecían y luego colapsaba, en vez de sentirse como una sola
+ * revelación continua. Ahora la grilla VISIBLE siempre renderiza TODOS los
+ * eventos (sin `.slice()`); lo único que anima es la altura de un
+ * contenedor `overflow: hidden` que envuelve esa grilla, entre una altura
+ * "colapsada" y una "completa" medidas con `ResizeObserver` sobre dos
+ * grillas ocultas idénticas (mismo `gridAutoFlow: dense`, para que la
+ * altura medida sea exacta y no un cálculo manual). Esto logra el efecto
+ * pedido: los tiles "siempre estuvieron ahí" y se van descubriendo (o
+ * tapando) a medida que el contenedor crece o se encoge — nunca aparecen
+ * ni desaparecen por sí mismos.
  *
  * El "destacado" (fondo navy sólido, texto claro) queda reservado a **un
  * único evento recurrente por mes: el próximo servicio/reunión que toca**
@@ -208,17 +223,19 @@ function AgendaTile({
         borderRadius: "14px",
         border: isAccented ? "none" : "1px solid",
         borderColor: "divider",
-        backgroundColor: isAccented ? "primary.main" : "background.paper",
+        // Navy fijo (no `primary.main`, que en modo oscuro cae en un azul
+        // claro "lavado" — mismo criterio de fondo fijo que el date block de
+        // AgendaItem/DashboardSidebar, D014/D025) para que el tile destacado
+        // se lea igual de sólido en ambos modos.
+        backgroundColor: isAccented ? "#101B45" : "background.paper",
         p: isFeature || size === "tall" ? 2.75 : 2,
-        transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease",
+        transition: "box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease",
         cursor: "default",
         "&:hover": isAccented
           ? {
-              transform: "translateY(-3px)",
               boxShadow: "0 10px 30px rgba(6,10,29,0.28)",
             }
           : {
-              transform: "translateY(-3px)",
               boxShadow: "0 8px 20px rgba(6,10,29,0.1)",
               borderColor: "secondary.main",
               backgroundColor: "action.hover",
@@ -253,7 +270,11 @@ function AgendaTile({
             fontWeight: 800,
             fontSize: isFeature ? "44px" : size === "tall" ? "34px" : isCompact ? "20px" : "26px",
             lineHeight: 1,
-            color: isAccented ? "primary.contrastText" : "text.primary",
+            // Blanco sólido, igual que el título — sin la opacidad reducida
+            // que antes separaba día/título de mes/hora (fase 07, ajuste
+            // post-entrega): en el tile destacado todo el texto es un mismo
+            // blanco, la jerarquía la da el tamaño/peso, no el color.
+            color: isAccented ? "#F5F6FA" : "text.primary",
             transition: "color 0.2s ease",
           }}
         >
@@ -268,7 +289,7 @@ function AgendaTile({
             fontWeight: 600,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
-            color: isAccented ? "rgba(245,246,250,0.7)" : "text.secondary",
+            color: isAccented ? "#F5F6FA" : "text.secondary",
             transition: "color 0.2s ease",
           }}
         >
@@ -284,7 +305,7 @@ function AgendaTile({
             fontWeight: 600,
             fontSize: isFeature ? "20px" : size === "tall" ? "17px" : isCompact ? "13.5px" : "15px",
             lineHeight: 1.25,
-            color: isAccented ? "primary.contrastText" : "text.primary",
+            color: isAccented ? "#F5F6FA" : "text.primary",
             mb: isCompact ? 0.25 : 0.75,
             display: "-webkit-box",
             WebkitLineClamp: isCompact ? 2 : 3,
@@ -301,7 +322,7 @@ function AgendaTile({
             sx={{
               fontFamily: "var(--font-body)",
               fontSize: isFeature ? "13.5px" : "12.5px",
-              color: isAccented ? "rgba(245,246,250,0.75)" : "text.secondary",
+              color: isAccented ? "#F5F6FA" : "text.secondary",
               transition: "color 0.2s ease",
             }}
           >
@@ -314,7 +335,7 @@ function AgendaTile({
             sx={{
               fontFamily: "var(--font-body)",
               fontSize: "11.5px",
-              color: isAccented ? "rgba(245,246,250,0.75)" : "text.secondary",
+              color: isAccented ? "#F5F6FA" : "text.secondary",
               transition: "color 0.2s ease",
             }}
           >
@@ -326,101 +347,178 @@ function AgendaTile({
   );
 }
 
+const AGENDA_GRID_SX = {
+  display: "grid",
+  gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(4, 1fr)" },
+  gridAutoRows: { xs: "84px", sm: "108px" },
+  gridAutoFlow: "dense",
+  gap: { xs: 1.25, sm: 1.75 },
+} as const;
+
 export function Agenda() {
   const agenda = useMemo(() => buildMonthlyAgenda(), []);
   const tileSizes = useMemo(() => assignTileSizes(agenda), [agenda]);
   const accentKey = useMemo(() => findAccentKey(agenda), [agenda]);
   const [expanded, setExpanded] = useState(false);
-
-  const visible = expanded ? agenda : agenda.slice(0, INITIAL_COUNT);
   const hasMore = agenda.length > INITIAL_COUNT;
+  const isToday = (entry: AgendaEntry) => entry.date.toDateString() === new Date().toDateString();
+
+  // Medidores ocultos: dos grillas invisibles (misma `gridAutoFlow: dense`,
+  // así que la altura medida coincide con la real) que existen únicamente
+  // para que `ResizeObserver` calcule la altura "colapsada" (primeros
+  // `INITIAL_COUNT`) y "completa" (todos) — ver nota arriba de `AgendaTile`.
+  const collapsedRef = useRef<HTMLDivElement>(null);
+  const fullRef = useRef<HTMLDivElement>(null);
+  const [collapsedHeight, setCollapsedHeight] = useState<number>();
+  const [fullHeight, setFullHeight] = useState<number>();
+
+  useEffect(() => {
+    const collapsedEl = collapsedRef.current;
+    const fullEl = fullRef.current;
+    if (!collapsedEl || !fullEl) return;
+
+    const measure = () => {
+      setCollapsedHeight(collapsedEl.getBoundingClientRect().height);
+      setFullHeight(fullEl.getBoundingClientRect().height);
+    };
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(collapsedEl);
+    observer.observe(fullEl);
+    return () => observer.disconnect();
+  }, [agenda]);
+
+  const targetHeight = !hasMore ? fullHeight : expanded ? fullHeight : collapsedHeight;
 
   return (
     <Box component="section" id="agenda" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 7 },
             }}
           >
-            Agenda
-          </Typography>
-
-          <Typography
-            component="h2"
-            sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
-            }}
-          >
-            Lo que se viene este mes
-          </Typography>
-
-          <Typography
-            sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
-            }}
-          >
-            Servicios de cada semana y eventos especiales, todo en un solo lugar.
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(4, 1fr)" },
-            gridAutoRows: { xs: "84px", sm: "108px" },
-            gridAutoFlow: "dense",
-            gap: { xs: 1.25, sm: 1.75 },
-          }}
-        >
-          {visible.map((entry) => (
-            <AgendaTile
-              key={entry.key}
-              entry={entry}
-              size={tileSizes.get(entry.key) ?? "sm"}
-              isAccented={entry.key === accentKey}
-              isToday={entry.date.toDateString() === new Date().toDateString()}
-            />
-          ))}
-        </Box>
-
-        {hasMore && (
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() => setExpanded((v) => !v)}
-              endIcon={expanded ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />}
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
             >
-              {expanded ? "Ver menos" : `Ver toda la agenda (${agenda.length})`}
-            </Button>
+              Agenda
+            </Typography>
+
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Lo que se viene este mes
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              Servicios de cada semana y eventos especiales, todo en un solo lugar.
+            </Typography>
           </Box>
-        )}
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          {/* Medidores ocultos — nunca visibles, `height: 0` + `overflow: hidden`
+              los saca del flujo sin afectar el layout ni el ancho medido. */}
+          <Box aria-hidden sx={{ height: 0, overflow: "hidden", visibility: "hidden" }}>
+            <Box ref={collapsedRef} sx={AGENDA_GRID_SX}>
+              {agenda.slice(0, INITIAL_COUNT).map((entry) => (
+                <AgendaTile
+                  key={entry.key}
+                  entry={entry}
+                  size={tileSizes.get(entry.key) ?? "sm"}
+                  isAccented={entry.key === accentKey}
+                  isToday={isToday(entry)}
+                />
+              ))}
+            </Box>
+            <Box ref={fullRef} sx={AGENDA_GRID_SX}>
+              {agenda.map((entry) => (
+                <AgendaTile
+                  key={entry.key}
+                  entry={entry}
+                  size={tileSizes.get(entry.key) ?? "sm"}
+                  isAccented={entry.key === accentKey}
+                  isToday={isToday(entry)}
+                />
+              ))}
+            </Box>
+          </Box>
+
+          {/* Grilla visible: siempre renderiza TODOS los eventos — lo que anima
+              es la altura de este contenedor (medida arriba), para que abrir/
+              cerrar se sienta como descubrir/tapar filas que ya estaban ahí, no
+              como aparecer/desaparecer contenido (pedido explícito del usuario). */}
+          <Box
+            component={motion.div}
+            animate={{ height: targetHeight ?? "auto" }}
+            transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+            sx={{ overflow: "hidden" }}
+          >
+            <Box sx={AGENDA_GRID_SX}>
+              {agenda.map((entry) => (
+                <AgendaTile
+                  key={entry.key}
+                  entry={entry}
+                  size={tileSizes.get(entry.key) ?? "sm"}
+                  isAccented={entry.key === accentKey}
+                  isToday={isToday(entry)}
+                />
+              ))}
+            </Box>
+          </Box>
+
+          {hasMore && (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+              <Button
+                variant="text"
+                color="primary"
+                onClick={() => setExpanded((v) => !v)}
+                endIcon={
+                  <motion.span
+                    style={{ display: "inline-flex" }}
+                    animate={{ rotate: expanded ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
+                  >
+                    <ExpandMoreRoundedIcon fontSize="small" />
+                  </motion.span>
+                }
+              >
+                {expanded ? "Ver menos" : `Ver toda la agenda (${agenda.length})`}
+              </Button>
+            </Box>
+          )}
+        </Reveal>
       </Container>
     </Box>
   );

@@ -13,10 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenuOverlay from "./MobileMenuOverlay";
-import { HOME_ANCHOR_ITEMS, PAGE_NAV_ITEMS, TITHE_ANCHOR_ID, type MobileNavLink } from "./navItems";
+import { HOME_ANCHOR_ITEMS, PAGE_NAV_ITEMS, type MobileNavLink } from "./navItems";
 import { useActiveAnchor } from "./useActiveAnchor";
+import { useTitheModal } from "@/lib/titheModalStore";
 
 const ANCHOR_IDS = HOME_ANCHOR_ITEMS.map((item) => item.id);
 
@@ -27,12 +29,34 @@ const ANCHOR_IDS = HOME_ANCHOR_ITEMS.map((item) => item.id);
  * abre `MobileMenuOverlay` (D025).
  *
  * Para el resto de páginas públicas (sin secciones/anclas) usar `PageNavbar`.
+ *
+ * Publica su propia altura real como variable CSS `--navbar-height` en
+ * `:root` (medida vía `ResizeObserver`, no un valor fijo estimado) — la usa
+ * el Hero (`components/sections/Hero.tsx`) para ocupar exactamente el resto
+ * del viewport (`calc(100vh - var(--navbar-height))`) sin adivinar la altura
+ * del navbar a mano ni desincronizarse si esta cambia (ej. breakpoint).
  */
 export default function Navbar() {
   const theme = useTheme();
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
   const activeAnchor = useActiveAnchor(ANCHOR_IDS);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { openTithe } = useTitheModal();
+  const appBarRef = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    const el = appBarRef.current;
+    if (!el) return;
+
+    const setNavbarHeightVar = () => {
+      document.documentElement.style.setProperty("--navbar-height", `${el.getBoundingClientRect().height}px`);
+    };
+    setNavbarHeightVar();
+
+    const observer = new ResizeObserver(setNavbarHeightVar);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const mobileLinks: MobileNavLink[] = [
     ...HOME_ANCHOR_ITEMS.map((item) => ({
@@ -52,6 +76,7 @@ export default function Navbar() {
   return (
     <>
       <AppBar
+        ref={appBarRef}
         position="sticky"
         elevation={0}
         sx={{
@@ -114,23 +139,44 @@ export default function Navbar() {
                   </Box>
                 );
               })}
+              {/* Links de página (Proyectos, etc.), separados visualmente de
+                  las anclas de arriba — feedback del cliente: al verse
+                  igual que las anclas, alguien que entra por primera vez
+                  puede pensar que "Proyectos" es también una sección de
+                  esta misma página. Un divisor + forma de píldora con
+                  ícono (en vez de texto plano subrayado) comunica "esto te
+                  lleva a otro lugar" sin depender solo del color — Opción 1
+                  del comparador de navbar (/design), elegida por el
+                  cliente. Mismo trío hover que el resto de links del
+                  navbar (`secondary.main`, D023) — la píldora es la que
+                  cambia, no el criterio de color. */}
+              {PAGE_NAV_ITEMS.length > 0 && (
+                <Box sx={{ width: "1px", height: 20, backgroundColor: "divider" }} />
+              )}
               {PAGE_NAV_ITEMS.map((item) => (
                 <Box
                   key={item.href}
                   component={Link}
                   href={item.href}
                   sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 0.75,
                     fontFamily: "var(--font-body)",
                     fontWeight: 500,
                     fontSize: 13,
                     textDecoration: "none",
                     color: "text.secondary",
-                    borderBottom: "2px solid",
-                    borderColor: "transparent",
-                    pb: 0.25,
-                    "&:hover": { color: "secondary.main" },
+                    border: "1px solid",
+                    borderColor: "divider",
+                    borderRadius: "999px",
+                    pl: 1.5,
+                    pr: 1.75,
+                    py: 0.75,
+                    "&:hover": { color: "secondary.main", borderColor: "secondary.main" },
                   }}
                 >
+                  <OpenInNewRoundedIcon sx={{ fontSize: 13 }} />
                   {item.label}
                 </Box>
               ))}
@@ -141,8 +187,7 @@ export default function Navbar() {
               <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1.5 }}>
                 <ThemeToggle />
                 <Button
-                  component={Link}
-                  href={`#${TITHE_ANCHOR_ID}`}
+                  onClick={openTithe}
                   variant="contained"
                   color="secondary"
                   size="small"
@@ -167,7 +212,7 @@ export default function Navbar() {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         links={mobileLinks}
-        ctaHref={`#${TITHE_ANCHOR_ID}`}
+        onCtaClick={openTithe}
       />
     </>
   );

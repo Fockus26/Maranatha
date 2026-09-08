@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import { ProjectCard, type ProjectStatus } from "@/components/ui/ProjectCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Proyectos" (fase 06) — componente + datos en un solo archivo (D030).
@@ -83,101 +84,105 @@ export function Projects() {
   return (
     <Box component="section" id="proyectos" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 7 },
             }}
           >
-            Proyectos
-          </Typography>
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
+            >
+              Proyectos
+            </Typography>
 
-          <Typography
-            component="h2"
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Construimos juntos lo que la comunidad necesita
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              Cada proyecto es una necesidad real de la iglesia — tu aporte hace la diferencia.
+            </Typography>
+          </Box>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <Box
             sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+              },
+              gap: "24px",
+              mb: { xs: 5, md: 6 },
             }}
           >
-            Construimos juntos lo que la comunidad necesita
-          </Typography>
+            {FEATURED_PROJECTS.map((project) => (
+              <ProjectCard
+                key={project.slug}
+                layout="vertical"
+                title={project.title}
+                description={project.description}
+                imageUrl={project.imageUrl}
+                status={project.status}
+                currentAmount={project.currentAmount}
+                goalAmount={project.goalAmount}
+                onCtaClick={() => router.push(`/proyectos/${project.slug}`)}
+              />
+            ))}
+          </Box>
 
-          <Typography
+          <Box
             sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
+              display: "flex",
+              justifyContent: { xs: "center", md: "flex-start" },
             }}
           >
-            Cada proyecto es una necesidad real de la iglesia — tu aporte hace la diferencia.
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, 1fr)",
-              lg: "repeat(3, 1fr)",
-            },
-            gap: "24px",
-            mb: { xs: 5, md: 6 },
-          }}
-        >
-          {FEATURED_PROJECTS.map((project) => (
-            <ProjectCard
-              key={project.slug}
-              layout="vertical"
-              title={project.title}
-              description={project.description}
-              imageUrl={project.imageUrl}
-              status={project.status}
-              currentAmount={project.currentAmount}
-              goalAmount={project.goalAmount}
-              onCtaClick={() => router.push(`/proyectos/${project.slug}`)}
-            />
-          ))}
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" },
-          }}
-        >
-          <Button
-            href="/proyectos"
-            variant="outlined"
-            color="primary"
-            size="large"
-            endIcon={<ArrowForwardRoundedIcon />}
-            sx={{ borderRadius: "10px", textTransform: "none", fontWeight: 600 }}
-          >
-            Ver todos los proyectos
-          </Button>
-        </Box>
+            <Button
+              href="/proyectos"
+              variant="outlined"
+              color="primary"
+              size="large"
+              endIcon={<ArrowForwardRoundedIcon />}
+              sx={{ borderRadius: "10px", textTransform: "none", fontWeight: 600 }}
+            >
+              Ver todos los proyectos
+            </Button>
+          </Box>
+        </Reveal>
       </Container>
     </Box>
   );

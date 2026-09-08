@@ -9,6 +9,7 @@ import { alpha } from "@mui/material/styles";
 import { AnimatePresence, motion } from "framer-motion";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { SocialLinkCard } from "@/components/ui/SocialLinkCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Redes Sociales" (fase 06) — componente + datos en un solo
@@ -81,57 +82,60 @@ export function SocialLinks() {
   return (
     <Box component="section" id="redes" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 6 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 6 },
             }}
           >
-            Redes sociales
-          </Typography>
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
+            >
+              Redes sociales
+            </Typography>
 
-          <Typography
-            component="h2"
-            sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
-            }}
-          >
-            Síguenos en cada cuenta
-          </Typography>
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Síguenos en cada cuenta
+            </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
-            }}
-          >
-            Elige una cuenta para ver sus últimas publicaciones y seguirla desde ahí.
-          </Typography>
-        </Box>
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              Elige una cuenta para ver sus últimas publicaciones y seguirla desde ahí.
+            </Typography>
+          </Box>
+        </Reveal>
 
+        <Reveal delay={0.12}>
         <Box
           sx={{
             mb: { xs: 4, md: 5 },
@@ -251,6 +255,7 @@ export function SocialLinks() {
             </Box>
           ))}
         </Box>
+        </Reveal>
       </Container>
     </Box>
   );

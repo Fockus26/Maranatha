@@ -6,6 +6,8 @@ import { ThemeProvider, CssBaseline, type PaletteMode } from "@mui/material";
 import { getTheme } from "./theme";
 
 const STORAGE_KEY = "color-mode";
+const COOKIE_KEY = "color-mode";
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 año
 
 type ColorModeContextValue = {
   mode: PaletteMode;
@@ -20,23 +22,57 @@ export function useColorMode() {
   return ctx;
 }
 
-export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = React.useState<PaletteMode>("light");
+function persistMode(mode: PaletteMode) {
+  window.localStorage.setItem(STORAGE_KEY, mode);
+  // La cookie es lo que le permite a `app/layout.tsx` resolver el modo en el
+  // SERVIDOR (ver ese archivo) — sin ella, el HTML siempre sale en "light" y
+  // el cliente lo corrige después, que es justo el flash que se reportó.
+  document.cookie = `${COOKIE_KEY}=${mode}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+}
 
-  // Al montar: usa preferencia guardada, si no, la del sistema.
+interface ThemeRegistryProps {
+  children: React.ReactNode;
+  /**
+   * Modo ya resuelto en el servidor (`app/layout.tsx`, leyendo la cookie
+   * `color-mode`) — se usa tal cual como estado inicial, así el primer
+   * render del cliente coincide exactamente con el HTML que ya llegó del
+   * servidor y no hay ningún salto de color al cargar (el flash del divider
+   * del navbar reportado por el cliente venía de que antes el estado
+   * siempre arrancaba en "light" sin importar la preferencia real).
+   */
+  initialMode: PaletteMode;
+}
+
+export default function ThemeRegistry({ children, initialMode }: ThemeRegistryProps) {
+  const [mode, setMode] = React.useState<PaletteMode>(initialMode);
+
+  // Migración de una sola vez: alguien que ya tenía una preferencia guardada
+  // en `localStorage` de antes de este cambio (o cuyo sistema pide oscuro)
+  // pero todavía no tiene la cookie nueva, la sincroniza ahora para que la
+  // SIGUIENTE carga ya la resuelva el servidor sin flash. En esta carga en
+  // particular sí puede alcanzar a verse un salto (mismo costo que una
+  // primera visita) — es un costo de migración único, no algo que se repita
+  // en cargas posteriores.
   React.useEffect(() => {
+    const hasCookie = document.cookie.split("; ").some((c) => c.startsWith(`${COOKIE_KEY}=`));
+    if (hasCookie) return;
+
     const saved = window.localStorage.getItem(STORAGE_KEY) as PaletteMode | null;
-    if (saved === "light" || saved === "dark") {
-      setMode(saved);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setMode("dark");
-    }
+    const resolved: PaletteMode =
+      saved === "light" || saved === "dark"
+        ? saved
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+
+    persistMode(resolved);
+    setMode((prev) => (prev === resolved ? prev : resolved));
   }, []);
 
   const toggleColorMode = React.useCallback(() => {
     setMode((prev) => {
       const next = prev === "light" ? "dark" : "light";
-      window.localStorage.setItem(STORAGE_KEY, next);
+      persistMode(next);
       return next;
     });
   }, []);

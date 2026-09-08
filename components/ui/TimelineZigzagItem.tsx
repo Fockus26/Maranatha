@@ -46,7 +46,11 @@ export function TimelineZigzagItem({ year, title, description, imageUrl, reverse
           backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
           backgroundColor: imageUrl ? undefined : theme.palette.primary.dark,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          // "top" en vez de "center" (fase 07, ajuste post-entrega): en fotos
+          // de personas/grupos el sujeto suele estar en el tercio superior —
+          // centrar el crop lo cortaba. Mismo criterio para las 6 fotos del
+          // zigzag, sin excepción por hito.
+          backgroundPosition: "center top",
         }}
       />
 

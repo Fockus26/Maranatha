@@ -13,10 +13,15 @@ import {
   useScrollTrigger,
   useTheme,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenuOverlay from "./MobileMenuOverlay";
 import { PAGE_NAV_ITEMS, type MobileNavLink } from "./navItems";
+import { useTitheModal } from "@/lib/titheModalStore";
+import { secondary } from "@/theme/tokens";
 
 /**
  * Variante simplificada de `Navbar` para toda página pública que no sea Home
@@ -32,15 +37,49 @@ export default function PageNavbar() {
   const pathname = usePathname();
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { openTithe } = useTitheModal();
 
   const isActive = (href: string) => pathname === href || (pathname?.startsWith(`${href}/`) ?? false);
 
-  const mobileLinks: MobileNavLink[] = PAGE_NAV_ITEMS.map((item) => ({
-    kind: "page" as const,
-    href: item.href,
-    label: item.label,
-    active: isActive(item.href),
-  }));
+  // Píldora de link de página — mismo tratamiento que el Navbar de Home
+  // (Opción 1 del comparador de navbar, /design): borde + ícono en vez de
+  // texto plano, para que se lea como "esto te lleva a otro lugar" y no
+  // como una ancla de la página actual. El estado activo (la página en la
+  // que ya estás) usa el mismo naranja apagado que el tab seleccionado de
+  // `/proyectos` (`secondary[600]`, D051) en vez del naranja vivo — mismo
+  // criterio: como estado persistente (no un hover pasajero), el naranja
+  // vivo se siente demasiado intenso.
+  const pillSx = (active: boolean) => ({
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 0.75,
+    fontFamily: "var(--font-body)",
+    fontWeight: active ? 600 : 500,
+    fontSize: 13,
+    textDecoration: "none",
+    color: active ? secondary[600] : "text.secondary",
+    border: "1px solid",
+    borderColor: active ? secondary[600] : "divider",
+    backgroundColor: active ? alpha(secondary[600], 0.08) : "transparent",
+    borderRadius: "999px",
+    pl: 1.5,
+    pr: 1.75,
+    py: 0.75,
+    ...(!active && { "&:hover": { color: "secondary.main", borderColor: "secondary.main" } }),
+  });
+
+  // "Inicio" también se agrega al menú mobile por la misma razón que en
+  // escritorio — antes el overlay mobile de páginas internas tampoco tenía
+  // ningún link de regreso más allá de cerrar el menú y tocar el logo.
+  const mobileLinks: MobileNavLink[] = [
+    { kind: "page" as const, href: "/", label: "Inicio", active: false },
+    ...PAGE_NAV_ITEMS.map((item) => ({
+      kind: "page" as const,
+      href: item.href,
+      label: item.label,
+      active: isActive(item.href),
+    })),
+  ];
 
   return (
     <>
@@ -82,27 +121,23 @@ export default function PageNavbar() {
               </Box>
             </Box>
 
-            {/* Links de escritorio: solo páginas, sin anclas */}
-            <Box component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
+            {/* Links de escritorio: solo páginas, sin anclas (esta página no
+                tiene secciones). Antes solo mostraba el link de página
+                actual (ej. "Proyectos" en /proyectos) sin ninguna forma de
+                volver a Inicio salvo el logo — el cliente señaló que no
+                era suficientemente explícito. Se agrega "Inicio" siempre
+                primero, con el mismo tratamiento de píldora que el resto
+                (Opción 1 del comparador de navbar, /design). */}
+            <Box component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1.25 }}>
+              <Box component={Link} href="/" sx={pillSx(false)}>
+                <HomeRoundedIcon sx={{ fontSize: 13 }} />
+                Inicio
+              </Box>
               {PAGE_NAV_ITEMS.map((item) => {
                 const active = isActive(item.href);
                 return (
-                  <Box
-                    key={item.href}
-                    component={Link}
-                    href={item.href}
-                    sx={{
-                      fontFamily: "var(--font-body)",
-                      fontWeight: 500,
-                      fontSize: 13,
-                      textDecoration: "none",
-                      color: active ? "text.primary" : "text.secondary",
-                      borderBottom: "2px solid",
-                      borderColor: active ? "secondary.main" : "transparent",
-                      pb: 0.25,
-                      "&:hover": { color: "secondary.main" },
-                    }}
-                  >
+                  <Box key={item.href} component={Link} href={item.href} sx={pillSx(active)}>
+                    <OpenInNewRoundedIcon sx={{ fontSize: 13 }} />
                     {item.label}
                   </Box>
                 );
@@ -114,8 +149,7 @@ export default function PageNavbar() {
               <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1.5 }}>
                 <ThemeToggle />
                 <Button
-                  component={Link}
-                  href="/#diezmo"
+                  onClick={openTithe}
                   variant="contained"
                   color="secondary"
                   size="small"
@@ -140,7 +174,7 @@ export default function PageNavbar() {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         links={mobileLinks}
-        ctaHref="/#diezmo"
+        onCtaClick={openTithe}
       />
     </>
   );

@@ -8,7 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { radius, typography } from "@/theme/tokens";
+import { primary, radius, typography } from "@/theme/tokens";
 import type { ProjectStatus } from "./ProjectCard";
 
 export interface Encargado {
@@ -60,12 +60,28 @@ export function ProjectSidebar({
         sx={{
           display: "inline-block",
           fontSize: "11px",
-          fontWeight: 500,
+          fontWeight: 700,
+          letterSpacing: "0.03em",
           borderRadius: "20px",
           px: 2.25,
           py: 0.75,
-          backgroundColor: isCompleted ? theme.palette.success.main : theme.palette.primary.main,
-          color: isCompleted ? theme.palette.success.contrastText : theme.palette.primary.contrastText,
+          // Navy fijo (no `primary.main`, que en modo oscuro es un azul claro
+          // "lavado" — mismo criterio de fondo fijo que el date block de
+          // Agenda/AgendaItem, D014/D025). Revisión: en modo oscuro el navy
+          // más profundo (`primary[700]`, `#101B45`) queda casi del mismo
+          // valor que la superficie del card (`gray[800]`, `#1D2032`) y no
+          // resaltaba lo suficiente (feedback directo del cliente) — en modo
+          // oscuro sube un peldaño en la escala (`primary[600]`, más claro y
+          // saturado) y se suma un borde sutil claro para marcar el borde del
+          // chip incluso cuando el contraste tonal es bajo. "Completado" se
+          // queda en success (verde), ya lo suficientemente distintivo.
+          backgroundColor: isCompleted
+            ? theme.palette.success.main
+            : theme.palette.mode === "dark"
+              ? primary[600]
+              : primary[700],
+          color: isCompleted ? theme.palette.success.contrastText : "#F5F6FA",
+          border: isCompleted ? "none" : `1px solid ${alpha("#F5F6FA", 0.14)}`,
         }}
       >
         {isCompleted ? "Completado" : "Activo"}
@@ -88,12 +104,27 @@ export function ProjectSidebar({
         {percent}% · {deadlineLabel}
       </Typography>
 
+      {/* "Ver proyecto" (completado): mismo tratamiento que el CTA del Hero —
+          neutro en reposo, acento azul al interactuar — aplicado también acá
+          (fase 07, ronda de feedback siguiente a D049; antes solo se había
+          actualizado la instancia de `ProjectCard.tsx`, esta quedó pendiente). */}
       <Button
         onClick={onCtaClick}
         fullWidth
         variant={isCompleted ? "outlined" : "contained"}
         color={isCompleted ? "primary" : "secondary"}
-        sx={{ mb: 4.5 }}
+        sx={{
+          mb: 4.5,
+          ...(isCompleted && {
+            borderColor: theme.palette.divider,
+            color: theme.palette.text.secondary,
+            "&:hover": {
+              borderColor: theme.palette.primary.main,
+              color: theme.palette.primary.main,
+              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            },
+          }),
+        }}
       >
         {ctaLabel ?? (isCompleted ? "Ver proyecto" : "Aportar")}
       </Button>

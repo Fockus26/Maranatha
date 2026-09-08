@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -94,15 +94,26 @@ export function SocialLinkCard({
         </Typography>
       </Box>
 
+      {/* Mismo tratamiento que "Ver proyecto" en ProjectCard (fase 07): neutro en
+          reposo, azul al interactuar — imita el CTA del Hero (blanco → efecto
+          naranja) pero con el efecto en azul, en vez del outlined plano anterior. */}
       <Button
         component="a"
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         variant="outlined"
-        color="primary"
         size="small"
-        sx={{ flexShrink: 0 }}
+        sx={{
+          flexShrink: 0,
+          borderColor: theme.palette.divider,
+          color: theme.palette.text.secondary,
+          "&:hover": {
+            borderColor: theme.palette.primary.main,
+            color: theme.palette.primary.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
+          },
+        }}
       >
         {ctaLabel}
       </Button>

@@ -7,22 +7,38 @@ import { Sermons } from "@/components/sections/Sermons";
 import { SocialLinks } from "@/components/sections/SocialLinks";
 import { Agenda } from "@/components/sections/Agenda";
 import { History } from "@/components/sections/History";
-import { Projects } from "@/components/sections/Projects";
-import { Tithe } from "@/components/sections/Tithe";
+import { PhotoAnchorBand } from "@/components/ui/PhotoAnchorBand";
 
+/**
+ * Home (fase 07, ritmo visual — /design): entre Áreas de Servicio → Liderazgo
+ * y entre Agenda → Historia se insertan "anclas fotográficas" con parallax
+ * (`PhotoAnchorBand`, Dirección B elegida) — los dos tramos donde más se
+ * repetía el mismo tratamiento bordered/plano seguido. Contenido (foto y
+ * stat) placeholder, mismo criterio que el resto del sitio.
+ */
 export default function Home() {
   return (
     <>
       <Navbar />
       <Hero />
       <ServiceAreas />
+      <PhotoAnchorBand
+        eyebrow="Comunidad"
+        value="+400"
+        label="personas sirviendo cada semana, en cinco áreas distintas"
+        imageUrl="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=1920&h=1080&fit=crop&q=80"
+      />
       <Leaders />
       <Sermons />
       <SocialLinks />
       <Agenda />
+      <PhotoAnchorBand
+        eyebrow="Nuestra historia"
+        value="11 años"
+        label="construyendo comunidad, un domingo a la vez"
+        imageUrl="https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1920&h=1080&fit=crop&q=80"
+      />
       <History />
-      <Projects />
-      <Tithe />
       <Footer />
     </>
   );

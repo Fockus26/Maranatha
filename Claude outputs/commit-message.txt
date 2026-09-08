@@ -1,0 +1,24 @@
+Ajustes de navbar, listado de Proyectos y transición entre páginas
+
+- TitheModal: el modal de diezmo ahora ocupa toda la pantalla siempre
+- Hero: ocupa exactamente 100vh menos la altura real del navbar (medida
+  vía ResizeObserver, publicada como --navbar-height)
+- CTAs "Ver proyecto"/"Seguir"/"Ver canal de YouTube": mismo tratamiento
+  que el botón del Hero (neutro en reposo, acento navy al hover)
+- Tabs de /proyectos: texto del tab activo en naranja apagado
+  (secondary[600]) en vez del naranja vivo; indicador se queda vívido
+- Chip "Activo" (ProjectCard/ProjectSidebar): más contraste en modo oscuro
+- Scroll suave global en enlaces de ancla (respeta prefers-reduced-motion)
+- /proyectos: toggle lista/cuadrícula + animación de layout (framer-motion)
+  al cambiar de tab o de vista
+- Navbar: los links de página (Proyectos) se separan visualmente de las
+  anclas de Home con un divisor y forma de píldora con ícono; se agrega
+  un link explícito "Inicio" en las páginas internas (escritorio y mobile)
+- Fix de flash del navbar al cargar: el modo claro/oscuro ahora se
+  resuelve en el servidor vía cookie (antes solo en el cliente)
+- Transición de entrada entre páginas (fade + slide corto) vía
+  app/template.tsx, sin interferir con las animaciones internas de
+  cada página
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0122iaKonEh3X2gKNriAeL4q

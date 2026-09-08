@@ -1,45 +1,39 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Dialog from "@mui/material/Dialog";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismRounded";
 import { keyframes } from "@mui/material/styles";
 import { useInView } from "framer-motion";
-import { TitheForm, type TitheFormValues } from "@/components/ui/TitheForm";
-import { Reveal } from "@/components/ui/Reveal";
+import { TitheForm, type TitheFormValues } from "./TitheForm";
+import { useTitheModal } from "@/lib/titheModalStore";
 
 /**
- * Sección "CTA Diezmo/Aportes" (fase 06) — componente + datos en un solo archivo (D030).
+ * Modal "Diezmo/Aportes" (fase 07 — reemplaza a la sección `Tithe.tsx` de
+ * Home, ahora removida): a pedido del cliente, el diezmo deja de vivir al
+ * final de Home y en su lugar se abre como modal al hacer click en el botón
+ * "Diezmo" desde cualquier página (Navbar/PageNavbar/MobileMenuOverlay). Se
+ * controla desde `TitheModalProvider`/`useTitheModal()`
+ * (`lib/titheModalStore.tsx`), montado una sola vez en `app/layout.tsx`.
  *
- * Última sección pendiente de Fase 06 (SECTION_INVENTORY). Es el CTA de más alta
- * prioridad del sitio (D011) — a diferencia de las demás secciones de Home (fondo
- * `background.default`/`paper`), esta usa **fondo navy sólido fijo**, sin importar el
- * modo claro/oscuro activo (mismo criterio que el sidebar del dashboard, D025, y el
- * overlay del menú mobile, D026) para que se sienta como el "cierre" del recorrido de
- * Home, no una sección más.
+ * Conserva el contenido y el efecto "wow" del fondo decidido en D048
+ * (patrón geométrico en pan continuo + contador animado de familias, ver
+ * comparativo de `/design`), ahora dentro de un `Dialog` de MUI en vez de
+ * una sección de Home. El contador solo corre mientras el modal está
+ * abierto (`active`), para que se reinicie visualmente si el usuario lo
+ * cierra y lo vuelve a abrir mucho después — mismo criterio de "una sola
+ * vez por apertura" que tenía `useInView({ once: true })` en la sección
+ * original, ahora ligado al ciclo de vida del modal en vez del scroll.
  *
- * Reutiliza `TitheForm` (`components/ui/TitheForm.tsx`, D018/D019) **sin modificarlo**
- * — trae su propio `DonationFormCard` (fondo `background.paper`, así que sobre el navy
- * de la sección queda como una card clara flotando, con buen contraste). `onSubmit` es
- * un placeholder (`console.log` + no-op) — el formulario no captura tarjeta ni procesa
- * pago (D018), solo recolecta los datos; la integración con un proveedor de pago real
- * queda fuera de alcance de esta fase.
- *
- * `id="diezmo"` — coincide con `TITHE_ANCHOR_ID` (`components/layout/navItems.ts`),
- * el ancla que ya usan el botón "Diezmo" del Navbar, el PageNavbar y el
- * MobileMenuOverlay (a diferencia de Historia/Proyectos, que son páginas propias, D007,
- * este sí es un scroll-target real dentro de Home).
- *
- * Efecto "wow" del fondo (fase 07, D048 — el cliente eligió combinar las opciones B
- * y C del comparativo de `/design`): (1) un patrón geométrico diagonal muy sutil,
- * en pan continuo vía CSS `@keyframes` (`patternPan`), sin foto — mantiene el fondo
- * navy plano pero le suma movimiento de fondo; (2) un contador animado ("+X
- * familias aportando este año") que cuenta hacia arriba una sola vez, la primera
- * vez que la sección entra en el viewport (`useInView` de framer-motion, `once:
- * true` — mismo criterio de "una sola vez" que `Reveal`). El monto es contenido
- * placeholder, mismo criterio que el resto del sitio.
+ * Revisión (feedback directo del cliente): el modal siempre ocupa **toda
+ * la pantalla** (`fullScreen` fijo, ya no solo por debajo de `md`) — antes
+ * en desktop se veía como un dialog centrado de ancho medio, y el cliente
+ * lo quería a pantalla completa en cualquier tamaño. El contenido se
+ * centra verticalmente dentro de esa pantalla completa.
  */
 
 const patternPan = keyframes`
@@ -49,13 +43,13 @@ const patternPan = keyframes`
 
 const FAMILIES_SUPPORTING = 132;
 
-function AnimatedFamiliesCounter() {
+function AnimatedFamiliesCounter({ active }: { active: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.6 });
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!active || !isInView) return;
     const steps = 36;
     const durationMs = 1400;
     let i = 0;
@@ -67,7 +61,7 @@ function AnimatedFamiliesCounter() {
       if (i >= steps) clearInterval(timer);
     }, durationMs / steps);
     return () => clearInterval(timer);
-  }, [isInView]);
+  }, [active, isInView]);
 
   return (
     <Box ref={ref} sx={{ mt: { xs: 4, md: 5 }, pt: 3, borderTop: "1px solid rgba(245,246,250,0.15)" }}>
@@ -91,26 +85,34 @@ function AnimatedFamiliesCounter() {
   );
 }
 
-export function Tithe() {
+export function TitheModal() {
+  const { open, closeTithe } = useTitheModal();
+
   function handleSubmit(values: TitheFormValues) {
-    // Placeholder: no hay proveedor de pago integrado todavía (fuera de alcance de
-    // esta fase). El formulario ya valida y entrega los datos vía onSubmit (D018);
-    // acá solo se registran en consola hasta que exista un backend/proveedor real.
+    // Placeholder: no hay proveedor de pago integrado todavía (fuera de alcance
+    // de esta fase) — mismo criterio que tenía la sección Tithe.tsx original (D018).
     console.log("Tithe form submitted (placeholder):", values);
   }
 
   return (
-    <Box
-      component="section"
-      id="diezmo"
-      sx={{
-        position: "relative",
-        overflow: "hidden",
-        py: { xs: 8, md: 12 },
-        backgroundColor: "#101B45",
+    <Dialog
+      open={open}
+      onClose={closeTithe}
+      fullScreen
+      scroll="body"
+      slotProps={{
+        paper: {
+          sx: {
+            position: "relative",
+            overflow: "hidden",
+            backgroundColor: "#101B45",
+            borderRadius: 0,
+            m: 0,
+          },
+        },
       }}
     >
-      {/* Patrón geométrico en pan continuo — ver nota de "efecto wow" arriba */}
+      {/* Patrón geométrico en pan continuo — mismo "efecto wow" de D048 */}
       <Box
         sx={{
           position: "absolute",
@@ -128,24 +130,45 @@ export function Tithe() {
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: "relative" }}>
-        <Reveal>
+      <IconButton
+        onClick={closeTithe}
+        aria-label="Cerrar"
+        sx={{
+          position: "absolute",
+          top: 12,
+          right: 12,
+          zIndex: 1,
+          color: "#F5F6FA",
+          backgroundColor: "rgba(245,246,250,0.1)",
+          "&:hover": { backgroundColor: "rgba(245,246,250,0.18)" },
+        }}
+      >
+        <CloseRoundedIcon fontSize="small" />
+      </IconButton>
+
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          p: { xs: 3, md: 6 },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             alignItems: { xs: "center", md: "flex-start" },
-            justifyContent: "space-between",
-            gap: { xs: 6, md: 8 },
+            justifyContent: "center",
+            gap: { xs: 6, md: 10 },
+            maxWidth: 960,
+            mx: "auto",
+            width: "100%",
           }}
         >
-          <Box
-            sx={{
-              maxWidth: 480,
-              textAlign: { xs: "center", md: "left" },
-              pt: { md: 2 },
-            }}
-          >
+          <Box sx={{ maxWidth: 480, textAlign: { xs: "center", md: "left" }, pt: { md: 2 } }}>
             <Box
               sx={{
                 display: "inline-flex",
@@ -183,7 +206,7 @@ export function Tithe() {
               sx={{
                 fontFamily: "var(--font-heading)",
                 fontWeight: 800,
-                fontSize: { xs: "28px", md: "38px" },
+                fontSize: { xs: "26px", md: "32px" },
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
                 color: "#F5F6FA",
@@ -206,15 +229,14 @@ export function Tithe() {
               compromisos, cancela cuando quieras.
             </Typography>
 
-            <AnimatedFamiliesCounter />
+            <AnimatedFamiliesCounter active={open} />
           </Box>
 
-          <Box sx={{ flexShrink: 0 }}>
+          <Box sx={{ flexShrink: 0, width: "100%", maxWidth: 440 }}>
             <TitheForm width={440} onSubmit={handleSubmit} />
           </Box>
         </Box>
-        </Reveal>
-      </Container>
-    </Box>
+      </Box>
+    </Dialog>
   );
 }

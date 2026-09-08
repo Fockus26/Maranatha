@@ -3,9 +3,8 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import { TimelineItem } from "@/components/ui/TimelineItem";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Historia" (fase 06) — componente + datos en un solo archivo (D030).
@@ -13,13 +12,13 @@ import { TimelineItem } from "@/components/ui/TimelineItem";
  * Es un **resumen** de la línea de tiempo completa, no la página completa (esa vive en
  * `/historia`, aún no construida — fase 07, ver PAGE_INVENTORY.md). Reutiliza `TimelineItem`
  * (`components/ui/TimelineItem.tsx`, D015), ya cerrado en fase 04, sin modificarlo: la versión
- * de Home solo muestra un subconjunto de hitos (los más relevantes, no todos) seguido de un
- * CTA hacia la página completa.
+ * de Home solo muestra un subconjunto de hitos (los más relevantes, no todos).
  *
  * Heading: mismo patrón izquierda/centrado (D032) que el resto de secciones de Home.
  *
- * CTA "Ver historia completa": outlined `color="primary"`, no lleva naranja — no es un CTA de
- * alta prioridad (D011 lo reserva para diezmo/aportes/agenda/donar).
+ * Revisión (fase 07): se quitó la página `/historia` y su CTA "Ver historia completa" —
+ * esta sección resumen de Home es ahora la única superficie de "Historia" del sitio, así
+ * que ya no tiene sentido un link hacia una página completa que ya no existe.
  *
  * Contenido placeholder: los hitos (años, títulos, descripciones) son marcadores basados en el
  * stat "11 años sirviendo" del Hero — pendientes de que el cliente confirme la línea de tiempo
@@ -64,88 +63,73 @@ export function History() {
   return (
     <Box component="section" id="historia" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 7 },
             }}
           >
-            Nuestra historia
-          </Typography>
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
+            >
+              Nuestra historia
+            </Typography>
 
-          <Typography
-            component="h2"
-            sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
-            }}
-          >
-            Once años de fe, en unos pocos pasos
-          </Typography>
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Once años de fe, en unos pocos pasos
+            </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
-            }}
-          >
-            De un grupo pequeño a una familia que crece cada año. Este es solo un resumen —
-            conoce el camino completo.
-          </Typography>
-        </Box>
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              De un grupo pequeño a una familia que crece cada año. Este es solo un resumen —
+              conoce el camino completo.
+            </Typography>
+          </Box>
+        </Reveal>
 
-        <Box sx={{ maxWidth: 720, mx: { xs: "auto", md: 0 } }}>
-          {HISTORY_MILESTONES.map((milestone, index) => (
-            <TimelineItem
-              key={milestone.year}
-              year={milestone.year}
-              title={milestone.title}
-              description={milestone.description}
-              progress={index / (HISTORY_MILESTONES.length - 1)}
-            />
-          ))}
-        </Box>
-
-        <Box
-          sx={{
-            mt: { xs: 4, md: 5 },
-            display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" },
-          }}
-        >
-          <Button
-            href="/historia"
-            variant="outlined"
-            color="primary"
-            size="large"
-            endIcon={<ArrowForwardRoundedIcon />}
-            sx={{ borderRadius: "10px", textTransform: "none", fontWeight: 600 }}
-          >
-            Ver historia completa
-          </Button>
-        </Box>
+        <Reveal delay={0.12}>
+          <Box sx={{ maxWidth: 720, mx: { xs: "auto", md: 0 } }}>
+            {HISTORY_MILESTONES.map((milestone, index) => (
+              <TimelineItem
+                key={milestone.year}
+                year={milestone.year}
+                title={milestone.title}
+                description={milestone.description}
+                progress={index / (HISTORY_MILESTONES.length - 1)}
+              />
+            ))}
+          </Box>
+        </Reveal>
       </Container>
     </Box>
   );

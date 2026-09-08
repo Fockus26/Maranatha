@@ -27,14 +27,8 @@ export const HOME_ANCHOR_ITEMS: AnchorNavItem[] = [
 ];
 
 export const PAGE_NAV_ITEMS: PageNavItem[] = [
-  { label: "Historia", href: "/historia" },
   { label: "Proyectos", href: "/proyectos" },
 ];
-
-// La sección CTA Diezmo/Aportes todavía no existe como componente (SECTION_INVENTORY,
-// fase 06) — este id queda reservado para cuando se construya, tanto el Navbar de Home
-// como el CTA de PageNavbar/MobileMenuOverlay ya apuntan a él.
-export const TITHE_ANCHOR_ID = "diezmo";
 
 /** Ítem normalizado que consume `MobileMenuOverlay`, ya resuelto con su estado activo. */
 export type MobileNavLink =

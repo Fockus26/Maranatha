@@ -18,7 +18,7 @@ export interface MobileMenuOverlayProps {
   open: boolean;
   onClose: () => void;
   links: MobileNavLink[];
-  ctaHref: string;
+  onCtaClick: () => void;
   ctaLabel?: string;
 }
 
@@ -32,7 +32,7 @@ export default function MobileMenuOverlay({
   open,
   onClose,
   links,
-  ctaHref,
+  onCtaClick,
   ctaLabel = "Diezmo",
 }: MobileMenuOverlayProps) {
   const theme = useTheme();
@@ -159,9 +159,10 @@ export default function MobileMenuOverlay({
               }}
             />
             <Button
-              component={Link}
-              href={ctaHref}
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                onCtaClick();
+              }}
               variant="contained"
               color="secondary"
               size="large"

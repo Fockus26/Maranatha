@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import Link from "next/link";
 import { alpha, keyframes } from "@mui/material/styles";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { primary, secondary, gray } from "@/theme/tokens";
@@ -54,6 +54,12 @@ const progressAnim = keyframes`
 export function Hero() {
   const total = SLIDES.length;
   const [index, setIndex] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Parallax (fase 07, Dirección B elegida en /design): la foto se mueve
+  // más lento que el scroll a medida que el Hero sale de vista.
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,16 +73,25 @@ export function Hero() {
 
   return (
     <Box
+      ref={heroRef}
       component="section"
       sx={{
         position: "relative",
-        minHeight: { xs: "auto", md: "88vh" },
+        // Ocupa exactamente el resto del viewport bajo el navbar (feedback
+        // directo del cliente): `--navbar-height` la publica el propio
+        // `Navbar` (medida real vía `ResizeObserver`, no un valor fijo
+        // adivinado) — con fallback a 72px por si el navbar no llegó a
+        // montarse todavía (ej. primer paint). Es `minHeight`, no `height`,
+        // así que en pantallas muy angostas el contenido igual puede
+        // empujarlo más alto sin recortarse.
+        minHeight: "calc(100vh - var(--navbar-height, 72px))",
         display: "flex",
         alignItems: "flex-end",
         overflow: "hidden",
       }}
     >
-      {/* Foto de fondo — crossfade entre slides */}
+      {/* Foto de fondo — crossfade entre slides + parallax al hacer scroll
+          (sobredimensionada ±10% para que el desplazamiento no revele bordes) */}
       <AnimatePresence mode="sync">
         <motion.div
           key={slide.id}
@@ -84,7 +99,7 @@ export function Hero() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeInOut" }}
-          style={{ position: "absolute", inset: 0 }}
+          style={{ position: "absolute", top: "-10%", bottom: "-10%", left: 0, right: 0, y: parallaxY }}
         >
           <Image
             src={slide.imageUrl}

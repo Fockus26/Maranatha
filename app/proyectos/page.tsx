@@ -2,21 +2,27 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import IconButton from "@mui/material/IconButton";
+import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
+import { AnimatePresence, motion } from "framer-motion";
 import PageNavbar from "@/components/layout/PageNavbar";
 import Footer from "@/components/layout/Footer";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { PROJECTS } from "@/lib/projectsData";
+import { secondary } from "@/theme/tokens";
 
 /**
  * Página "Proyectos" (`/proyectos`, fase 07, D044) — listado completo, a
  * diferencia de los 3 destacados en Home (`components/sections/Projects.tsx`,
- * D041). Usa `ProjectCard` en layout `horizontal` (D016, pensado justo para
- * este listado), sin modificarlo.
+ * D041). Usa `ProjectCard` sin modificarlo, alternando entre sus dos layouts
+ * ya existentes (D016) según `viewMode` — ver nota más abajo.
  *
  * Filtro: tabs "Todos / Activos / Completados" (elegido explícitamente por el
  * cliente entre 3 opciones — tabs / chips+orden / sidebar de filtros) —
@@ -30,10 +36,22 @@ import { PROJECTS } from "@/lib/projectsData";
  */
 
 type FilterTab = "all" | "active" | "completed";
+type ViewMode = "list" | "grid";
+
+const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 export default function ProyectosPage() {
+  const theme = useTheme();
   const router = useRouter();
   const [tab, setTab] = useState<FilterTab>("all");
+  // Toggle "lista"/"cuadrícula" (fase 07, ronda de feedback siguiente a D051)
+  // — el cliente pidió poder ver el listado completo en dos formatos: el
+  // actual (`ProjectCard` layout `horizontal`, una columna) o en tarjetas de
+  // cuadrícula (`ProjectCard` layout `vertical`, el mismo que usa el resumen
+  // de Home en `components/sections/Projects.tsx`). No se crea ningún
+  // componente nuevo — ambos layouts ya existían en `ProjectCard`, solo se
+  // alternan aquí.
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const filtered = useMemo(() => {
     if (tab === "all") return PROJECTS;
@@ -90,50 +108,151 @@ export default function ProyectosPage() {
             </Typography>
           </Box>
 
-          <Tabs
-            value={tab}
-            onChange={(_, value: FilterTab) => setTab(value)}
+          <Box
             sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 2,
               mb: { xs: 4, md: 5 },
-              minHeight: "auto",
-              borderBottom: 1,
-              borderColor: "divider",
-              "& .MuiTab-root": {
-                textTransform: "none",
-                fontFamily: "var(--font-body)",
-                fontWeight: 500,
-                fontSize: 14,
-                minHeight: "auto",
-                py: 1.5,
-              },
-              "& .MuiTabs-indicator": { backgroundColor: "secondary.main", height: 2 },
-              "& .Mui-selected": { color: "text.primary !important" },
             }}
           >
-            <Tab value="all" label={`Todos (${PROJECTS.length})`} />
-            <Tab value="active" label={`Activos (${PROJECTS.filter((p) => p.status === "active").length})`} />
-            <Tab value="completed" label={`Completados (${PROJECTS.filter((p) => p.status === "completed").length})`} />
-          </Tabs>
+            <Tabs
+              value={tab}
+              onChange={(_, value: FilterTab) => setTab(value)}
+              // El indicador (línea inferior) sí usa el naranja de marca a toda
+              // intensidad vía el prop nativo `indicatorColor` — es una línea
+              // delgada de 2px, no compite. El TEXTO del tab activo, en cambio,
+              // no usa `textColor="secondary"` (que lo pondría en `secondary.main`,
+              // el naranja más vivo de la escala) — el cliente lo encontró
+              // demasiado intenso como color de texto, así que baja un peldaño
+              // a `secondary[600]`, más apagado/oscuro mantiene la identidad
+              // naranja sin saturar el texto.
+              indicatorColor="secondary"
+              sx={{
+                minHeight: "auto",
+                borderBottom: 1,
+                borderColor: "divider",
+                "& .MuiTab-root": {
+                  textTransform: "none",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 500,
+                  fontSize: 14,
+                  minHeight: "auto",
+                  py: 1.5,
+                },
+                "& .MuiTabs-indicator": { height: 2 },
+                "& .Mui-selected": { color: `${secondary[600]} !important`, fontWeight: 600 },
+              }}
+            >
+              <Tab value="all" label={`Todos (${PROJECTS.length})`} />
+              <Tab value="active" label={`Activos (${PROJECTS.filter((p) => p.status === "active").length})`} />
+              <Tab value="completed" label={`Completados (${PROJECTS.filter((p) => p.status === "completed").length})`} />
+            </Tabs>
+
+            {/* Toggle lista/cuadrícula — mismo tratamiento "neutro en reposo,
+                acento navy al interactuar" que el resto de controles del sitio
+                (CTAs estilo Hero, D028/D050/D051), aplicado aquí a un estado
+                seleccionado en vez de a hover únicamente. */}
+            <Box
+              sx={{
+                display: "inline-flex",
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: "8px",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}
+            >
+              <IconButton
+                onClick={() => setViewMode("list")}
+                aria-label="Ver en lista"
+                aria-pressed={viewMode === "list"}
+                size="small"
+                sx={{
+                  borderRadius: 0,
+                  px: 1.25,
+                  color: viewMode === "list" ? "primary.main" : "text.secondary",
+                  backgroundColor: viewMode === "list" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
+                  "&:hover": {
+                    color: "primary.main",
+                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  },
+                }}
+              >
+                <ViewListRoundedIcon fontSize="small" />
+              </IconButton>
+              <Box sx={{ width: "1px", backgroundColor: "divider" }} />
+              <IconButton
+                onClick={() => setViewMode("grid")}
+                aria-label="Ver en cuadrícula"
+                aria-pressed={viewMode === "grid"}
+                size="small"
+                sx={{
+                  borderRadius: 0,
+                  px: 1.25,
+                  color: viewMode === "grid" ? "primary.main" : "text.secondary",
+                  backgroundColor: viewMode === "grid" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
+                  "&:hover": {
+                    color: "primary.main",
+                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  },
+                }}
+              >
+                <GridViewRoundedIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          </Box>
 
           {filtered.length === 0 ? (
             <Typography sx={{ color: "text.secondary", fontSize: 14 }}>
               No hay proyectos en esta categoría por ahora.
             </Typography>
           ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-              {filtered.map((project) => (
-                <ProjectCard
-                  key={project.slug}
-                  layout="horizontal"
-                  title={project.title}
-                  description={project.description}
-                  imageUrl={project.imageUrl}
-                  status={project.status}
-                  currentAmount={project.currentAmount}
-                  goalAmount={project.goalAmount}
-                  onCtaClick={() => router.push(`/proyectos/${project.slug}`)}
-                />
-              ))}
+            // `layout` en el contenedor y en cada card anima con FLIP
+            // (framer-motion) tanto el reflow al cambiar de tab (entran/salen
+            // proyectos filtrados) como el cambio lista/cuadrícula — mismo
+            // criterio de easing/duración que el resto de animaciones del
+            // sitio (`Reveal.tsx`, `Agenda.tsx`).
+            <Box
+              component={motion.div}
+              layout
+              transition={{ duration: 0.45, ease: EASE }}
+              sx={
+                viewMode === "grid"
+                  ? {
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
+                      gap: "24px",
+                    }
+                  : { display: "flex", flexDirection: "column", gap: 3 }
+              }
+            >
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project) => (
+                  <Box
+                    key={project.slug}
+                    component={motion.div}
+                    layout
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                  >
+                    <ProjectCard
+                      layout={viewMode === "grid" ? "vertical" : "horizontal"}
+                      title={project.title}
+                      description={project.description}
+                      imageUrl={project.imageUrl}
+                      status={project.status}
+                      currentAmount={project.currentAmount}
+                      goalAmount={project.goalAmount}
+                      onCtaClick={() => router.push(`/proyectos/${project.slug}`)}
+                    />
+                  </Box>
+                ))}
+              </AnimatePresence>
             </Box>
           )}
         </Container>

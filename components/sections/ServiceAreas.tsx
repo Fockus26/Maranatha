@@ -9,6 +9,7 @@ import ChildCareIcon from "@mui/icons-material/ChildCare";
 import SelfImprovementIcon from "@mui/icons-material/SelfImprovement";
 import FavoriteIcon from "@mui/icons-material/FavoriteBorder";
 import { ServiceAreaCard } from "@/components/ui/ServiceAreaCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Sección "Áreas de Servicio" (fase 06) — componente + datos en un solo
@@ -74,73 +75,77 @@ export function ServiceAreas() {
   return (
     <Box component="section" id="areas" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            maxWidth: 640,
-            mx: { xs: "auto", md: 0 },
-            textAlign: { xs: "center", md: "left" },
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          <Typography
-            component="span"
+        <Reveal>
+          <Box
             sx={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "secondary.main",
-              mb: 1.5,
+              maxWidth: 640,
+              mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "center", md: "left" },
+              mb: { xs: 5, md: 7 },
             }}
           >
-            Cómo servimos
-          </Typography>
+            <Typography
+              component="span"
+              sx={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontWeight: 500,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "secondary.main",
+                mb: 1.5,
+              }}
+            >
+              Cómo servimos
+            </Typography>
 
-          <Typography
-            component="h2"
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: { xs: "28px", md: "38px" },
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                color: "text.primary",
+                mb: 2,
+              }}
+            >
+              Encuentra tu lugar para servir
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "text.secondary",
+              }}
+            >
+              Cada área es una forma distinta de vivir la fe en comunidad — súmate a la que resuene contigo.
+            </Typography>
+          </Box>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <Box
             sx={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 700,
-              fontSize: { xs: "28px", md: "38px" },
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "text.primary",
-              mb: 2,
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(5, 1fr)",
+              },
+              gap: "24px",
             }}
           >
-            Encuentra tu lugar para servir
-          </Typography>
-
-          <Typography
-            sx={{
-              fontFamily: "var(--font-body)",
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: "text.secondary",
-            }}
-          >
-            Cada área es una forma distinta de vivir la fe en comunidad — súmate a la que resuene contigo.
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-              lg: "repeat(5, 1fr)",
-            },
-            gap: "24px",
-          }}
-        >
-          {SERVICE_AREAS.map((area) => (
-            <ServiceAreaCard key={area.name} {...area} />
-          ))}
-        </Box>
+            {SERVICE_AREAS.map((area) => (
+              <ServiceAreaCard key={area.name} {...area} />
+            ))}
+          </Box>
+        </Reveal>
       </Container>
     </Box>
   );

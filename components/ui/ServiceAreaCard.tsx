@@ -1,13 +1,18 @@
 "use client";
 
-import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { primary, secondary, gray } from "@/theme/tokens";
+import { gray } from "@/theme/tokens";
 import { PhotoOverlayCard } from "./PhotoOverlayCard";
 
+/**
+ * Revisión (fase 07): a pedido del cliente se quitó el badge de ícono
+ * (`topLeftSlot`) y el CTA "Conocer más" (`bottomSlot`) — la card ahora
+ * solo muestra nombre + descripción sobre la foto. `icon`/`ctaLabel` se
+ * mantienen en la interfaz (y `ServiceAreas.tsx` sigue pasando `icon` al
+ * spread `{...area}`) para no forzar un cambio en el llamador; quedan sin
+ * usar en el render.
+ */
 export interface ServiceAreaCardProps {
   name: string;
   description: string;
@@ -17,35 +22,11 @@ export interface ServiceAreaCardProps {
   onClick?: () => void;
 }
 
-export function ServiceAreaCard({
-  name,
-  description,
-  icon,
-  imageUrl,
-  ctaLabel = "Conocer más",
-  onClick,
-}: ServiceAreaCardProps) {
+export function ServiceAreaCard({ name, description, imageUrl, onClick }: ServiceAreaCardProps) {
   return (
     <PhotoOverlayCard
       imageUrl={imageUrl}
       onClick={onClick}
-      topLeftSlot={
-        <Box
-          sx={{
-            width: 36,
-            height: 36,
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: alpha(primary[700], 0.55),
-            border: `1px solid ${alpha(gray[50], 0.25)}`,
-            color: gray[50],
-          }}
-        >
-          {icon}
-        </Box>
-      }
       bottomSlot={
         <>
           <Typography
@@ -67,27 +48,10 @@ export function ServiceAreaCard({
               fontSize: "13px",
               color: gray[200],
               lineHeight: 1.4,
-              mb: 1.5,
             }}
           >
             {description}
           </Typography>
-          <Box
-            component={motion.span}
-            variants={{
-              rest: { gap: "4px", color: secondary[300] },
-              hover: { gap: "8px", color: secondary[500] },
-            }}
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              fontFamily: "var(--font-body)",
-              fontSize: "13px",
-              fontWeight: 500,
-            }}
-          >
-            {ctaLabel} →
-          </Box>
         </>
       }
     />
