@@ -8,7 +8,9 @@ import Button from "@mui/material/Button";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles";
 import { Reveal } from "@/components/ui/Reveal";
+import { secondary } from "@/theme/tokens";
 
 /**
  * Sección "Agenda" (fase 06) — componente + datos en un solo archivo
@@ -201,10 +203,23 @@ function AgendaTile({
   isAccented: boolean;
   isToday: boolean;
 }) {
+  const theme = useTheme();
   const day = String(entry.date.getDate()).padStart(2, "0");
   const month = MONTH_ABBR[entry.date.getMonth()];
   const isFeature = size === "feature";
   const isCompact = size === "sm";
+  // Fase 10 (QA) — contraste: el tag naranja de la celda "feature" vive
+  // sobre `background.paper`, no sobre el navy fijo de las celdas
+  // destacadas — en modo claro eso es blanco sólido, y `secondary.light`
+  // (#FCA355, pastel) sobre blanco da ~2:1 de contraste, muy por debajo del
+  // mínimo de 4.5:1 para texto de este tamaño (11px). En modo oscuro
+  // `background.paper` es oscuro (`gray[800]`) y ahí sí funciona bien. Se
+  // resuelve igual que el resto del sitio ante este mismo problema
+  // (D047/D050/D057): un tono más oscuro/saturado de la escala
+  // (`secondary[700]`) solo en modo claro, sin tocar el tratamiento en modo
+  // oscuro ni el de las celdas destacadas (siempre sobre navy, sin este
+  // problema).
+  const tagColor = theme.palette.mode === "light" ? secondary[700] : theme.palette.secondary.light;
   // "Destacado" (fondo navy sólido) — solo el próximo evento recurrente
   // (D039). Los puntuales ("feature"/"wide") nunca lo llevan, solo su
   // tag naranja "Evento especial".
@@ -244,7 +259,7 @@ function AgendaTile({
     >
       {tagLabel && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
-          <EventRoundedIcon sx={{ fontSize: 16, color: "secondary.light" }} />
+          <EventRoundedIcon sx={{ fontSize: 16, color: tagColor }} />
           <Typography
             component="span"
             sx={{
@@ -253,7 +268,7 @@ function AgendaTile({
               fontSize: 11,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "secondary.light",
+              color: tagColor,
             }}
           >
             {tagLabel}
@@ -410,6 +425,7 @@ export function Agenda() {
                 fontFamily: "var(--font-body)",
                 fontWeight: 500,
                 fontSize: 11,
+                "@media (min-width:1920px)": { fontSize: "13px" },
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 color: "secondary.main",
@@ -425,6 +441,7 @@ export function Agenda() {
                 fontFamily: "var(--font-heading)",
                 fontWeight: 700,
                 fontSize: { xs: "28px", md: "38px" },
+                "@media (min-width:1920px)": { fontSize: "46px" },
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
                 color: "text.primary",
@@ -438,6 +455,7 @@ export function Agenda() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
+                "@media (min-width:1920px)": { fontSize: "19px" },
                 lineHeight: 1.6,
                 color: "text.secondary",
               }}

@@ -70,6 +70,7 @@ export function Sermons() {
                 textTransform: "uppercase",
                 color: "secondary.main",
                 mb: 1.5,
+                "@media (min-width:1920px)": { fontSize: "13px" },
               }}
             >
               Prédicas
@@ -81,6 +82,7 @@ export function Sermons() {
                 fontFamily: "var(--font-heading)",
                 fontWeight: 700,
                 fontSize: { xs: "28px", md: "38px" },
+                "@media (min-width:1920px)": { fontSize: "46px" },
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
                 color: "text.primary",
@@ -94,6 +96,7 @@ export function Sermons() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
+                "@media (min-width:1920px)": { fontSize: "19px" },
                 lineHeight: 1.6,
                 color: "text.secondary",
               }}
@@ -112,25 +115,42 @@ export function Sermons() {
               mb: { xs: 5, md: 6 },
             }}
           >
-            {SERMONS.map((sermon) => (
-              <YoutubeEmbedCard
+            {SERMONS.map((sermon, index) => (
+              // Feedback de cliente: cuando el grid cae a 2 columnas (`sm`) y
+              // hay un número impar de elementos, la última fila queda con
+              // un solo item y una celda vacía al lado — mismo problema que
+              // se resolvió en Áreas de Servicio. Con solo 3 videos, el único
+              // caso posible es el último elemento solo en su fila: se le da
+              // `gridColumn: "1 / -1"` para que ocupe el ancho completo en
+              // vez de dejar un hueco. A partir de `md` (3 columnas, 3 items)
+              // ya no sobra ninguna celda, así que vuelve a ocupar 1 columna.
+              <Box
                 key={sermon.videoId}
-                videoId={sermon.videoId}
-                title={sermon.title}
-                publishedAt={sermon.publishedAt}
-                onPlay={setActiveVideoId}
-              />
+                sx={
+                  index === SERMONS.length - 1
+                    ? { gridColumn: { sm: "1 / -1", md: "auto" } }
+                    : undefined
+                }
+              >
+                <YoutubeEmbedCard
+                  videoId={sermon.videoId}
+                  title={sermon.title}
+                  publishedAt={sermon.publishedAt}
+                  onPlay={setActiveVideoId}
+                />
+              </Box>
             ))}
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-start" } }}>
             {/* Mismo tratamiento que "Ver proyecto" (ProjectCard/ProjectSidebar)
-                y "Seguir" (SocialLinkCard): neutro en reposo, acento navy al
-                interactuar — copiando el patrón del CTA del Hero (D028) pero
-                con azul en vez de naranja (fase 07, ronda de feedback
-                siguiente a D050). Reemplaza el pill redondeado distintivo de
-                D048 — el cliente pidió unificar este botón con los demás en
-                vez de mantenerle una firma visual propia. */}
+                y "Seguir" (SocialLinkCard): neutro en reposo, acento al
+                interactuar. Antes el acento era navy (D050-siguiente), pero
+                eso chocaba con el hover naranja de las `YoutubeEmbedCard` de
+                arriba — dos acentos distintos en la misma sección se sentían
+                inconsistentes (feedback directo del cliente). Se cambia a
+                naranja para que el botón "cierre" la sección con el mismo
+                acento que ya usan las cards al hacer hover. */}
             <Button
               variant="outlined"
               size="large"
@@ -143,9 +163,9 @@ export function Sermons() {
                 borderColor: "divider",
                 color: "text.secondary",
                 "&:hover": {
-                  borderColor: "primary.main",
-                  color: "primary.main",
-                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  borderColor: "secondary.main",
+                  color: "secondary.main",
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.08),
                 },
               }}
             >

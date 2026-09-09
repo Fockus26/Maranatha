@@ -5,14 +5,20 @@ import { Box, Container, IconButton } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 
+// Fase 10 (QA): antes solo tenía 3 de las 5 anclas de Home — se completa
+// con Prédicas y Redes para que coincida con `HOME_ANCHOR_ITEMS`
+// (`components/layout/navItems.ts`), la misma fuente que usa el Navbar.
 const NAV_LINKS = [
   { label: "Áreas", href: "#areas" },
   { label: "Liderazgo", href: "#liderazgo" },
+  { label: "Prédicas", href: "#predicas" },
+  { label: "Redes", href: "#redes" },
   { label: "Agenda", href: "#agenda" },
 ] as const;
 
+// Fase 10 (QA): se quita "Nosotros" → `/nosotros` — esa ruta no existe en
+// el árbol de páginas (`app/`), era un link roto (404).
 const RESOURCE_LINKS = [
-  { label: "Nosotros", href: "/nosotros" },
   { label: "Proyectos", href: "/proyectos" },
 ] as const;
 
@@ -36,6 +42,7 @@ function FooterColumn({
           fontFamily: "var(--font-body)",
           fontWeight: 500,
           fontSize: 12,
+          "@media (min-width:1920px)": { fontSize: "14px" },
           color: "text.primary",
           mb: 0.5,
         }}
@@ -50,6 +57,7 @@ function FooterColumn({
           sx={{
             fontFamily: "var(--font-body)",
             fontSize: 12,
+            "@media (min-width:1920px)": { fontSize: "14px" },
             color: "text.secondary",
             textDecoration: "none",
             "&:hover": { color: "secondary.main" },
@@ -96,6 +104,7 @@ export default function Footer() {
                   fontFamily: "var(--font-heading)",
                   fontWeight: 600,
                   fontSize: 13,
+                  "@media (min-width:1920px)": { fontSize: "15px" },
                   color: "primary.main",
                 }}
               >
@@ -107,6 +116,7 @@ export default function Footer() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 11,
+                "@media (min-width:1920px)": { fontSize: "13px" },
                 lineHeight: 1.5,
                 color: "text.secondary",
                 m: 0,
@@ -126,6 +136,7 @@ export default function Footer() {
                 fontFamily: "var(--font-body)",
                 fontWeight: 500,
                 fontSize: 12,
+                "@media (min-width:1920px)": { fontSize: "14px" },
                 color: "text.primary",
               }}
             >
@@ -137,6 +148,7 @@ export default function Footer() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
+                "@media (min-width:1920px)": { fontSize: "14px" },
                 color: "text.secondary",
                 textDecoration: "none",
                 "&:hover": { color: "secondary.main" },
@@ -186,7 +198,13 @@ export default function Footer() {
             justifyContent: "space-between",
             fontFamily: "var(--font-body)",
             fontSize: 11,
-            color: "text.muted",
+            "@media (min-width:1920px)": { fontSize: "13px" },
+            // Fase 10 (QA): `text.muted` no existe en la paleta de MUI/tema
+            // del proyecto (solo `text.primary`/`text.secondary`/`text.disabled`,
+            // ver `theme/theme.ts`) — la barra de copyright se renderizaba con
+            // el color heredado (más oscuro/marcado de lo previsto) en vez de
+            // atenuado. Se corrige a `text.secondary`, el token real más cercano.
+            color: "text.secondary",
           }}
         >
           <Box component="span">© 2026 Iglesia. Todos los derechos reservados.</Box>

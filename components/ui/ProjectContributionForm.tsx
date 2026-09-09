@@ -154,12 +154,34 @@ export function ProjectContributionForm({
         Monto a aportar
       </Typography>
       <Box sx={{ mb: 3.5 }}>
-        <AmountSelector presets={presetAmounts} onChange={setAmount} error={touched && !amountValid} />
+        <AmountSelector
+          presets={presetAmounts}
+          onChange={setAmount}
+          error={touched && !amountValid}
+          helperText="Elegí un monto o ingresá uno propio."
+        />
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3.5, mb: 4.5 }}>
-        <TextField label="Nombre completo" fullWidth size="small" value={name} onChange={(e) => setName(e.target.value)} error={touched && !nameValid} />
-        <TextField label="Correo electrónico" type="email" fullWidth size="small" value={email} onChange={(e) => setEmail(e.target.value)} error={touched && !emailValid} />
+        <TextField
+          label="Nombre completo"
+          fullWidth
+          size="small"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          error={touched && !nameValid}
+          helperText={touched && !nameValid ? "Ingresá tu nombre completo." : undefined}
+        />
+        <TextField
+          label="Correo electrónico"
+          type="email"
+          fullWidth
+          size="small"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={touched && !emailValid}
+          helperText={touched && !emailValid ? "Ingresá un correo electrónico válido." : undefined}
+        />
       </Box>
 
       <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>

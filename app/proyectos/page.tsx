@@ -2,19 +2,17 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import IconButton from "@mui/material/IconButton";
-import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
-import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import { AnimatePresence, motion } from "framer-motion";
+import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import PageNavbar from "@/components/layout/PageNavbar";
 import Footer from "@/components/layout/Footer";
 import { ProjectCard } from "@/components/ui/ProjectCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { PROJECTS } from "@/lib/projectsData";
 import { secondary } from "@/theme/tokens";
 
@@ -36,22 +34,12 @@ import { secondary } from "@/theme/tokens";
  */
 
 type FilterTab = "all" | "active" | "completed";
-type ViewMode = "list" | "grid";
 
 const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 export default function ProyectosPage() {
-  const theme = useTheme();
   const router = useRouter();
   const [tab, setTab] = useState<FilterTab>("all");
-  // Toggle "lista"/"cuadrícula" (fase 07, ronda de feedback siguiente a D051)
-  // — el cliente pidió poder ver el listado completo en dos formatos: el
-  // actual (`ProjectCard` layout `horizontal`, una columna) o en tarjetas de
-  // cuadrícula (`ProjectCard` layout `vertical`, el mismo que usa el resumen
-  // de Home en `components/sections/Projects.tsx`). No se crea ningún
-  // componente nuevo — ambos layouts ya existían en `ProjectCard`, solo se
-  // alternan aquí.
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const filtered = useMemo(() => {
     if (tab === "all") return PROJECTS;
@@ -76,6 +64,7 @@ export default function ProyectosPage() {
                 textTransform: "uppercase",
                 color: "secondary.main",
                 mb: 1.5,
+                "@media (min-width:1920px)": { fontSize: "13px" },
               }}
             >
               Proyectos
@@ -87,6 +76,7 @@ export default function ProyectosPage() {
                 fontFamily: "var(--font-heading)",
                 fontWeight: 800,
                 fontSize: { xs: "32px", md: "44px" },
+                "@media (min-width:1920px)": { fontSize: "54px" },
                 lineHeight: 1.15,
                 letterSpacing: "-0.01em",
                 color: "text.primary",
@@ -100,6 +90,7 @@ export default function ProyectosPage() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
+                "@media (min-width:1920px)": { fontSize: "19px" },
                 lineHeight: 1.6,
                 color: "text.secondary",
               }}
@@ -112,9 +103,6 @@ export default function ProyectosPage() {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 2,
               mb: { xs: 4, md: 5 },
             }}
           >
@@ -150,85 +138,26 @@ export default function ProyectosPage() {
               <Tab value="active" label={`Activos (${PROJECTS.filter((p) => p.status === "active").length})`} />
               <Tab value="completed" label={`Completados (${PROJECTS.filter((p) => p.status === "completed").length})`} />
             </Tabs>
-
-            {/* Toggle lista/cuadrícula — mismo tratamiento "neutro en reposo,
-                acento navy al interactuar" que el resto de controles del sitio
-                (CTAs estilo Hero, D028/D050/D051), aplicado aquí a un estado
-                seleccionado en vez de a hover únicamente. */}
-            <Box
-              sx={{
-                display: "inline-flex",
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: "8px",
-                overflow: "hidden",
-                flexShrink: 0,
-              }}
-            >
-              <IconButton
-                onClick={() => setViewMode("list")}
-                aria-label="Ver en lista"
-                aria-pressed={viewMode === "list"}
-                size="small"
-                sx={{
-                  borderRadius: 0,
-                  px: 1.25,
-                  color: viewMode === "list" ? "primary.main" : "text.secondary",
-                  backgroundColor: viewMode === "list" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
-                  "&:hover": {
-                    color: "primary.main",
-                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                  },
-                }}
-              >
-                <ViewListRoundedIcon fontSize="small" />
-              </IconButton>
-              <Box sx={{ width: "1px", backgroundColor: "divider" }} />
-              <IconButton
-                onClick={() => setViewMode("grid")}
-                aria-label="Ver en cuadrícula"
-                aria-pressed={viewMode === "grid"}
-                size="small"
-                sx={{
-                  borderRadius: 0,
-                  px: 1.25,
-                  color: viewMode === "grid" ? "primary.main" : "text.secondary",
-                  backgroundColor: viewMode === "grid" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
-                  "&:hover": {
-                    color: "primary.main",
-                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                  },
-                }}
-              >
-                <GridViewRoundedIcon fontSize="small" />
-              </IconButton>
-            </Box>
           </Box>
 
           {filtered.length === 0 ? (
-            <Typography sx={{ color: "text.secondary", fontSize: 14 }}>
-              No hay proyectos en esta categoría por ahora.
-            </Typography>
+            <EmptyState
+              icon={SearchOffRoundedIcon}
+              title="No hay proyectos en esta categoría"
+              description="Probá con otra pestaña para ver el resto de los proyectos."
+              ctaLabel={tab !== "all" ? "Ver todos los proyectos" : undefined}
+              onCtaClick={tab !== "all" ? () => setTab("all") : undefined}
+            />
           ) : (
             // `layout` en el contenedor y en cada card anima con FLIP
-            // (framer-motion) tanto el reflow al cambiar de tab (entran/salen
-            // proyectos filtrados) como el cambio lista/cuadrícula — mismo
-            // criterio de easing/duración que el resto de animaciones del
-            // sitio (`Reveal.tsx`, `Agenda.tsx`).
-            <Box
-              component={motion.div}
-              layout
-              transition={{ duration: 0.45, ease: EASE }}
-              sx={
-                viewMode === "grid"
-                  ? {
-                      display: "grid",
-                      gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
-                      gap: "24px",
-                    }
-                  : { display: "flex", flexDirection: "column", gap: 3 }
-              }
-            >
+            // (framer-motion) el reflow al cambiar de tab (entran/salen
+            // proyectos filtrados) — mismo criterio de easing/duración que
+            // el resto de animaciones del sitio (`Reveal.tsx`, `Agenda.tsx`).
+            //
+            // Antes existía un toggle "lista"/"cuadrícula" (fase 07); el
+            // cliente pidió quitarlo y dejar una sola visualización — la que
+            // estaba por defecto (layout `horizontal`, una columna).
+            <Box component={motion.div} layout transition={{ duration: 0.45, ease: EASE }} sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
               <AnimatePresence mode="popLayout">
                 {filtered.map((project) => (
                   <Box
@@ -241,7 +170,7 @@ export default function ProyectosPage() {
                     transition={{ duration: 0.35, ease: EASE }}
                   >
                     <ProjectCard
-                      layout={viewMode === "grid" ? "vertical" : "horizontal"}
+                      layout="horizontal"
                       title={project.title}
                       description={project.description}
                       imageUrl={project.imageUrl}

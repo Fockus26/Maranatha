@@ -93,6 +93,15 @@ export function YoutubeEmbedCard({
 
       {/* Cuerpo */}
       <Box sx={{ p: 1.75 }}>
+        {/*
+          Fase 09 (feedback puntual): antes solo tenía `WebkitLineClamp: 2`
+          (recorta y agrega "…" si el título excede 2 líneas), pero sin una
+          altura reservada — un título de 1 línea dejaba la card más baja que
+          una de 2 líneas, así que el grid se veía dispar entre cards. Se fija
+          `height` a exactamente 2 líneas (`fontSize` 14px × `lineHeight` 1.3
+          × 2) para que toda card mida lo mismo sin importar cuántas líneas
+          ocupe el título real.
+        */}
         <Typography
           component="p"
           sx={{
@@ -101,6 +110,7 @@ export function YoutubeEmbedCard({
             fontSize: "14px",
             color: "text.primary",
             lineHeight: 1.3,
+            height: "36.4px",
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",

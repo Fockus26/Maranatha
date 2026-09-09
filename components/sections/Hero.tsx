@@ -85,6 +85,11 @@ export function Hero() {
         // así que en pantallas muy angostas el contenido igual puede
         // empujarlo más alto sin recortarse.
         minHeight: "calc(100vh - var(--navbar-height, 72px))",
+        // Feedback de cliente: en pantallas muy altas/anchas (monitores
+        // grandes, ultrawide) el Hero a 100vh se sentía excesivo — se limita
+        // a 1024px de alto total (navbar + Hero), restando la misma
+        // `--navbar-height` que ya usa `minHeight` arriba.
+        maxHeight: "calc(1024px - var(--navbar-height, 72px))",
         display: "flex",
         alignItems: "flex-end",
         overflow: "hidden",
@@ -220,6 +225,7 @@ export function Hero() {
                   fontFamily: "var(--font-body)",
                   fontWeight: 500,
                   fontSize: 11,
+                  "@media (min-width:1920px)": { fontSize: "13px" },
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   color: secondary[300],
@@ -235,6 +241,10 @@ export function Hero() {
                   fontFamily: "var(--font-heading)",
                   fontWeight: 800,
                   fontSize: { xs: "34px", md: "52px" },
+                  // Feedback de cliente: en pantallas ≥1920px el texto se
+                  // sentía chico — se sube un peldaño más allá de lo que
+                  // cubre el breakpoint `md`.
+                  "@media (min-width:1920px)": { fontSize: "64px" },
                   lineHeight: 1.15,
                   letterSpacing: "-0.02em",
                   color: gray[50],
@@ -283,6 +293,7 @@ export function Hero() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
+                "@media (min-width:1920px)": { fontSize: "14px" },
                 letterSpacing: "0.02em",
                 color: gray[300],
               }}

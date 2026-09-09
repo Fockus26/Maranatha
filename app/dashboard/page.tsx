@@ -8,8 +8,10 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { DashboardStatBand } from "@/components/ui/DashboardStatBand";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { radius, typography } from "@/theme/tokens";
 import { useDashboardProjects } from "@/lib/dashboardProjectsStore";
 import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
@@ -35,7 +37,7 @@ function formatCurrency(value: number) {
 
 export default function DashboardResumenPage() {
   const theme = useTheme();
-  const { projects } = useDashboardProjects();
+  const { projects, isLoading } = useDashboardProjects();
   const { openCreate } = useDashboardProjectModal();
 
   const stats = useMemo(() => {
@@ -52,6 +54,7 @@ export default function DashboardResumenPage() {
   return (
     <DashboardShell>
       <DashboardStatBand
+        loading={isLoading}
         stats={[
           { label: "Total recaudado", value: formatCurrency(stats.totalRecaudado), accent: true },
           { label: "Proyectos activos", value: String(stats.activos.length) },
@@ -76,10 +79,19 @@ export default function DashboardResumenPage() {
               Proyectos activos ordenados por fecha de cierre.
             </Typography>
 
-            {stats.proximosCierres.length === 0 ? (
-              <Typography sx={{ fontSize: 13, color: theme.palette.text.secondary }}>
-                No hay proyectos activos por el momento.
-              </Typography>
+            {isLoading ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {[0, 1, 2].map((key) => (
+                  <Box key={key} sx={{ display: "flex", alignItems: "center", gap: 3, py: 1 }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Box sx={{ height: 14, width: "50%", mb: 1, borderRadius: 1, backgroundColor: theme.palette.action.hover }} />
+                      <Box sx={{ height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }} />
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            ) : stats.proximosCierres.length === 0 ? (
+              <EmptyState compact icon={EventBusyRoundedIcon} title="No hay proyectos activos" description="Cuando crees uno, sus próximos cierres van a aparecer acá." />
             ) : (
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 {stats.proximosCierres.map((project) => {

@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 export interface RevealProps {
   children: ReactNode;
@@ -23,11 +25,20 @@ export interface RevealProps {
  * de reveal).
  */
 export function Reveal({ children, delay = 0, y = 18 }: RevealProps) {
+  const theme = useTheme();
+  // Feedback de cliente (ronda post-fase 08): en mobile las secciones suelen
+  // ser más altas que el viewport — con el mismo `amount` que desktop (25%
+  // del bloque visible antes de disparar) la animación tardaba en verse, o
+  // el usuario ya había scrolleado de largo antes de que se cumpliera. Por
+  // debajo de `sm` basta con que un 10% del bloque sea visible.
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const amount = isMobile ? 0.1 : 0.25;
+
   return (
     <motion.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, amount }}
       transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay }}
     >
       {children}

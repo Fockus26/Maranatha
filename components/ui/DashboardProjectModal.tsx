@@ -4,6 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DashboardProjectForm, type DashboardProjectFormValues } from "./DashboardProjectForm";
 import { useDashboardProjects } from "@/lib/dashboardProjectsStore";
@@ -21,9 +22,41 @@ import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
  * ahora se usa con la prop `bare` para no duplicar el borde/fondo/padding que
  * ya aporta el propio `Dialog` (antes se veía como una tarjeta blanca flotando
  * sobre el fondo de otra tarjeta, con espacio "de más" alrededor).
+ *
+ * Segunda revisión (feedback directo del cliente, ronda post-fase 08): el
+ * modal pasa a `fullScreen` — mismo criterio que `TitheModal` (D048/fase 07):
+ * en vez de un dialog centrado de ancho medio, ocupa toda la pantalla en
+ * cualquier tamaño. `DialogContent` sigue haciendo scroll interno igual que
+ * antes (MUI ya le da `overflowY: auto` por defecto con `scroll="paper"`),
+ * solo que ahora el "paper" es la pantalla completa en vez de un recuadro de
+ * 95vh centrado.
+ *
+ * Tercera revisión (feedback puntual, fase 09): el `fullScreen` fijo se
+ * pasó de largo — el cliente solo lo pedía para mobile, no para desktop
+ * (a diferencia de `TitheModal`, que sí es fullScreen siempre por decisión
+ * explícita, D050). Acá `fullScreen` ahora depende de `useMediaQuery` contra
+ * el mismo breakpoint `sm` que usa el resto del sitio para "es mobile"
+ * (D064) — en desktop vuelve a ser un dialog centrado con alto acotado
+ * (`95vh`, criterio de D060, previo a que D065 lo pasara a fullScreen sin
+ * distinguir tamaño de pantalla).
+ *
+ * Cuarta revisión (feedback puntual, fase 09): en desktop el ancho ya no se
+ * fuerza a `maxWidth="md"` + `fullWidth` (eso estiraba el Paper al ancho
+ * completo del breakpoint aunque el formulario, acotado a 640px por el propio
+ * `DialogContent`, no lo necesitara). `fullWidth={false}` + `maxWidth={false}`
+ * en el `Dialog` evita las clases `MuiDialog-paperFullWidth`/`paperWidthMd`
+ * (que son las que de verdad fijan el `width` del Paper vía CSS — `width` no
+ * se puede pisar de forma confiable desde `sx` porque esas clases tienen la
+ * misma especificidad y quedan declaradas después en la hoja de estilos, así
+ * que un `sx.width` sin más perdía la cascada). Con ambas en `false`, el
+ * `Paper` solo hereda `max-width: calc(100% - 64px)` (de `paperWidthFalse`, un
+ * techo de seguridad, no un ancho fijo) y se ajusta al ancho real de su
+ * contenido — el `maxWidth: 640` del propio `DialogContent`. En mobile no
+ * cambia nada: `fullScreen` sigue ocupando todo el ancho/alto de la pantalla.
  */
 export function DashboardProjectModal() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { open, editingId, close } = useDashboardProjectModal();
   const { projects, addProject, updateProject } = useDashboardProjects();
 
@@ -55,19 +88,18 @@ export function DashboardProjectModal() {
     <Dialog
       open={open}
       onClose={close}
-      maxWidth="sm"
-      fullWidth
+      fullScreen={isMobile}
+      fullWidth={false}
+      maxWidth={isMobile ? undefined : false}
       slotProps={{
         // `elevation: 0` — mismo diagnóstico que `TitheModal`/`ConfirmDialog`
         // (D057/D058/D061): sin esto, el overlay blanco automático de MUI en
         // modo oscuro aclaraba el fondo del modal más de lo esperado.
         paper: {
           elevation: 0,
-          sx: {
-            height: "95vh",
-            maxHeight: "95vh",
-            m: { xs: 2, sm: 4 },
-          },
+          sx: isMobile
+            ? { borderRadius: 0 }
+            : { height: "95vh", maxHeight: "95vh", width: "auto" },
         },
       }}
     >
@@ -87,7 +119,7 @@ export function DashboardProjectModal() {
       >
         <CloseRoundedIcon fontSize="small" />
       </IconButton>
-      <DialogContent sx={{ p: { xs: 3, sm: 5 }, pt: { xs: 6, sm: 6.5 } }}>
+      <DialogContent sx={{ p: { xs: 3, sm: 5 }, pt: { xs: 6, sm: 6.5 }, maxWidth: 640, mx: "auto", width: "auto" }}>
         <DashboardProjectForm
           key={editingId ?? "new"}
           bare

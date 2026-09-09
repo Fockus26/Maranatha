@@ -36,6 +36,50 @@ body {
 }
 
 /*
+ * Transición del toggle claro/oscuro (fase 09, D067) — antes el cambio de
+ * modo era instantáneo (MUI recalcula la paleta y React re-pinta de golpe).
+ * El cliente eligió, entre 3 direcciones (fade cross-fade global / circular
+ * reveal desde el ícono / sin transición), un fade parejo y sutil en vez de
+ * un efecto "wow" con protagonismo propio — coherente con el resto de
+ * easings del sitio, que priorizan transiciones discretas sobre las que
+ * llaman la atención por sí mismas.
+ *
+ * Acotado a las superficies reales de color (fondo/texto/borde de las
+ * clases de MUI más comunes) en vez de un `*` universal — un selector
+ * universal chocaría con elementos que ya animan su propio
+ * background-color vía framer-motion (el fill de hover de `AgendaItem`,
+ * el patrón animado de `TitheModal`/`DashboardStatBand`), duplicando la
+ * transición sobre la misma propiedad.
+ */
+body,
+.MuiPaper-root,
+.MuiAppBar-root,
+.MuiButton-root,
+.MuiChip-root,
+.MuiCard-root,
+.MuiDialog-paper,
+.MuiTableCell-root,
+.MuiInputBase-root,
+[data-color-mode] {
+  transition: background-color 280ms ease, color 280ms ease, border-color 280ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .MuiPaper-root,
+  .MuiAppBar-root,
+  .MuiButton-root,
+  .MuiChip-root,
+  .MuiCard-root,
+  .MuiDialog-paper,
+  .MuiTableCell-root,
+  .MuiInputBase-root,
+  [data-color-mode] {
+    transition: none;
+  }
+}
+
+/*
  * Scroll personalizado (pedido del cliente) — aplica a toda la página y,
  * como no está acotado a un selector específico, también al scroll interno
  * del modal (`DashboardProjectModal`, `DialogContent` ya trae

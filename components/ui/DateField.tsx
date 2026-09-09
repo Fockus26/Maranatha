@@ -17,6 +17,10 @@ export interface DateFieldProps {
   value: string; // "YYYY-MM-DD"
   onChange: (value: string) => void;
   error?: boolean;
+  /** Fase 09 (D067) — mensaje bajo el campo cuando `error` está activo, mismo
+   * tratamiento (borde rojo + texto bajo el campo) que el resto de los
+   * `TextField` del sitio. */
+  helperText?: string;
 }
 
 const EASE = [0.2, 0.8, 0.2, 1] as const;
@@ -73,7 +77,7 @@ function buildMonthGrid(viewDate: Date): Date[] {
  * `YYYY-MM-DD`, igual que antes — no cambia nada para quien consume
  * `DashboardProjectForm`.
  */
-export function DateField({ label, value, onChange, error }: DateFieldProps) {
+export function DateField({ label, value, onChange, error, helperText }: DateFieldProps) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const selected = parseValue(value);
@@ -148,6 +152,12 @@ export function DateField({ label, value, onChange, error }: DateFieldProps) {
         </Box>
         <CalendarMonthRoundedIcon fontSize="small" sx={{ color: theme.palette.text.secondary, flexShrink: 0 }} />
       </Box>
+
+      {error && helperText && (
+        <Box component="p" sx={{ m: 0, mt: 0.75, ml: 1.75, fontSize: "12px", color: theme.palette.error.main }}>
+          {helperText}
+        </Box>
+      )}
 
       <Popper
         open={open}

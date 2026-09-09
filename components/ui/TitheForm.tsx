@@ -146,7 +146,12 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
         Monto
       </Typography>
       <Box sx={{ mb: 3.5 }}>
-        <AmountSelector presets={presetAmounts} onChange={setAmount} error={touched && !amountValid} />
+        <AmountSelector
+          presets={presetAmounts}
+          onChange={setAmount}
+          error={touched && !amountValid}
+          helperText="Elegí un monto o ingresá uno propio."
+        />
       </Box>
 
       <Typography sx={{ fontFamily: typography.fontFamily.body, fontSize: "12px", fontWeight: 500, color: theme.palette.text.primary, mb: 2 }}>
@@ -187,6 +192,7 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
           value={name}
           onChange={(e) => setName(e.target.value)}
           error={touched && !nameValid}
+          helperText={touched && !nameValid ? "Ingresá tu nombre completo." : undefined}
           sx={FIELD_LABEL_SX}
         />
         <TextField
@@ -197,6 +203,7 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={touched && !emailValid}
+          helperText={touched && !emailValid ? "Ingresá un correo electrónico válido." : undefined}
           sx={FIELD_LABEL_SX}
         />
       </Box>

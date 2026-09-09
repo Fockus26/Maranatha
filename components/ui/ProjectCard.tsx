@@ -142,14 +142,28 @@ export function ProjectCard({
       <Box
         sx={{
           display: "flex",
+          // Fase 08: por debajo de `sm` la fila (foto lateral + texto) se
+          // apila en columna — el layout `horizontal` original (fila fija,
+          // foto 200px) no cabía en mobile. Desde `sm` en adelante queda
+          // exactamente igual que antes.
+          flexDirection: { xs: "column", sm: "row" },
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: `${radius.lg}px`,
           overflow: "hidden",
           backgroundColor: theme.palette.background.paper,
         }}
       >
-        <Box sx={{ width: 200, flexShrink: 0, ...photoStyle }} />
-        <Box sx={{ p: 5, flex: 1, display: "flex", gap: 7, alignItems: "flex-start" }}>
+        <Box sx={{ width: { xs: "100%", sm: 200 }, height: { xs: 180, sm: "auto" }, flexShrink: 0, ...photoStyle }} />
+        <Box
+          sx={{
+            p: { xs: 4, sm: 5 },
+            flex: 1,
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: { xs: 3, sm: 7 },
+            alignItems: { xs: "stretch", sm: "flex-start" },
+          }}
+        >
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start", mb: 1.5 }}>
               <Typography sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 600, fontSize: "17px", color: theme.palette.text.primary }}>
@@ -173,7 +187,7 @@ export function ProjectCard({
             </Typography>
             <ProgressBlock light={false} />
           </Box>
-          <CtaButton sx={{ width: 120, flexShrink: 0 }} />
+          <CtaButton sx={{ width: { xs: "100%", sm: 120 }, flexShrink: 0 }} />
         </Box>
       </Box>
     );

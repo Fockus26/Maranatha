@@ -166,6 +166,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           error={touched && !titleValid}
+          helperText={touched && !titleValid ? "El título es obligatorio." : undefined}
           sx={fieldSx()}
         />
 
@@ -188,7 +189,10 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
           }}
         />
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}>
+        {/* Fase 08: los grids de 2/3 columnas fijas de este formulario no
+            cabían en mobile (modal angosto) — todos pasan a 1 columna por
+            debajo de `sm`, sin cambiar nada en tablet/desktop. */}
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 3 }}>
           <TextField
             label="Monto meta"
             type="number"
@@ -196,9 +200,16 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
             value={goalAmount || ""}
             onChange={(e) => setGoalAmount(Number(e.target.value))}
             error={touched && !goalValid}
+            helperText={touched && !goalValid ? "Ingresá un monto mayor a 0." : undefined}
             sx={numberFieldSx()}
           />
-          <DateField label="Fecha de cierre" value={deadline} onChange={setDeadline} error={touched && !deadlineValid} />
+          <DateField
+            label="Fecha de cierre"
+            value={deadline}
+            onChange={setDeadline}
+            error={touched && !deadlineValid}
+            helperText="La fecha de cierre es obligatoria."
+          />
         </Box>
 
         {/*
@@ -239,14 +250,14 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                   initial={{ opacity: 0, y: -8, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.22, ease: EASE }}
-                  sx={{ display: "grid", gridTemplateColumns: "1fr 160px auto", gap: 2 }}
+                  sx={{ display: "grid", gridTemplateColumns: { xs: "1fr auto", sm: "1fr 160px auto" }, gap: 2 }}
                 >
                   <TextField
                     placeholder="Concepto"
                     size="small"
                     value={line.label}
                     onChange={(e) => updateBudgetLine(line.id, { label: e.target.value })}
-                    sx={fieldSx()}
+                    sx={{ ...fieldSx(), gridColumn: { xs: "1 / -1", sm: "auto" } }}
                   />
                   <TextField
                     placeholder="Monto"
@@ -284,7 +295,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                   transition={{ duration: 0.22, ease: EASE }}
                   sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: `${radius.md}px`, p: 3 }}
                 >
-                  <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+                  <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2, mb: 2 }}>
                     <TextField
                       label="Nombre"
                       size="small"
@@ -300,13 +311,20 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                       sx={fieldSx()}
                     />
                   </Box>
-                  <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 2, alignItems: "center" }}>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr auto", sm: "1fr 1fr auto" },
+                      gap: 2,
+                      alignItems: "center",
+                    }}
+                  >
                     <TextField
                       label="URL de foto"
                       size="small"
                       value={encargado.imageUrl}
                       onChange={(e) => updateEncargado(encargado.id, { imageUrl: e.target.value })}
-                      sx={fieldSx()}
+                      sx={{ ...fieldSx(), gridColumn: { xs: "1 / -1", sm: "auto" } }}
                     />
                     <TextField
                       label="Instagram (opcional)"

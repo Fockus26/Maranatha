@@ -56,6 +56,7 @@ export default function PageNavbar() {
     fontFamily: "var(--font-body)",
     fontWeight: active ? 600 : 500,
     fontSize: 13,
+    "@media (min-width:1920px)": { fontSize: "15px" },
     textDecoration: "none",
     color: active ? secondary[600] : "text.secondary",
     border: "1px solid",
@@ -90,7 +91,7 @@ export default function PageNavbar() {
           zIndex: theme.zIndex.appBar,
           backgroundColor: "background.default",
           color: "text.primary",
-          borderBottom: scrolled ? "none" : `1px solid ${theme.palette.divider}`,
+          borderBottom: `1px solid ${scrolled ? "transparent" : theme.palette.divider}`,
           boxShadow: scrolled ? theme.shadows[1] : "none",
           transition: theme.transitions.create(["box-shadow", "border-bottom"], {
             duration: theme.transitions.duration.shortest,
@@ -115,7 +116,13 @@ export default function PageNavbar() {
               <Box sx={{ width: 18, height: 18, borderRadius: "4px", bgcolor: "primary.main" }} />
               <Box
                 component="span"
-                sx={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: 14, color: "primary.main" }}
+                sx={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  "@media (min-width:1920px)": { fontSize: "16px" },
+                  color: "primary.main",
+                }}
               >
                 Iglesia
               </Box>

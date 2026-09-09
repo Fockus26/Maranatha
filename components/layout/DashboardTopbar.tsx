@@ -52,12 +52,12 @@ export function DashboardTopbar({ onLogout }: DashboardTopbarProps) {
         alignItems: "center",
         justifyContent: "space-between",
         height: 72,
-        px: { xs: 3, md: 5 },
+        px: { xs: 2, sm: 3, md: 5 },
         borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 3, md: 5 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1.5, sm: 3, md: 5 }, minWidth: 0 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, flexShrink: 0 }}>
           <Box sx={{ width: 18, height: 18, borderRadius: "4px", bgcolor: "secondary.main" }} />
           <Typography
             component="span"
@@ -67,7 +67,11 @@ export function DashboardTopbar({ onLogout }: DashboardTopbarProps) {
           </Typography>
         </Box>
 
-        <Box component="nav" sx={{ display: "flex", gap: 0.75 }}>
+        {/* Fase 08: padding horizontal de las píldoras y gap entre ellas se
+            reducen en mobile para que el topbar (logo + nav + acciones) no
+            desborde en viewports angostos (~360px) — la barra sigue siendo
+            una sola fila, sin colapsar a un menú hamburguesa. */}
+        <Box component="nav" sx={{ display: "flex", gap: { xs: 0.5, sm: 0.75 }, minWidth: 0 }}>
           {NAV_ITEMS.map((item) => {
             const isActive =
               pathname === item.href || (item.href !== "/dashboard" && (pathname?.startsWith(`${item.href}/`) ?? false));
@@ -78,7 +82,7 @@ export function DashboardTopbar({ onLogout }: DashboardTopbarProps) {
                 href={item.href}
                 sx={{
                   position: "relative",
-                  px: 2.5,
+                  px: { xs: 1.5, sm: 2.5 },
                   py: 1.1,
                   borderRadius: "999px",
                   textDecoration: "none",
@@ -122,12 +126,14 @@ export function DashboardTopbar({ onLogout }: DashboardTopbarProps) {
         </Box>
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}>
         <ThemeToggle
           size="small"
           sx={{ color: "rgba(255,255,255,0.75)", "&:hover": { backgroundColor: "rgba(255,255,255,0.08)", color: ON_DARK } }}
         />
-        <Box sx={{ width: "1px", height: 24, bgcolor: "rgba(255,255,255,0.15)" }} />
+        {/* Divisor puramente decorativo — se oculta en mobile para ganar
+            espacio en el topbar (fase 08). */}
+        <Box sx={{ display: { xs: "none", sm: "block" }, width: "1px", height: 24, bgcolor: "rgba(255,255,255,0.15)" }} />
         <Box
           sx={{
             width: 32,

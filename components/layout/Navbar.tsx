@@ -110,7 +110,13 @@ export default function Navbar() {
               <Box sx={{ width: 18, height: 18, borderRadius: "4px", bgcolor: "primary.main" }} />
               <Box
                 component="span"
-                sx={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: 14, color: "primary.main" }}
+                sx={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  "@media (min-width:1920px)": { fontSize: "16px" },
+                  color: "primary.main",
+                }}
               >
                 Iglesia
               </Box>
@@ -130,6 +136,7 @@ export default function Navbar() {
                       fontFamily: "var(--font-body)",
                       fontWeight: 500,
                       fontSize: 13,
+                      "@media (min-width:1920px)": { fontSize: "15px" },
                       textDecoration: "none",
                       color: isActive ? "text.primary" : "text.secondary",
                       pb: 0.25,

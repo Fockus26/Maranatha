@@ -14,13 +14,15 @@ export interface AmountSelectorProps {
   onChange: (amount: number) => void;
   customLabel?: string;
   error?: boolean;
+  /** Fase 09 (D067) — mensaje bajo el campo cuando `error` está activo. */
+  helperText?: string;
 }
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("es", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 }
 
-export function AmountSelector({ presets, onChange, customLabel = "Otro monto", error }: AmountSelectorProps) {
+export function AmountSelector({ presets, onChange, customLabel = "Otro monto", error, helperText }: AmountSelectorProps) {
   const theme = useTheme();
   const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
@@ -122,6 +124,7 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
         value={customAmount}
         onChange={(e) => handleCustomChange(e.target.value)}
         error={error}
+        helperText={error ? helperText : undefined}
         sx={{
           // Placeholder/valor del input más chico — el default de MUI (16px)
           // se veía "muy grande" para el cliente en un campo de una sola

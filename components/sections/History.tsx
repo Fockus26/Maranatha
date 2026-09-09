@@ -79,6 +79,7 @@ export function History() {
                 fontFamily: "var(--font-body)",
                 fontWeight: 500,
                 fontSize: 11,
+                "@media (min-width:1920px)": { fontSize: "13px" },
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 color: "secondary.main",
@@ -94,6 +95,7 @@ export function History() {
                 fontFamily: "var(--font-heading)",
                 fontWeight: 700,
                 fontSize: { xs: "28px", md: "38px" },
+                "@media (min-width:1920px)": { fontSize: "46px" },
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
                 color: "text.primary",
@@ -107,12 +109,13 @@ export function History() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
+                "@media (min-width:1920px)": { fontSize: "19px" },
                 lineHeight: 1.6,
                 color: "text.secondary",
               }}
             >
-              De un grupo pequeño a una familia que crece cada año. Este es solo un resumen —
-              conoce el camino completo.
+              De un grupo pequeño a una familia que crece cada año, en cinco áreas de servicio
+              y una sola comunidad.
             </Typography>
           </Box>
         </Reveal>

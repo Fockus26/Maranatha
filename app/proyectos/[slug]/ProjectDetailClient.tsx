@@ -78,7 +78,8 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
         open={contributeOpen}
         onClose={() => setContributeOpen(false)}
         maxWidth="xs"
-        slotProps={{ paper: { sx: { backgroundImage: "none" } } }}
+        fullWidth
+        slotProps={{ paper: { sx: { backgroundImage: "none", m: { xs: 2, sm: 4 } } } }}
       >
         <IconButton
           onClick={() => setContributeOpen(false)}
@@ -87,7 +88,7 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
         >
           <CloseRoundedIcon fontSize="small" />
         </IconButton>
-        <DialogContent sx={{ p: 4, display: "flex", justifyContent: "center" }}>
+        <DialogContent sx={{ p: { xs: 2.5, sm: 4 }, display: "flex", justifyContent: "center" }}>
           <ProjectContributionForm
             projectTitle={project.title}
             projectImageUrl={project.imageUrl}

@@ -111,7 +111,6 @@ export function TitheModal() {
       open={open}
       onClose={closeTithe}
       fullScreen
-      scroll="body"
       slotProps={{
         paper: {
           // `elevation: 0` es la parte que realmente importa acá: el Dialog
@@ -126,7 +125,22 @@ export function TitheModal() {
           elevation: 0,
           sx: {
             position: "relative",
-            overflow: "hidden",
+            // Segunda revisión de este fix (feedback de cliente): la versión
+            // anterior combinaba `scroll="body"` con `fullScreen` para
+            // resolver el recorte de contenido en mobile — pero esa
+            // combinación es una conocida rareza de MUI: la clase que
+            // `scroll="body"` le agrega al Paper (`display: inline-block`,
+            // para centrarlo dentro del body) pisaba el `width: 100%` que
+            // `fullScreen` necesita, y el modal quedaba angosto (ajustado al
+            // contenido) en vez de ocupar todo el ancho. Se quita
+            // `scroll="body"` del todo — con el `scroll="paper"` default de
+            // MUI, el propio Paper `fullScreen` (ya 100% ancho/alto por su
+            // clase nativa) es el que scrollea internamente
+            // (`overflowY: "auto"`) cuando el contenido no entra, sin
+            // ninguna clase adicional que le achique el ancho.
+            width: "100%",
+            height: "100%",
+            overflowY: "auto",
             backgroundColor: "#060A1D",
             borderRadius: 0,
             m: 0,
@@ -231,8 +245,14 @@ export function TitheModal() {
               Tu diezmo y tus aportes sostienen esta obra
             </Typography>
 
+            {/* Feedback de cliente: en mobile este párrafo empujaba el
+                formulario más abajo sin aportar tanto como el heading — se
+                quita por debajo de `md` para que el modal quede más
+                compacto; desde `md` (donde hay espacio de sobra al lado del
+                formulario) se mantiene. */}
             <Typography
               sx={{
+                display: { xs: "none", md: "block" },
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
                 lineHeight: 1.6,

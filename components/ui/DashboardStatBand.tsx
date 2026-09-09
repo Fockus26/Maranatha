@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Skeleton from "@mui/material/Skeleton";
 import { keyframes } from "@mui/material/styles";
 import { primary } from "@/theme/tokens";
 
@@ -18,6 +19,8 @@ export interface DashboardStat {
 
 export interface DashboardStatBandProps {
   stats: DashboardStat[];
+  /** Fase 09 (D067) — skeleton en vez de las cifras mientras carga. */
+  loading?: boolean;
 }
 
 /**
@@ -27,7 +30,7 @@ export interface DashboardStatBandProps {
  * geométrico en pan continuo ya usado en `TitheModal.tsx` (D048/D057) en
  * vez de inventar una textura nueva — mismo lenguaje "wow" de marca.
  */
-export function DashboardStatBand({ stats }: DashboardStatBandProps) {
+export function DashboardStatBand({ stats, loading }: DashboardStatBandProps) {
   return (
     <Box
       sx={{
@@ -69,16 +72,24 @@ export function DashboardStatBand({ stats }: DashboardStatBandProps) {
             >
               {stat.label}
             </Typography>
-            <Typography
-              sx={{
-                fontFamily: "var(--font-heading)",
-                fontWeight: 800,
-                fontSize: { xs: 26, md: 34 },
-                color: stat.accent ? "secondary.main" : "#F5F6FA",
-              }}
-            >
-              {stat.value}
-            </Typography>
+            {loading ? (
+              <Skeleton
+                variant="text"
+                width={90}
+                sx={{ fontSize: { xs: 26, md: 34 }, bgcolor: "rgba(245,246,250,0.12)" }}
+              />
+            ) : (
+              <Typography
+                sx={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 800,
+                  fontSize: { xs: 26, md: 34 },
+                  color: stat.accent ? "secondary.main" : "#F5F6FA",
+                }}
+              >
+                {stat.value}
+              </Typography>
+            )}
           </Box>
         ))}
       </Box>

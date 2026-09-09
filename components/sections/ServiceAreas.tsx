@@ -95,6 +95,7 @@ export function ServiceAreas() {
                 textTransform: "uppercase",
                 color: "secondary.main",
                 mb: 1.5,
+                "@media (min-width:1920px)": { fontSize: "13px" },
               }}
             >
               Cómo servimos
@@ -106,6 +107,11 @@ export function ServiceAreas() {
                 fontFamily: "var(--font-heading)",
                 fontWeight: 700,
                 fontSize: { xs: "28px", md: "38px" },
+                // Feedback de cliente: tipografía más grande en pantallas
+                // ≥1920px — este heading/copy se repite igual en el resto
+                // de secciones de Home (Leaders, Sermons, SocialLinks,
+                // Agenda, History).
+                "@media (min-width:1920px)": { fontSize: "46px" },
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
                 color: "text.primary",
@@ -119,6 +125,7 @@ export function ServiceAreas() {
               sx={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
+                "@media (min-width:1920px)": { fontSize: "19px" },
                 lineHeight: 1.6,
                 color: "text.secondary",
               }}
@@ -141,8 +148,35 @@ export function ServiceAreas() {
               gap: "24px",
             }}
           >
-            {SERVICE_AREAS.map((area) => (
-              <ServiceAreaCard key={area.name} {...area} />
+            {SERVICE_AREAS.map((area, index) => (
+              // Feedback de cliente: con 5 áreas, el grid cae en columnas
+              // que no dividen 5 exacto en `sm` (2 cols) ni en `md` (3 cols)
+              // — quedaría una fila con un hueco vacío. En vez de eso, con
+              // 3 filas simétricas:
+              // - `sm` (2 columnas): fila 1 → items 1-2 normales (1 col c/u);
+              //   fila 2 → item 3 solo, ancho completo (2 cols); fila 3 →
+              //   items 4-5 normales.
+              // - `md` (3 columnas): fila 1 → item 1 (1 col) + item 2 (2
+              //   cols); fila 2 → item 3 solo, ancho completo (3 cols);
+              //   fila 3 → item 4 (2 cols) + item 5 (1 col).
+              // - `lg` (5 columnas, calzan exactas): cada una vuelve a 1 col.
+              <Box
+                key={area.name}
+                sx={{
+                  gridColumn: {
+                    sm: index === 2 ? "1 / -1" : "auto",
+                    md:
+                      index === 1 || index === 3
+                        ? "span 2"
+                        : index === 2
+                          ? "1 / -1"
+                          : "auto",
+                    lg: "auto",
+                  },
+                }}
+              >
+                <ServiceAreaCard {...area} />
+              </Box>
             ))}
           </Box>
         </Reveal>

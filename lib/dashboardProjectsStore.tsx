@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { PROJECTS } from "./projectsData";
 import type { ProjectStatus } from "@/components/ui/ProjectCard";
 import type { DashboardProjectFormValues } from "@/components/ui/DashboardProjectForm";
@@ -79,6 +79,17 @@ function seedProjects(): DashboardProject[] {
 
 interface DashboardProjectsContextValue {
   projects: DashboardProjectWithStatus[];
+  /**
+   * Fase 09 (D067) — patrón de loading elegido por el cliente entre 3
+   * opciones (skeleton screens / spinner en botón / barra superior):
+   * skeleton screens. No hay backend real todavía (D045), así que no hay
+   * ninguna espera real que mostrar hoy — se simula una carga inicial breve
+   * (600ms) al montar el Provider, únicamente para dejar el patrón
+   * implementado y listo para cuando exista un fetch real; `DashboardTable`
+   * y `DashboardStatBand` leen este flag para renderizar sus `Skeleton` en
+   * vez de contenido.
+   */
+  isLoading: boolean;
   addProject: (values: DashboardProjectFormValues) => void;
   updateProject: (id: string, values: DashboardProjectFormValues) => void;
   deleteProject: (id: string) => void;
@@ -88,6 +99,12 @@ const DashboardProjectsContext = createContext<DashboardProjectsContextValue | n
 
 export function DashboardProjectsProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<DashboardProject[]>(() => seedProjects());
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   const addProject = useCallback((values: DashboardProjectFormValues) => {
     setProjects((prev) => [
@@ -131,8 +148,8 @@ export function DashboardProjectsProvider({ children }: { children: ReactNode })
   }, []);
 
   const value = useMemo<DashboardProjectsContextValue>(
-    () => ({ projects: projects.map(withDerived), addProject, updateProject, deleteProject }),
-    [projects, addProject, updateProject, deleteProject],
+    () => ({ projects: projects.map(withDerived), isLoading, addProject, updateProject, deleteProject }),
+    [projects, isLoading, addProject, updateProject, deleteProject],
   );
 
   return <DashboardProjectsContext.Provider value={value}>{children}</DashboardProjectsContext.Provider>;

@@ -135,12 +135,41 @@ export function getTheme(mode: PaletteMode) {
     spacing: (factor: number) => `${factor * 4}px`,
   });
 
+  // Feedback de cliente: en pantallas muy grandes (desde 1920×1080) el texto
+  // se sentía chico y costaba leer — se sube un peldaño el tamaño de los
+  // variants de `Typography` a partir de ese ancho. Es un media query fijo
+  // en px (no un breakpoint de `theme.breakpoints`, que solo llega a `xl`
+  // 1536) aplicado directamente en la definición de cada variant.
+  //
+  // Nota: la mayoría de las secciones del sitio (Hero, ServiceAreas, Sermons,
+  // etc.) no usan estos variants — definen su tamaño de fuente directamente
+  // en `sx` con valores fijos en px, que pisan cualquier tamaño del variant.
+  // Este cambio sube el tamaño base de la tipografía de MUI (afecta a
+  // cualquier `Typography` sin `sx.fontSize` propio, y sirve de piso para
+  // futuras secciones); una pasada para subir también los tamaños fijos de
+  // cada sección a partir de 1920px queda pendiente como una ronda aparte.
+  const LARGE_SCREEN_QUERY = "@media (min-width:1920px)";
+
   return createTheme(baseTheme, {
     typography: {
-      h1: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h1.mobile } },
-      h2: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h2.mobile } },
-      h3: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h3.mobile } },
-      h4: { [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h4.mobile } },
+      h1: {
+        [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h1.mobile },
+        [LARGE_SCREEN_QUERY]: { fontSize: "72px" },
+      },
+      h2: {
+        [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h2.mobile },
+        [LARGE_SCREEN_QUERY]: { fontSize: "52px" },
+      },
+      h3: {
+        [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h3.mobile },
+        [LARGE_SCREEN_QUERY]: { fontSize: "36px" },
+      },
+      h4: {
+        [baseTheme.breakpoints.down("sm")]: { fontSize: typography.size.h4.mobile },
+        [LARGE_SCREEN_QUERY]: { fontSize: "26px" },
+      },
+      body1: { [LARGE_SCREEN_QUERY]: { fontSize: "20px" } },
+      body2: { [LARGE_SCREEN_QUERY]: { fontSize: "18px" } },
     },
     components: {
       MuiCard: {

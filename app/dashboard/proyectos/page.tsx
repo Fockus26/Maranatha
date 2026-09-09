@@ -7,8 +7,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { DashboardTable, type DashboardProjectRow } from "@/components/ui/DashboardTable";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { radius, typography } from "@/theme/tokens";
 import { useDashboardProjects } from "@/lib/dashboardProjectsStore";
 import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
@@ -33,7 +35,7 @@ import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
 
 export default function DashboardProyectosPage() {
   const theme = useTheme();
-  const { projects, deleteProject } = useDashboardProjects();
+  const { projects, isLoading, deleteProject } = useDashboardProjects();
   const { openCreate, openEdit } = useDashboardProjectModal();
   const [query, setQuery] = useState("");
 
@@ -121,22 +123,21 @@ export default function DashboardProyectosPage() {
           />
         </Box>
 
-        {filteredRows.length === 0 ? (
-          <Box
-            sx={{
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: `${radius.lg}px`,
-              backgroundColor: theme.palette.background.paper,
-              p: 5,
-              textAlign: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color: theme.palette.text.secondary }}>
-              Ningún proyecto coincide con &quot;{query}&quot;.
-            </Typography>
+        {/* Sin resultados de búsqueda (con proyectos existentes) — distinto
+            del caso "sin ningún proyecto todavía", que resuelve el propio
+            `DashboardTable` vía su prop `onCreate` (fase 09, D067). */}
+        {!isLoading && query.trim() && filteredRows.length === 0 ? (
+          <Box sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: `${radius.lg}px`, backgroundColor: theme.palette.background.paper }}>
+            <EmptyState
+              icon={SearchOffRoundedIcon}
+              title={`Ningún proyecto coincide con "${query}"`}
+              description="Probá con otro título o borrá la búsqueda."
+              ctaLabel="Limpiar búsqueda"
+              onCtaClick={() => setQuery("")}
+            />
           </Box>
         ) : (
-          <DashboardTable projects={filteredRows} onEdit={openEdit} onDelete={deleteProject} />
+          <DashboardTable projects={filteredRows} onEdit={openEdit} onDelete={deleteProject} loading={isLoading} onCreate={openCreate} />
         )}
       </Box>
     </DashboardShell>

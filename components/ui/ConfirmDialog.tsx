@@ -40,11 +40,15 @@ export function ConfirmDialog({
     // translúcido proporcional a la elevación, lo que aclara el fondo del
     // modal más de lo esperado (mismo diagnóstico que `TitheModal`, D057/D058).
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth slotProps={{ paper: { elevation: 0 } }}>
-      <DialogTitle sx={{ fontWeight: 700 }}>{title}</DialogTitle>
-      <DialogContent>
+      {/* Feedback de cliente: el modal de confirmar (usado para eliminar
+          proyecto, entre otros) se sentía "apretado" — se sube el padding
+          horizontal/vertical en las 3 secciones del dialog en vez de dejar
+          el default de MUI (16-20px). */}
+      <DialogTitle sx={{ fontWeight: 700, px: 3.5, pt: 3.5, pb: 1 }}>{title}</DialogTitle>
+      <DialogContent sx={{ px: 3.5, pb: 1 }}>
         <DialogContentText>{description}</DialogContentText>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 3 }}>
+      <DialogActions sx={{ px: 3.5, pb: 3.5, pt: 1.5 }}>
         <Button onClick={onClose} color="primary" variant="outlined">
           {cancelLabel}
         </Button>
