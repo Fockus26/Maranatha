@@ -8,8 +8,10 @@ import ButtonBase from "@mui/material/ButtonBase";
 import { alpha } from "@mui/material/styles";
 import { AnimatePresence, motion } from "framer-motion";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import PlayCircleRoundedIcon from "@mui/icons-material/PlayCircleRounded";
 import { SocialLinkCard } from "@/components/ui/SocialLinkCard";
 import { Reveal } from "@/components/ui/Reveal";
+import type { InstagramPost } from "@/lib/instagram";
 
 /**
  * Sección "Redes Sociales" (fase 06) — componente + datos en un solo
@@ -27,11 +29,10 @@ import { Reveal } from "@/components/ui/Reveal";
  * que ya resuelve el panel. Las portadas de posts pasan de 1:1 a 4:5
  * (más altura, más parecido al grid real de Instagram).
  *
- * Instagram no ofrece una API pública gratuita para traer las últimas
- * publicaciones (Graph API requiere app review + token). Las cuentas,
- * handles y el botón "Seguir" apuntan a los perfiles reales; las 4 celdas
- * del grid son ventanas decorativas al perfil (cada una lo abre en una
- * pestaña nueva), no capturas de posts individuales.
+ * Últimas publicaciones: si la cuenta tiene un feed de Behold.so configurado
+ * (`postsByAccount`, resuelto en `app/page.tsx` desde `lib/instagram.ts`) se
+ * muestran los posts reales — reels incluidos, con badge de video y link al
+ * post en Instagram. Sin feed configurado, las celdas son ventanas al perfil.
  */
 
 const IG = "https://www.instagram.com";
@@ -75,9 +76,10 @@ const ACCOUNTS = [
   },
 ] as const;
 
-export function SocialLinks() {
+export function SocialLinks({ postsByAccount }: { postsByAccount?: Record<string, InstagramPost[]> }) {
   const [activeId, setActiveId] = useState<(typeof ACCOUNTS)[number]["id"]>(ACCOUNTS[0].id);
   const active = ACCOUNTS.find((a) => a.id === activeId) ?? ACCOUNTS[0];
+  const posts = postsByAccount?.[active.id] ?? [];
 
   return (
     <Box component="section" id="redes" sx={{ py: { xs: 8, md: 12 } }}>
@@ -218,46 +220,105 @@ export function SocialLinks() {
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
-            gap: "16px",
-          }}
-        >
-          {active.gradients.map((gradient, i) => (
-            <Box
-              key={`${active.id}-${i}`}
-              component="a"
-              href={active.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Abrir el perfil de Instagram de ${active.label} (pestaña nueva)`}
-              sx={{
-                position: "relative",
-                display: "block",
-                aspectRatio: "4 / 5",
-                borderRadius: "10px",
-                overflow: "hidden",
-                border: "1px solid",
-                borderColor: "divider",
-                transition: "border-color 0.2s ease",
-                "&:hover": { borderColor: "secondary.main" },
-              }}
-            >
-              <Box sx={{ position: "absolute", inset: 0, background: gradient }} />
-              <InstagramIcon
-                sx={{
-                  position: "absolute",
-                  bottom: 8,
-                  right: 8,
-                  fontSize: 16,
-                  color: "rgba(245,246,250,0.85)",
-                }}
-              />
-            </Box>
-          ))}
-        </Box>
+        <AnimatePresence mode="wait">
+          <Box
+            key={active.id}
+            component={motion.div}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.18 }}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+              gap: "16px",
+            }}
+          >
+            {posts.length > 0
+              ? posts.map((post) => (
+                  <Box
+                    key={post.id}
+                    component="a"
+                    href={post.permalink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={
+                      post.caption
+                        ? `${post.isReel ? "Reel" : "Publicación"} de Instagram: ${post.caption.slice(0, 80)}`
+                        : `${post.isReel ? "Reel" : "Publicación"} de Instagram de ${active.label}`
+                    }
+                    sx={{
+                      position: "relative",
+                      display: "block",
+                      aspectRatio: "4 / 5",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "1px solid",
+                      borderColor: "divider",
+                      backgroundColor: "action.hover",
+                      transition: "border-color 0.2s ease",
+                      "&:hover": { borderColor: "secondary.main" },
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={post.thumbnail}
+                      alt=""
+                      loading="lazy"
+                      sx={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    {post.isVideo && (
+                      <PlayCircleRoundedIcon
+                        sx={{
+                          position: "absolute",
+                          top: 8,
+                          right: 8,
+                          fontSize: 20,
+                          color: "#F5F6FA",
+                          filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))",
+                        }}
+                      />
+                    )}
+                    <InstagramIcon
+                      sx={{
+                        position: "absolute",
+                        bottom: 8,
+                        right: 8,
+                        fontSize: 16,
+                        color: "#F5F6FA",
+                        filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))",
+                      }}
+                    />
+                  </Box>
+                ))
+              : active.gradients.map((gradient, i) => (
+                  <Box
+                    key={`${active.id}-${i}`}
+                    component="a"
+                    href={active.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Abrir el perfil de Instagram de ${active.label} (pestaña nueva)`}
+                    sx={{
+                      position: "relative",
+                      display: "block",
+                      aspectRatio: "4 / 5",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "1px solid",
+                      borderColor: "divider",
+                      transition: "border-color 0.2s ease",
+                      "&:hover": { borderColor: "secondary.main" },
+                    }}
+                  >
+                    <Box sx={{ position: "absolute", inset: 0, background: gradient }} />
+                    <InstagramIcon
+                      sx={{ position: "absolute", bottom: 8, right: 8, fontSize: 16, color: "rgba(245,246,250,0.85)" }}
+                    />
+                  </Box>
+                ))}
+          </Box>
+        </AnimatePresence>
         </Reveal>
       </Container>
     </Box>

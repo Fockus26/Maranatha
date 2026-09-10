@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import { sora, ibmPlexSans } from "../theme/fonts";
 import ThemeRegistry from "../theme/ThemeRegistry";
+import { Analytics } from "@vercel/analytics/next";
 import { TitheModalProvider } from "@/lib/titheModalStore";
 import { TitheModal } from "@/components/ui/TitheModal";
 import { SITE_URL, SITE_NAME, SITE_TITLE_DEFAULT, SITE_DESCRIPTION, SITE_LOCALE } from "@/lib/siteConfig";
@@ -56,6 +57,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <TitheModal />
           </TitheModalProvider>
         </ThemeRegistry>
+        <Analytics />
       </body>
     </html>
   );

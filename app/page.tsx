@@ -12,6 +12,7 @@ import { PhotoAnchorBand } from "@/components/ui/PhotoAnchorBand";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, webSiteJsonLd, sermonsJsonLd } from "@/lib/jsonLd";
 import { getLatestSermons } from "@/lib/youtube";
+import { getAllInstagramPosts } from "@/lib/instagram";
 
 export const metadata: Metadata = {
   // El title queda como el `default` de la plantilla (app/layout.tsx).
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
  * stat) placeholder, mismo criterio que el resto del sitio.
  */
 export default async function Home() {
-  const sermons = await getLatestSermons(3);
+  const [sermons, instagramPosts] = await Promise.all([getLatestSermons(3), getAllInstagramPosts(4)]);
   const sermonsLd = sermonsJsonLd(sermons);
 
   return (
@@ -44,7 +45,7 @@ export default async function Home() {
       />
       <Leaders />
       <Sermons videos={sermons} />
-      <SocialLinks />
+      <SocialLinks postsByAccount={instagramPosts} />
       <Agenda />
       <PhotoAnchorBand
         eyebrow="Nuestra historia"
