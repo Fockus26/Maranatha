@@ -1,12 +1,10 @@
 /**
- * Builders de JSON-LD (schema.org) — fase QA (SEO).
- *
- * Solo se describe contenido que está visible en la página correspondiente.
- * Datos de contacto/redes son placeholders (ver `siteConfig.ts` y
- * CONTENT_CHECKLIST.md) — cuando el cliente entregue los reales, se
- * reemplazan aquí y se refleja en todas las páginas a la vez.
+ * Builders de JSON-LD (schema.org). Solo se describe contenido visible en la
+ * página. El email de contacto sigue siendo placeholder (ver
+ * CONTENT_CHECKLIST.md); las redes ya son las reales.
  */
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_SOCIAL_LINKS } from "./siteConfig";
+import type { SermonVideo } from "./youtube";
 
 /** Organización — se usa en Home. `@type: Church` es subtipo de PlaceOfWorship. */
 export function organizationJsonLd(): Record<string, unknown> {
@@ -33,6 +31,29 @@ export function webSiteJsonLd(): Record<string, unknown> {
     url: `${SITE_URL}/`,
     inLanguage: "es",
     publisher: { "@id": `${SITE_URL}/#organization` },
+  };
+}
+
+/** Lista de videos de la sección Prédicas (visible en Home). */
+export function sermonsJsonLd(videos: SermonVideo[]): Record<string, unknown> | null {
+  const real = videos.filter((v) => !v.videoId.startsWith("sermon-placeholder"));
+  if (real.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `Últimas prédicas de ${SITE_NAME}`,
+    itemListElement: real.map((v, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "VideoObject",
+        name: v.title,
+        uploadDate: v.publishedIso,
+        thumbnailUrl: `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`,
+        embedUrl: `https://www.youtube-nocookie.com/embed/${v.videoId}`,
+        url: `https://www.youtube.com/watch?v=${v.videoId}`,
+      },
+    })),
   };
 }
 

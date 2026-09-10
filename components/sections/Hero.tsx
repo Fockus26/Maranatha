@@ -189,7 +189,10 @@ export function Hero() {
       </IconButton>
 
       <Container maxWidth="lg" sx={{ position: "relative", pt: { xs: 14, md: 10 }, pb: { xs: 8, md: 10 } }}>
-        <Box sx={{ maxWidth: 580 }}>
+        {/* En pantallas grandes el bloque se ensancha para acompañar el
+            headline más grande (64px) — antes quedaba encajado en 580px y el
+            título se recortaba a 3 líneas apretadas. */}
+        <Box sx={{ maxWidth: { xs: 580, xl: 720 }, "@media (min-width:1920px)": { maxWidth: 860 } }}>
           {/* Barras de progreso — indican slide activo y navegan (botones reales).
               + control de pausa/reproducción del autoplay (WCAG 2.2.2). */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 5, maxWidth: 260 }}>
@@ -282,19 +285,19 @@ export function Hero() {
                 sx={{
                   fontFamily: "var(--font-heading)",
                   fontWeight: 800,
-                  fontSize: { xs: "34px", md: "52px" },
-                  // Feedback de cliente: en pantallas ≥1920px el texto se
-                  // sentía chico — se sube un peldaño más allá de lo que
-                  // cubre el breakpoint `md`.
+                  fontSize: { xs: "34px", md: "52px", xl: "58px" },
+                  // En pantallas ≥1920px el texto se sentía chico — sube un
+                  // peldaño más allá de lo que cubre el breakpoint. El bloque
+                  // que lo contiene también se ensancha (ver arriba).
                   "@media (min-width:1920px)": { fontSize: "64px" },
                   lineHeight: 1.15,
                   letterSpacing: "-0.02em",
                   color: gray[50],
                   mb: 4,
-                  // Altura fija reservada para 3 líneas (el headline más largo de
-                  // los 3 slides las ocupa) — evita que el resto del contenido
-                  // (CTA, stats) salte de posición según el slide activo.
-                  minHeight: "3.45em",
+                  // Altura reservada para el headline más largo — evita que el
+                  // CTA/stats salten de posición al cambiar de slide. Con el
+                  // bloque más ancho en pantallas grandes entra en 2 líneas.
+                  minHeight: { xs: "3.45em", xl: "2.7em" },
                 }}
               >
                 {slide.headline}

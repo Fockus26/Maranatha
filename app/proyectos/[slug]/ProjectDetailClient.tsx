@@ -17,7 +17,7 @@ import { ProjectContributionForm, type ProjectContributionFormValues } from "@/c
 import type { ProjectRecord } from "@/lib/projectsData";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/jsonLd";
-import { semantic } from "@/theme/tokens";
+import { gray, semantic } from "@/theme/tokens";
 
 /**
  * Parte interactiva de la página de detalle: botón "Aportar" del sidebar
@@ -118,8 +118,8 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
           sx={{
             width: "100%",
             bgcolor: semantic.successFilled,
-            color: "#FFFFFF",
-            "& .MuiAlert-icon, & .MuiAlert-action": { color: "#FFFFFF" },
+            color: gray[50],
+            "& .MuiAlert-icon, & .MuiAlert-action": { color: gray[50] },
           }}
         >
           ¡Gracias por tu aporte a &quot;{project.title}&quot;!
