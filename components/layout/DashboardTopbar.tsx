@@ -33,7 +33,7 @@ export interface DashboardTopbarProps {
  * resta ancho al contenido, la navegación (Resumen/Proyectos) vive en una
  * barra navy horizontal — mismo navy sólido permanente, mismo criterio de
  * "ítem activo con acento de marca" que el sidebar, pero como píldora
- * (`secondary[600]`, el mismo naranja apagado de "seleccionado" ya usado en
+ * (`secondary[700]`, el mismo naranja apagado de "seleccionado" ya usado en
  * el tab de Proyectos D051 y la píldora activa del navbar público D054) en
  * vez de un acento lateral de 3px.
  */
@@ -112,7 +112,7 @@ export function DashboardTopbar({ onLogout }: DashboardTopbarProps) {
                       position: "absolute",
                       inset: 0,
                       borderRadius: "999px",
-                      bgcolor: secondary[600],
+                      bgcolor: secondary[700],
                       zIndex: 0,
                     }}
                   />

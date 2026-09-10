@@ -39,20 +39,6 @@ import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
  * (D064) — en desktop vuelve a ser un dialog centrado con alto acotado
  * (`95vh`, criterio de D060, previo a que D065 lo pasara a fullScreen sin
  * distinguir tamaño de pantalla).
- *
- * Cuarta revisión (feedback puntual, fase 09): en desktop el ancho ya no se
- * fuerza a `maxWidth="md"` + `fullWidth` (eso estiraba el Paper al ancho
- * completo del breakpoint aunque el formulario, acotado a 640px por el propio
- * `DialogContent`, no lo necesitara). `fullWidth={false}` + `maxWidth={false}`
- * en el `Dialog` evita las clases `MuiDialog-paperFullWidth`/`paperWidthMd`
- * (que son las que de verdad fijan el `width` del Paper vía CSS — `width` no
- * se puede pisar de forma confiable desde `sx` porque esas clases tienen la
- * misma especificidad y quedan declaradas después en la hoja de estilos, así
- * que un `sx.width` sin más perdía la cascada). Con ambas en `false`, el
- * `Paper` solo hereda `max-width: calc(100% - 64px)` (de `paperWidthFalse`, un
- * techo de seguridad, no un ancho fijo) y se ajusta al ancho real de su
- * contenido — el `maxWidth: 640` del propio `DialogContent`. En mobile no
- * cambia nada: `fullScreen` sigue ocupando todo el ancho/alto de la pantalla.
  */
 export function DashboardProjectModal() {
   const theme = useTheme();
@@ -89,17 +75,15 @@ export function DashboardProjectModal() {
       open={open}
       onClose={close}
       fullScreen={isMobile}
-      fullWidth={false}
-      maxWidth={isMobile ? undefined : false}
+      fullWidth={!isMobile}
+      maxWidth={isMobile ? undefined : "md"}
       slotProps={{
         // `elevation: 0` — mismo diagnóstico que `TitheModal`/`ConfirmDialog`
         // (D057/D058/D061): sin esto, el overlay blanco automático de MUI en
         // modo oscuro aclaraba el fondo del modal más de lo esperado.
         paper: {
           elevation: 0,
-          sx: isMobile
-            ? { borderRadius: 0 }
-            : { height: "95vh", maxHeight: "95vh", width: "auto" },
+          sx: isMobile ? { borderRadius: 0 } : { height: "95vh", maxHeight: "95vh" },
         },
       }}
     >
@@ -119,7 +103,7 @@ export function DashboardProjectModal() {
       >
         <CloseRoundedIcon fontSize="small" />
       </IconButton>
-      <DialogContent sx={{ p: { xs: 3, sm: 5 }, pt: { xs: 6, sm: 6.5 }, maxWidth: 640, mx: "auto", width: "auto" }}>
+      <DialogContent sx={{ p: { xs: 3, sm: 5 }, pt: { xs: 6, sm: 6.5 }, maxWidth: 640, mx: "auto", width: "100%" }}>
         <DashboardProjectForm
           key={editingId ?? "new"}
           bare

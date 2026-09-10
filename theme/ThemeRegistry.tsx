@@ -3,6 +3,7 @@
 import * as React from "react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { ThemeProvider, CssBaseline, type PaletteMode } from "@mui/material";
+import { MotionConfig } from "framer-motion";
 import { getTheme } from "./theme";
 
 const STORAGE_KEY = "color-mode";
@@ -93,7 +94,11 @@ export default function ThemeRegistry({ children, initialMode }: ThemeRegistryPr
       <ColorModeContext.Provider value={contextValue}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {children}
+          {/* `reducedMotion="user"` — respeta `prefers-reduced-motion` en TODA
+              animación de framer-motion sin tener que consultarlo componente
+              por componente (fase QA — cubre los tabs de `/proyectos` y
+              `DashboardTable`, que no lo hacían). */}
+          <MotionConfig reducedMotion="user">{children}</MotionConfig>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </AppRouterCacheProvider>

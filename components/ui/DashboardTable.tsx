@@ -11,7 +11,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import { AnimatePresence, motion } from "framer-motion";
-import { radius, secondary } from "@/theme/tokens";
+import { radius, secondary, semantic } from "@/theme/tokens";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import type { ProjectStatus } from "./ProjectCard";
@@ -60,7 +60,11 @@ function formatCurrency(value: number) {
 }
 
 function progressOf(row: DashboardProjectRow) {
-  return Math.min((row.currentAmount / row.goalAmount) * 100, 100);
+  // Fase QA (functional-qa): acota a 0-100. Sin el piso en 0, un
+  // `currentAmount` negativo mostraba "-80%" en la tabla; sin el techo, uno
+  // mayor a la meta pasaba de 100. Un `goalAmount` de 0 daría NaN → 0.
+  const raw = (row.currentAmount / row.goalAmount) * 100;
+  return Number.isFinite(raw) ? Math.min(Math.max(raw, 0), 100) : 0;
 }
 
 const SKELETON_ROWS = [0, 1, 2];
@@ -231,7 +235,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                   component={motion.div}
                   layout
                   initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: isCompleted ? 0.6 : 1, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.28, ease: EASE }}
                   sx={{
@@ -262,7 +266,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                         // que se pasa a fondo sólido + texto blanco, mismo
                         // criterio de contraste que la píldora del topbar
                         // (D060/D061).
-                        backgroundColor: isCompleted ? theme.palette.success.main : secondary[600],
+                        backgroundColor: isCompleted ? semantic.successFilled : secondary[700],
                         color: "#FFFFFF",
                       }}
                     >
@@ -274,6 +278,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                       <LinearProgress
                         variant="determinate"
                         value={percent}
+                        aria-label={`${row.title}: ${Math.round(percent)}% recaudado`}
                         color={isCompleted ? "success" : "secondary"}
                         sx={{ width: 80, height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                       />
@@ -294,6 +299,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                         <IconButton
                           size="small"
                           onClick={() => onEdit(row.id)}
+                          aria-label={`Editar ${row.title}`}
                           sx={{
                             border: `1px solid ${theme.palette.divider}`,
                             borderRadius: `${radius.sm}px`,
@@ -307,6 +313,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                       <IconButton
                         size="small"
                         onClick={() => setDeleteTarget(row)}
+                        aria-label={`Eliminar ${row.title}`}
                         sx={{
                           border: `1px solid ${theme.palette.divider}`,
                           borderRadius: `${radius.sm}px`,
@@ -365,7 +372,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                 component={motion.div}
                 layout
                 initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: isCompleted ? 0.6 : 1, scale: 1 }}
+                animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.28, ease: EASE }}
                 sx={{
@@ -390,7 +397,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                       px: 1.75,
                       py: 0.4,
                       whiteSpace: "nowrap",
-                      backgroundColor: isCompleted ? theme.palette.success.main : secondary[600],
+                      backgroundColor: isCompleted ? semantic.successFilled : secondary[700],
                       color: "#FFFFFF",
                     }}
                   >
@@ -402,6 +409,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                   <LinearProgress
                     variant="determinate"
                     value={percent}
+                    aria-label={`${row.title}: ${Math.round(percent)}% recaudado`}
                     color={isCompleted ? "success" : "secondary"}
                     sx={{ flex: 1, height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                   />

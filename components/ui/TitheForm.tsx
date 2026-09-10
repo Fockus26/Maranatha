@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { AnimatePresence, animate, motion } from "framer-motion";
 import { typography } from "@/theme/tokens";
+import { isValidEmail } from "@/lib/validation";
 import { AmountSelector } from "./AmountSelector";
 import { DonationFormCard } from "./DonationFormCard";
 import { SegmentedToggle } from "./SegmentedToggle";
@@ -96,20 +97,25 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const amountValid = amount > 0;
   const nameValid = name.trim().length > 0;
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailValid = isValidEmail(email);
   const formValid = amountValid && nameValid && emailValid;
   const displayAmount = useAnimatedAmount(amount);
 
-  function handleSubmit() {
+  function handleSubmit(event?: FormEvent) {
+    event?.preventDefault();
     setTouched(true);
-    if (!formValid) return;
-    onSubmit({ type, amount, frequency, name, email });
+    if (!formValid || submitting) return;
+    // Guard contra doble/triple submit (fase QA — functional-qa).
+    setSubmitting(true);
+    onSubmit({ type, amount, frequency, name: name.trim(), email: email.trim() });
   }
 
   return (
+    <Box component="form" noValidate onSubmit={handleSubmit}>
     <DonationFormCard width={width}>
       <Box sx={{ textAlign: "center", pb: 4.5, mb: 4.5, borderBottom: `1px solid ${theme.palette.divider}` }}>
         {/*
@@ -209,10 +215,11 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
       </Box>
 
       <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, mt: 4.5, pt: 4.5 }}>
-        <Button fullWidth variant="contained" color="secondary" onClick={handleSubmit}>
+        <Button fullWidth type="submit" variant="contained" color="secondary" disabled={submitting}>
           Continuar al pago
         </Button>
       </Box>
     </DonationFormCard>
+    </Box>
   );
 }

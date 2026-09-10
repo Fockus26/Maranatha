@@ -64,10 +64,10 @@ export default function DashboardProyectosPage() {
 
   return (
     <DashboardShell>
-      <Box sx={{ px: { xs: 3, md: 5 }, pt: { xs: "32px", md: "48px" }, pb: 5 }}>
+      <Box sx={{ px: { xs: 3, md: 5 }, pt: { xs: "32px", md: "48px" }, pb: 5, maxWidth: 1400, mx: "auto" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 4, flexWrap: "wrap", gap: 2 }}>
           <Box>
-            <Typography sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 800, fontSize: 26, color: theme.palette.text.primary, mb: 0.5 }}>
+            <Typography component="h1" sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 800, fontSize: 26, color: theme.palette.text.primary, mb: 0.5 }}>
               Proyectos
             </Typography>
             <Typography sx={{ fontSize: 13, color: theme.palette.text.secondary }}>

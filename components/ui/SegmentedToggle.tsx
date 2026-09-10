@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useRef, type KeyboardEvent } from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
@@ -42,11 +42,29 @@ export function SegmentedToggle<T extends string>({
 }: SegmentedToggleProps<T>) {
   const theme = useTheme();
   const layoutId = useId();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Patrón APG "radio group": flechas mueven la selección, el foco sigue al
+  // control seleccionado (roving tabindex — solo el activo es tabbable).
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const currentIndex = options.findIndex((o) => o.value === value);
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (currentIndex + 1) % options.length;
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (currentIndex - 1 + options.length) % options.length;
+    else return;
+    event.preventDefault();
+    const next = options[nextIndex];
+    onChange(next.value);
+    const nodes = containerRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
+    nodes?.[nextIndex]?.focus();
+  }
 
   return (
     <Box
+      ref={containerRef}
       role="radiogroup"
       aria-label={ariaLabel}
+      onKeyDown={handleKeyDown}
       sx={{
         display: "grid",
         gridTemplateColumns: `repeat(${options.length}, 1fr)`,
@@ -62,13 +80,18 @@ export function SegmentedToggle<T extends string>({
         return (
           <Box
             key={option.value}
+            component="button"
+            type="button"
             role="radio"
             aria-checked={active}
+            tabIndex={active ? 0 : -1}
             onClick={() => onChange(option.value)}
             sx={{
               position: "relative",
               textAlign: "center",
               py: 1,
+              border: "none",
+              background: "transparent",
               borderRadius: `${Math.max(radius.sm - 3, 4)}px`,
               fontFamily: "var(--font-body)",
               fontSize: "13px",

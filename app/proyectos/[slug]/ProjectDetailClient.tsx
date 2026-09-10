@@ -15,6 +15,9 @@ import { ProjectDetailContent } from "@/components/ui/ProjectDetailContent";
 import { ProjectSidebar } from "@/components/ui/ProjectSidebar";
 import { ProjectContributionForm, type ProjectContributionFormValues } from "@/components/ui/ProjectContributionForm";
 import type { ProjectRecord } from "@/lib/projectsData";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/jsonLd";
+import { semantic } from "@/theme/tokens";
 
 /**
  * Parte interactiva de la página de detalle: botón "Aportar" del sidebar
@@ -41,9 +44,16 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Proyectos", path: "/proyectos" },
+          { name: project.title, path: `/proyectos/${project.slug}` },
+        ])}
+      />
       <PageNavbar />
 
-      <Box component="main" sx={{ py: { xs: 6, md: 9 } }}>
+      <Box component="main" id="main-content" sx={{ py: { xs: 6, md: 9 } }}>
         <Container maxWidth="lg">
           <Box
             sx={{
@@ -79,6 +89,7 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
         onClose={() => setContributeOpen(false)}
         maxWidth="xs"
         fullWidth
+        aria-label={`Aportar a "${project.title}"`}
         slotProps={{ paper: { sx: { backgroundImage: "none", m: { xs: 2, sm: 4 } } } }}
       >
         <IconButton
@@ -100,7 +111,17 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
       </Dialog>
 
       <Snackbar open={confirmed} autoHideDuration={5000} onClose={() => setConfirmed(false)}>
-        <Alert onClose={() => setConfirmed(false)} severity="success" variant="filled" sx={{ width: "100%" }}>
+        <Alert
+          onClose={() => setConfirmed(false)}
+          severity="success"
+          variant="filled"
+          sx={{
+            width: "100%",
+            bgcolor: semantic.successFilled,
+            color: "#FFFFFF",
+            "& .MuiAlert-icon, & .MuiAlert-action": { color: "#FFFFFF" },
+          }}
+        >
           ¡Gracias por tu aporte a &quot;{project.title}&quot;!
         </Alert>
       </Snackbar>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type MouseEvent } from "react";
+import { useId, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
@@ -27,6 +27,7 @@ const EASE = [0.2, 0.8, 0.2, 1] as const;
 const WEEKDAY_LABELS = ["L", "M", "X", "J", "V", "S", "D"];
 const MONTH_FORMATTER = new Intl.DateTimeFormat("es", { month: "long", year: "numeric" });
 const DISPLAY_FORMATTER = new Intl.DateTimeFormat("es", { day: "numeric", month: "short", year: "numeric" });
+const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("es", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
 function parseValue(value: string): Date | null {
   if (!value) return null;
@@ -82,7 +83,8 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
   const [open, setOpen] = useState(false);
   const selected = parseValue(value);
   const [viewDate, setViewDate] = useState<Date>(selected ?? new Date());
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+  const labelId = useId();
 
   function toggleOpen(e: MouseEvent) {
     e.stopPropagation();
@@ -91,6 +93,13 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
       if (next) setViewDate(selected ?? new Date());
       return next;
     });
+  }
+
+  function handleTriggerKeyDown(e: KeyboardEvent) {
+    if (e.key === "Escape" && open) {
+      e.stopPropagation();
+      setOpen(false);
+    }
   }
 
   const today = new Date();
@@ -110,7 +119,8 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
   return (
     <Box>
       <Box
-        component="label"
+        component="span"
+        id={labelId}
         sx={{
           display: "block",
           fontSize: "12px",
@@ -124,9 +134,18 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
 
       <Box
         ref={anchorRef}
+        component="button"
+        type="button"
         onClick={toggleOpen}
+        onKeyDown={handleTriggerKeyDown}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-labelledby={labelId}
+        aria-invalid={error || undefined}
+        aria-describedby={error && helperText ? `${labelId}-error` : undefined}
         sx={{
           display: "flex",
+          width: "100%",
           alignItems: "center",
           justifyContent: "space-between",
           gap: 1,
@@ -154,7 +173,12 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
       </Box>
 
       {error && helperText && (
-        <Box component="p" sx={{ m: 0, mt: 0.75, ml: 1.75, fontSize: "12px", color: theme.palette.error.main }}>
+        <Box
+          component="p"
+          id={`${labelId}-error`}
+          role="alert"
+          sx={{ m: 0, mt: 0.75, ml: 1.75, fontSize: "12px", color: theme.palette.error.main }}
+        >
           {helperText}
         </Box>
       )}
@@ -169,6 +193,14 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
         <ClickAwayListener onClickAway={() => setOpen(false)}>
           <Box
             component={motion.div}
+            role="dialog"
+            aria-label={`${label} — elegir fecha`}
+            onKeyDown={(e: KeyboardEvent) => {
+              if (e.key === "Escape") {
+                setOpen(false);
+                anchorRef.current?.focus();
+              }
+            }}
             initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.16, ease: EASE }}
@@ -224,6 +256,9 @@ export function DateField({ label, value, onChange, error, helperText }: DateFie
                     component="button"
                     type="button"
                     onClick={() => selectDay(day)}
+                    aria-label={FULL_DATE_FORMATTER.format(day)}
+                    aria-pressed={isSelected}
+                    aria-current={isToday ? "date" : undefined}
                     sx={{
                       width: "100%",
                       aspectRatio: "1 / 1",

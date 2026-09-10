@@ -12,7 +12,9 @@ export interface TimelineItemProps {
   progress: number;
 }
 
-const RAMP_LIGHT = [primary[700], primary[500], secondary[700], secondary[500]] as const;
+// El último paso era `secondary[500]` (#F9750D) — a 40px sobre fondo claro
+// da 2.7:1 (mín. 3:1). `secondary[700]` lo sube a ~5.9:1.
+const RAMP_LIGHT = [primary[700], primary[500], secondary[700], secondary[700]] as const;
 const RAMP_DARK = [primary[300], primary[200], secondary[300], secondary[500]] as const;
 
 function hexToRgb(hex: string): [number, number, number] {

@@ -52,15 +52,21 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
           return (
             <Box
               key={value}
+              component="button"
+              type="button"
               onClick={() => handlePresetClick(value)}
+              aria-pressed={active}
+              aria-label={`Monto ${formatCurrency(value)}`}
               sx={{
                 position: "relative",
                 textAlign: "center",
                 py: 2.5,
                 borderRadius: `${radius.sm}px`,
+                fontFamily: "var(--font-body)",
                 fontSize: "13px",
                 fontWeight: 500,
                 cursor: "pointer",
+                backgroundColor: "transparent",
                 // Borde y texto ya no dependen de una animación compartida
                 // entre presets (ver abajo) — cambian de golpe, es el fondo
                 // el que hace la transición.
@@ -68,11 +74,11 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
                 // El texto del preset activo usaba `secondary.dark`
                 // (#B34C02) sobre el fondo naranja translúcido — el cliente
                 // lo vio "sucio" (un naranja quemado/marrón, poco legible).
-                // `secondary[600]` es el mismo naranja apagado ya usado para
+                // `secondary[700]` es el mismo naranja apagado ya usado para
                 // "seleccionado" en el resto del sitio (tabs de Proyectos,
                 // D051; píldora activa del navbar, D054) — más claro y
                 // consistente.
-                color: active ? secondary[600] : theme.palette.text.primary,
+                color: active ? secondary[700] : theme.palette.text.primary,
               }}
             >
               {/*
@@ -118,7 +124,9 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
       </Box>
       <TextField
         placeholder={customLabel}
+        aria-label={customLabel}
         type="number"
+        inputMode="numeric"
         fullWidth
         size="small"
         value={customAmount}

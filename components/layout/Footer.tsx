@@ -8,12 +8,16 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Fase 10 (QA): antes solo tenía 3 de las 5 anclas de Home — se completa
 // con Prédicas y Redes para que coincida con `HOME_ANCHOR_ITEMS`
 // (`components/layout/navItems.ts`), la misma fuente que usa el Navbar.
+//
+// Fase QA (functional-qa): los `href` eran relativos (`#areas`) — en toda
+// página que no es Home resolvían a `/proyectos#areas`, un ancla que no
+// existe ahí. Se prefijan con `/` para que naveguen a Home y hagan scroll.
 const NAV_LINKS = [
-  { label: "Áreas", href: "#areas" },
-  { label: "Liderazgo", href: "#liderazgo" },
-  { label: "Prédicas", href: "#predicas" },
-  { label: "Redes", href: "#redes" },
-  { label: "Agenda", href: "#agenda" },
+  { label: "Áreas", href: "/#areas" },
+  { label: "Liderazgo", href: "/#liderazgo" },
+  { label: "Prédicas", href: "/#predicas" },
+  { label: "Redes", href: "/#redes" },
+  { label: "Agenda", href: "/#agenda" },
 ] as const;
 
 // Fase 10 (QA): se quita "Nosotros" → `/nosotros` — esa ruta no existe en
@@ -35,7 +39,7 @@ function FooterColumn({
   links: readonly { label: string; href: string }[];
 }) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+    <Box component="nav" aria-label={title} sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
       <Box
         component="span"
         sx={{
@@ -49,23 +53,26 @@ function FooterColumn({
       >
         {title}
       </Box>
-      {links.map((link) => (
-        <Box
-          key={link.href}
-          component={Link}
-          href={link.href}
-          sx={{
-            fontFamily: "var(--font-body)",
-            fontSize: 12,
-            "@media (min-width:1920px)": { fontSize: "14px" },
-            color: "text.secondary",
-            textDecoration: "none",
-            "&:hover": { color: "secondary.main" },
-          }}
-        >
-          {link.label}
-        </Box>
-      ))}
+      <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0, display: "flex", flexDirection: "column", gap: 0.75 }}>
+        {links.map((link) => (
+          <Box component="li" key={link.href}>
+            <Box
+              component={Link}
+              href={link.href}
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                "@media (min-width:1920px)": { fontSize: "14px" },
+                color: "text.secondary",
+                textDecoration: "none",
+                "&:hover": { color: "secondary.main" },
+              }}
+            >
+              {link.label}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
@@ -105,7 +112,7 @@ export default function Footer() {
                   fontWeight: 600,
                   fontSize: 13,
                   "@media (min-width:1920px)": { fontSize: "15px" },
-                  color: "primary.main",
+                  color: (t) => (t.palette.mode === "dark" ? t.palette.primary.light : t.palette.primary.main),
                 }}
               >
                 Iglesia
@@ -164,7 +171,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={label}
+                  aria-label={`${label} (se abre en una pestaña nueva)`}
                   size="small"
                   sx={{
                     width: 26,

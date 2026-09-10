@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { visuallyHidden } from "@mui/utils";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,7 +13,7 @@ import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { DashboardStatBand } from "@/components/ui/DashboardStatBand";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { radius, typography } from "@/theme/tokens";
+import { primary, radius, typography } from "@/theme/tokens";
 import { useDashboardProjects } from "@/lib/dashboardProjectsStore";
 import { useDashboardProjectModal } from "@/lib/dashboardProjectModalStore";
 
@@ -53,6 +54,11 @@ export default function DashboardResumenPage() {
 
   return (
     <DashboardShell>
+      {/* La página no tiene un título visible (el diseño arranca directo con
+          la banda de KPIs); un h1 accesible da el encabezado de la página. */}
+      <Typography component="h1" sx={visuallyHidden}>
+        Resumen del dashboard
+      </Typography>
       <DashboardStatBand
         loading={isLoading}
         stats={[
@@ -62,7 +68,7 @@ export default function DashboardResumenPage() {
         ]}
       />
 
-      <Box sx={{ px: { xs: 3, md: 5 }, py: 5 }}>
+      <Box sx={{ px: { xs: 3, md: 5 }, py: 5, maxWidth: 1400, mx: "auto" }}>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1.6fr 1fr" }, gap: 3 }}>
           <Box
             sx={{
@@ -123,6 +129,7 @@ export default function DashboardResumenPage() {
                         <LinearProgress
                           variant="determinate"
                           value={percent}
+                          aria-label={`${project.title}: ${percent}% recaudado`}
                           color="secondary"
                           sx={{ height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                         />
@@ -172,7 +179,9 @@ export default function DashboardResumenPage() {
                 gap: 1.25,
                 width: "100%",
                 border: "none",
-                backgroundColor: theme.palette.primary.main,
+                // Navy fijo (no `primary.main`, que en oscuro es claro y con
+                // blanco da 3.7:1).
+                backgroundColor: primary[700],
                 color: "#FFFFFF",
                 borderRadius: `${radius.sm}px`,
                 px: 2.25,
@@ -183,7 +192,7 @@ export default function DashboardResumenPage() {
                 cursor: "pointer",
                 mb: 1.5,
                 transition: theme.transitions.create(["background-color"], { duration: theme.transitions.duration.shortest }),
-                "&:hover": { backgroundColor: theme.palette.primary.dark },
+                "&:hover": { backgroundColor: primary[800] },
               }}
             >
               <AddIcon fontSize="small" />

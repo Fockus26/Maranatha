@@ -39,6 +39,9 @@ export const gray = {
 
 export const semantic = {
   success: "#16B37A",
+  // Verde profundo para superficies rellenas con texto blanco (chips
+  // "Completado", alert de éxito) — `success` con blanco encima da 2.7:1.
+  successFilled: "#0B7A54",
   error: "#EF4444",
   warning: "#F5A524",
   info: "#3B9EF5",

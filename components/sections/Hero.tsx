@@ -9,9 +9,11 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import Link from "next/link";
 import { alpha, keyframes } from "@mui/material/styles";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { primary, secondary, gray } from "@/theme/tokens";
 
 const AUTOPLAY_MS = 6000;
@@ -54,19 +56,28 @@ const progressAnim = keyframes`
 export function Hero() {
   const total = SLIDES.length;
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
 
   // Parallax (fase 07, Dirección B elegida en /design): la foto se mueve
-  // más lento que el scroll a medida que el Hero sale de vista.
+  // más lento que el scroll a medida que el Hero sale de vista. Se desactiva
+  // con "reducir movimiento" (WCAG 2.3.3).
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const parallaxTransform = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const parallaxY = reduceMotion ? "0%" : parallaxTransform;
+
+  // Autoplay del slider (WCAG 2.2.2): no corre si el usuario pidió reducir
+  // movimiento ni mientras esté pausado con el control de abajo.
+  const autoplayActive = !reduceMotion && !paused;
 
   useEffect(() => {
+    if (!autoplayActive) return;
     const timer = setTimeout(() => {
       setIndex((current) => (current + 1) % total);
     }, AUTOPLAY_MS);
     return () => clearTimeout(timer);
-  }, [index, total]);
+  }, [index, total, autoplayActive]);
 
   const goTo = (next: number) => setIndex(((next % total) + total) % total);
   const slide = SLIDES[index];
@@ -75,6 +86,8 @@ export function Hero() {
     <Box
       ref={heroRef}
       component="section"
+      aria-roledescription="carrusel"
+      aria-label="Destacados de la iglesia"
       sx={{
         position: "relative",
         // Ocupa exactamente el resto del viewport bajo el navbar (feedback
@@ -177,42 +190,71 @@ export function Hero() {
 
       <Container maxWidth="lg" sx={{ position: "relative", pt: { xs: 14, md: 10 }, pb: { xs: 8, md: 10 } }}>
         <Box sx={{ maxWidth: 580 }}>
-          {/* Barras de progreso — indican slide activo y son clicables (navegación manual) */}
-          <Box sx={{ display: "flex", gap: 1, mb: 5, maxWidth: 220 }}>
-            {SLIDES.map((s, i) => (
-              <Box
-                key={s.id}
-                onClick={() => goTo(i)}
-                role="button"
-                aria-label={`Ir al slide ${i + 1}`}
-                sx={{
-                  flex: 1,
-                  height: 2.5,
-                  borderRadius: "999px",
-                  bgcolor: alpha(gray[50], 0.22),
-                  overflow: "hidden",
-                  cursor: "pointer",
-                }}
-              >
-                {i === index && (
+          {/* Barras de progreso — indican slide activo y navegan (botones reales).
+              + control de pausa/reproducción del autoplay (WCAG 2.2.2). */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 5, maxWidth: 260 }}>
+            <Box sx={{ display: "flex", gap: 1, flex: 1 }} role="group" aria-label="Elegir destacado">
+              {SLIDES.map((s, i) => (
+                <Box
+                  key={s.id}
+                  component="button"
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Ir al destacado ${i + 1} de ${total}: ${s.eyebrow}`}
+                  aria-current={i === index ? "true" : undefined}
+                  sx={{
+                    flex: 1,
+                    height: 6,
+                    p: 0,
+                    border: "none",
+                    borderRadius: "999px",
+                    bgcolor: alpha(gray[50], 0.22),
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <Box
-                    key={slide.id}
+                    component="span"
                     sx={{
-                      height: "100%",
-                      width: 0,
-                      bgcolor: secondary[400],
-                      animation: `${progressAnim} ${AUTOPLAY_MS}ms linear forwards`,
+                      display: "block",
+                      height: 2.5,
+                      width: i < index ? "100%" : "0%",
+                      bgcolor: i < index ? alpha(gray[50], 0.55) : secondary[400],
+                      ...(i === index &&
+                        autoplayActive && {
+                          animation: `${progressAnim} ${AUTOPLAY_MS}ms linear forwards`,
+                        }),
+                      ...(i === index && !autoplayActive && { width: "100%" }),
                     }}
                   />
-                )}
-                {i < index && <Box sx={{ height: "100%", bgcolor: alpha(gray[50], 0.55) }} />}
-              </Box>
-            ))}
+                </Box>
+              ))}
+            </Box>
+            <IconButton
+              onClick={() => setPaused((p) => !p)}
+              aria-label={autoplayActive ? "Pausar cambio automático de destacados" : "Reanudar cambio automático de destacados"}
+              disabled={!!reduceMotion}
+              sx={{
+                color: gray[50],
+                width: 28,
+                height: 28,
+                bgcolor: "transparent",
+                "&:hover": { backgroundColor: alpha(gray[50], 0.14) },
+                "&.Mui-disabled": { color: alpha(gray[50], 0.4) },
+              }}
+            >
+              {autoplayActive ? <PauseRoundedIcon sx={{ fontSize: 16 }} /> : <PlayArrowRoundedIcon sx={{ fontSize: 16 }} />}
+            </IconButton>
           </Box>
 
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.id}
+              role="group"
+              aria-roledescription="diapositiva"
+              aria-label={`${index + 1} de ${total}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}

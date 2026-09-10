@@ -5,12 +5,15 @@ import Dialog from "@mui/material/Dialog";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismRounded";
 import { keyframes } from "@mui/material/styles";
 import { useInView } from "framer-motion";
 import { TitheForm, type TitheFormValues } from "./TitheForm";
 import { useTitheModal } from "@/lib/titheModalStore";
+import { semantic } from "@/theme/tokens";
 
 /**
  * Modal "Diezmo/Aportes" (fase 07 — reemplaza a la sección `Tithe.tsx` de
@@ -99,18 +102,28 @@ function AnimatedFamiliesCounter({ active }: { active: boolean }) {
 
 export function TitheModal() {
   const { open, closeTithe } = useTitheModal();
+  const [confirmed, setConfirmed] = useState(false);
 
   function handleSubmit(values: TitheFormValues) {
     // Placeholder: no hay proveedor de pago integrado todavía (fuera de alcance
     // de esta fase) — mismo criterio que tenía la sección Tithe.tsx original (D018).
     console.log("Tithe form submitted (placeholder):", values);
+    // Fase QA (functional-qa, Alto): antes no había ningún feedback y el
+    // modal quedaba abierto con los datos dentro — parecía roto. Se cierra
+    // el modal y se confirma con un Snackbar, mismo patrón que el flujo
+    // "Aportar" a proyecto (ProjectDetailClient). PENDIENTE de decisión de
+    // César: copy definitivo y si debería haber un paso "pago próximamente".
+    closeTithe();
+    setConfirmed(true);
   }
 
   return (
+    <>
     <Dialog
       open={open}
       onClose={closeTithe}
       fullScreen
+      aria-labelledby="tithe-modal-title"
       slotProps={{
         paper: {
           // `elevation: 0` es la parte que realmente importa acá: el Dialog
@@ -156,6 +169,7 @@ export function TitheModal() {
           backgroundImage:
             "repeating-linear-gradient(135deg, rgba(245,246,250,0.05) 0px, rgba(245,246,250,0.05) 1px, transparent 1px, transparent 40px)",
           animation: `${patternPan} 24s linear infinite`,
+          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
         }}
       />
 
@@ -181,8 +195,14 @@ export function TitheModal() {
           minHeight: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          // Fase QA (design-qa): en pantallas bajas (teléfono horizontal) el
+          // centrado vertical dejaba el submit fuera de vista sin señal de
+          // que había más abajo. `safe center` no recorta el inicio del
+          // contenido cuando no entra; el `pb` grande garantiza aire bajo el
+          // botón "Continuar al pago".
+          justifyContent: "safe center",
           p: { xs: 3, md: 6 },
+          pb: { xs: 8, md: 6 },
         }}
       >
         <Box
@@ -232,6 +252,7 @@ export function TitheModal() {
 
             <Typography
               component="h2"
+              id="tithe-modal-title"
               sx={{
                 fontFamily: "var(--font-heading)",
                 fontWeight: 800,
@@ -273,5 +294,27 @@ export function TitheModal() {
         </Box>
       </Box>
     </Dialog>
+
+    <Snackbar
+      open={confirmed}
+      autoHideDuration={6000}
+      onClose={() => setConfirmed(false)}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    >
+      <Alert
+        onClose={() => setConfirmed(false)}
+        severity="success"
+        variant="filled"
+        sx={{
+          width: "100%",
+          bgcolor: semantic.successFilled,
+          color: "#FFFFFF",
+          "& .MuiAlert-icon, & .MuiAlert-action": { color: "#FFFFFF" },
+        }}
+      >
+        ¡Gracias! Recibimos tus datos y te contactaremos para completar el aporte.
+      </Alert>
+    </Snackbar>
+    </>
   );
 }

@@ -46,6 +46,7 @@ const SERMONS = [
 export function Sermons() {
   const theme = useTheme();
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const activeSermon = SERMONS.find((s) => s.videoId === activeVideoId);
 
   return (
     <Box component="section" id="predicas" sx={{ py: { xs: 8, md: 12 } }}>
@@ -180,6 +181,7 @@ export function Sermons() {
         onClose={() => setActiveVideoId(null)}
         maxWidth="md"
         fullWidth
+        aria-label={activeSermon ? `Video: ${activeSermon.title}` : "Reproductor de video"}
         slotProps={{
           paper: {
             sx: { backgroundColor: "background.paper", borderRadius: "12px" },
@@ -204,7 +206,7 @@ export function Sermons() {
             <Box sx={{ position: "relative", aspectRatio: "16 / 9", backgroundColor: "#000" }}>
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=1`}
-                title="Prédica"
+                title={activeSermon ? `Prédica: ${activeSermon.title}` : "Prédica"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}

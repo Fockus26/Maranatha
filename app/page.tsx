@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
@@ -8,6 +9,13 @@ import { SocialLinks } from "@/components/sections/SocialLinks";
 import { Agenda } from "@/components/sections/Agenda";
 import { History } from "@/components/sections/History";
 import { PhotoAnchorBand } from "@/components/ui/PhotoAnchorBand";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { organizationJsonLd, webSiteJsonLd } from "@/lib/jsonLd";
+
+export const metadata: Metadata = {
+  // El title queda como el `default` de la plantilla (app/layout.tsx).
+  alternates: { canonical: "/" },
+};
 
 /**
  * Home (fase 07, ritmo visual — /design): entre Áreas de Servicio → Liderazgo
@@ -19,7 +27,9 @@ import { PhotoAnchorBand } from "@/components/ui/PhotoAnchorBand";
 export default function Home() {
   return (
     <>
+      <JsonLd data={[organizationJsonLd(), webSiteJsonLd()]} />
       <Navbar />
+      <main id="main-content">
       <Hero />
       <ServiceAreas />
       <PhotoAnchorBand
@@ -39,6 +49,7 @@ export default function Home() {
         imageUrl="https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1920&h=1080&fit=crop&q=80"
       />
       <History />
+      </main>
       <Footer />
     </>
   );
