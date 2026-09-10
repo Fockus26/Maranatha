@@ -136,7 +136,9 @@ export function ProjectSidebar({
             sx={{
               fontFamily: typography.fontFamily.body,
               fontSize: "11px",
-              color: theme.palette.text.disabled,
+              // Fase QA (a11y): antes `text.disabled` (~2.7:1 sobre `background.paper`)
+              // — es un encabezado de sección real, no texto inhabilitado.
+              color: theme.palette.text.secondary,
               textTransform: "uppercase",
               letterSpacing: "0.04em",
               mb: 2.5,

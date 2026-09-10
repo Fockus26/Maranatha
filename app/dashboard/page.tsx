@@ -129,6 +129,7 @@ export default function DashboardResumenPage() {
                         <LinearProgress
                           variant="determinate"
                           value={percent}
+                          aria-label={`${project.title}: ${percent}% recaudado`}
                           color="secondary"
                           sx={{ height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                         />

@@ -274,6 +274,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                       <LinearProgress
                         variant="determinate"
                         value={percent}
+                        aria-label={`${row.title}: ${Math.round(percent)}% recaudado`}
                         color={isCompleted ? "success" : "secondary"}
                         sx={{ width: 80, height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                       />
@@ -404,6 +405,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                   <LinearProgress
                     variant="determinate"
                     value={percent}
+                    aria-label={`${row.title}: ${Math.round(percent)}% recaudado`}
                     color={isCompleted ? "success" : "secondary"}
                     sx={{ flex: 1, height: 5, borderRadius: "20px", backgroundColor: theme.palette.action.hover }}
                   />
