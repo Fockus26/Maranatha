@@ -124,7 +124,7 @@ export default function ProyectosPage() {
               // no usa `textColor="secondary"` (que lo pondría en `secondary.main`,
               // el naranja más vivo de la escala) — el cliente lo encontró
               // demasiado intenso como color de texto, así que baja un peldaño
-              // a `secondary[600]`, más apagado/oscuro mantiene la identidad
+              // a `secondary[700]`, más apagado/oscuro mantiene la identidad
               // naranja sin saturar el texto.
               indicatorColor="secondary"
               sx={{
@@ -140,7 +140,13 @@ export default function ProyectosPage() {
                   py: 1.5,
                 },
                 "& .MuiTabs-indicator": { height: 2 },
-                "& .Mui-selected": { color: `${secondary[600]} !important`, fontWeight: 600 },
+                // Naranja del tab activo, contrastado según el modo: en claro
+                // `secondary[700]` (oscuro sobre fondo claro), en oscuro
+                // `secondary[300]` (claro sobre navy).
+                "& .Mui-selected": {
+                  color: (t) => `${t.palette.mode === "dark" ? secondary[300] : secondary[700]} !important`,
+                  fontWeight: 600,
+                },
               }}
             >
               <Tab value="all" label={`Todos (${PROJECTS.length})`} />

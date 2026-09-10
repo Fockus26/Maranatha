@@ -14,7 +14,11 @@ function getPaletteOptions(mode: PaletteMode): ThemeOptions["palette"] {
       contrastText: isLight ? "#FFFFFF" : gray[900],
     },
     secondary: {
-      main: secondary[500],
+      // Modo claro: el naranja de marca (`#F9750D`) sobre fondo claro no
+      // llega a AA como texto (2.6:1) ni como fondo con texto blanco (2.8:1).
+      // En claro baja a `secondary[700]` (`#B34C02`, ~5.5:1). El modo oscuro
+      // conserva el naranja pleno (sobre navy sí contrasta).
+      main: isLight ? secondary[700] : secondary[500],
       light: secondary[300],
       dark: secondary[700],
       contrastText: "#FFFFFF",
@@ -181,6 +185,18 @@ export function getTheme(mode: PaletteMode) {
         defaultProps: {
           disableElevation: true,
         },
+        // MUI v9 aplica el color de `contained` vía la API `variants`, que
+        // gana sobre `styleOverrides.containedSecondary` — el naranja fijo
+        // se define acá. `#F9750D` + blanco da 2.8:1; `#B34C02` ~5.5:1.
+        variants: [
+          {
+            props: { variant: "contained", color: "secondary" },
+            style: {
+              backgroundColor: secondary[700],
+              "&:hover": { backgroundColor: secondary[800] },
+            },
+          },
+        ],
         styleOverrides: {
           root: {
             borderRadius: radius.sm,
@@ -193,14 +209,20 @@ export function getTheme(mode: PaletteMode) {
           sizeMedium: { padding: "9px 18px", fontSize: 14 },
           sizeLarge: { padding: "12px 24px", fontSize: 15 },
           containedPrimary: {
-            "&:hover": { backgroundColor: primary[600] },
+            // En oscuro `primary.main` es un navy claro (`#5B6B9E`) y con
+            // texto blanco da 3.7:1 — se fija un navy más profundo.
+            ...(mode === "dark" && { backgroundColor: primary[600], color: "#FFFFFF" }),
+            "&:hover": { backgroundColor: mode === "dark" ? primary[700] : primary[600] },
             "&.Mui-disabled": {
               backgroundColor: gray[200],
               color: gray[400],
             },
           },
           containedSecondary: {
-            "&:hover": { backgroundColor: secondary[600] },
+            // Fondo naranja fijo en ambos modos: `#F9750D` con texto blanco
+            // da 2.8:1; `secondary[700]` (`#B34C02`) lo sube a ~5.5:1.
+            backgroundColor: secondary[700],
+            "&:hover": { backgroundColor: secondary[800] },
             "&.Mui-disabled": {
               backgroundColor: gray[200],
               color: gray[400],
@@ -219,6 +241,17 @@ export function getTheme(mode: PaletteMode) {
       MuiChip: {
         styleOverrides: {
           root: { borderRadius: radius.xs },
+        },
+      },
+      MuiContainer: {
+        styleOverrides: {
+          // El contenido se topaba en 1200px (`lg`) y dejaba la mitad del
+          // viewport vacío en monitores 2K/4K. Se aprovecha el breakpoint
+          // `xl` (1536, hasta ahora sin usar) y un escalón extra ≥1920.
+          maxWidthLg: {
+            [baseTheme.breakpoints.up("xl")]: { maxWidth: 1440 },
+            "@media (min-width:1920px)": { maxWidth: 1600 },
+          },
         },
       },
       MuiDialog: {

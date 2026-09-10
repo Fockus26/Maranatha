@@ -13,7 +13,6 @@ import {
   useScrollTrigger,
   useTheme,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -46,9 +45,13 @@ export default function PageNavbar() {
   // texto plano, para que se lea como "esto te lleva a otro lugar" y no
   // como una ancla de la página actual. El estado activo (la página en la
   // que ya estás) usa el mismo naranja apagado que el tab seleccionado de
-  // `/proyectos` (`secondary[600]`, D051) en vez del naranja vivo — mismo
+  // `/proyectos` (`secondary[700]`, D051) en vez del naranja vivo — mismo
   // criterio: como estado persistente (no un hover pasajero), el naranja
   // vivo se siente demasiado intenso.
+  // Naranja del estado activo contrastado según el modo (en oscuro
+  // `secondary[700]` sobre navy da 3.7:1). Sin relleno translúcido: sobre él
+  // el texto quedaba en 4.4:1; el borde ya marca el activo.
+  const activeOrange = theme.palette.mode === "dark" ? secondary[300] : secondary[700];
   const pillSx = (active: boolean) => ({
     display: "inline-flex",
     alignItems: "center",
@@ -58,10 +61,10 @@ export default function PageNavbar() {
     fontSize: 13,
     "@media (min-width:1920px)": { fontSize: "15px" },
     textDecoration: "none",
-    color: active ? secondary[600] : "text.secondary",
+    color: active ? activeOrange : "text.secondary",
     border: "1px solid",
-    borderColor: active ? secondary[600] : "divider",
-    backgroundColor: active ? alpha(secondary[600], 0.08) : "transparent",
+    borderColor: active ? activeOrange : "divider",
+    backgroundColor: "transparent",
     borderRadius: "999px",
     pl: 1.5,
     pr: 1.75,
@@ -121,7 +124,7 @@ export default function PageNavbar() {
                   fontWeight: 600,
                   fontSize: 14,
                   "@media (min-width:1920px)": { fontSize: "16px" },
-                  color: "primary.main",
+                  color: (t) => (t.palette.mode === "dark" ? t.palette.primary.light : t.palette.primary.main),
                 }}
               >
                 Iglesia

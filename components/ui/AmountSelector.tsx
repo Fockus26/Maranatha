@@ -74,11 +74,11 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
                 // El texto del preset activo usaba `secondary.dark`
                 // (#B34C02) sobre el fondo naranja translúcido — el cliente
                 // lo vio "sucio" (un naranja quemado/marrón, poco legible).
-                // `secondary[600]` es el mismo naranja apagado ya usado para
+                // `secondary[700]` es el mismo naranja apagado ya usado para
                 // "seleccionado" en el resto del sitio (tabs de Proyectos,
                 // D051; píldora activa del navbar, D054) — más claro y
                 // consistente.
-                color: active ? secondary[600] : theme.palette.text.primary,
+                color: active ? secondary[700] : theme.palette.text.primary,
               }}
             >
               {/*

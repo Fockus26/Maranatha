@@ -13,6 +13,7 @@ import { keyframes } from "@mui/material/styles";
 import { useInView } from "framer-motion";
 import { TitheForm, type TitheFormValues } from "./TitheForm";
 import { useTitheModal } from "@/lib/titheModalStore";
+import { semantic } from "@/theme/tokens";
 
 /**
  * Modal "Diezmo/Aportes" (fase 07 — reemplaza a la sección `Tithe.tsx` de
@@ -300,7 +301,17 @@ export function TitheModal() {
       onClose={() => setConfirmed(false)}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
     >
-      <Alert onClose={() => setConfirmed(false)} severity="success" variant="filled" sx={{ width: "100%" }}>
+      <Alert
+        onClose={() => setConfirmed(false)}
+        severity="success"
+        variant="filled"
+        sx={{
+          width: "100%",
+          bgcolor: semantic.successFilled,
+          color: "#FFFFFF",
+          "& .MuiAlert-icon, & .MuiAlert-action": { color: "#FFFFFF" },
+        }}
+      >
         ¡Gracias! Recibimos tus datos y te contactaremos para completar el aporte.
       </Alert>
     </Snackbar>

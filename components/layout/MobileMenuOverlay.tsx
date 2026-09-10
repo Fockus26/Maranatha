@@ -4,7 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Box, IconButton, Button, useTheme } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -213,10 +212,10 @@ export default function MobileMenuOverlay({
                         fontWeight: isActive ? 600 : 500,
                         fontSize: "16px",
                         textDecoration: "none",
-                        color: isActive ? secondary[600] : mutedColor,
+                        color: isActive ? (isLight ? secondary[700] : secondary[300]) : mutedColor,
                         border: "1.5px solid",
-                        borderColor: isActive ? secondary[600] : dividerColor,
-                        backgroundColor: isActive ? alpha(secondary[600], 0.12) : "transparent",
+                        borderColor: isActive ? (isLight ? secondary[700] : secondary[300]) : dividerColor,
+                        backgroundColor: "transparent",
                         borderRadius: "999px",
                         pl: 2,
                         pr: 2.5,

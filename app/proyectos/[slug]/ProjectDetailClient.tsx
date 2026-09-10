@@ -17,6 +17,7 @@ import { ProjectContributionForm, type ProjectContributionFormValues } from "@/c
 import type { ProjectRecord } from "@/lib/projectsData";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/jsonLd";
+import { semantic } from "@/theme/tokens";
 
 /**
  * Parte interactiva de la página de detalle: botón "Aportar" del sidebar
@@ -110,7 +111,17 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
       </Dialog>
 
       <Snackbar open={confirmed} autoHideDuration={5000} onClose={() => setConfirmed(false)}>
-        <Alert onClose={() => setConfirmed(false)} severity="success" variant="filled" sx={{ width: "100%" }}>
+        <Alert
+          onClose={() => setConfirmed(false)}
+          severity="success"
+          variant="filled"
+          sx={{
+            width: "100%",
+            bgcolor: semantic.successFilled,
+            color: "#FFFFFF",
+            "& .MuiAlert-icon, & .MuiAlert-action": { color: "#FFFFFF" },
+          }}
+        >
           ¡Gracias por tu aporte a &quot;{project.title}&quot;!
         </Alert>
       </Snackbar>

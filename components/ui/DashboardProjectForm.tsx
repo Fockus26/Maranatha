@@ -118,7 +118,10 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
   const titleValid = title.trim().length > 0;
   const goalValid = goalAmount > 0;
   const deadlineValid = deadline.trim().length > 0;
-  const formValid = titleValid && goalValid && deadlineValid;
+  // El recaudado no puede ser negativo ni superar la meta (un tipeo que lo
+  // pasara marcaba el proyecto como "Completado" y bloqueaba la edición).
+  const currentValid = currentAmount >= 0 && (!goalValid || currentAmount <= goalAmount);
+  const formValid = titleValid && goalValid && deadlineValid && currentValid;
 
   function addBudgetLine() {
     setBudget((prev) => [...prev, { id: newId(), label: "", amount: 0 }]);
@@ -243,7 +246,14 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
           fullWidth
           value={currentAmount || ""}
           onChange={(e) => setCurrentAmount(Number(e.target.value))}
-          helperText="Para registrar aportes recibidos fuera del sitio"
+          error={touched && !currentValid}
+          helperText={
+            touched && currentAmount < 0
+              ? "No puede ser negativo."
+              : touched && goalValid && currentAmount > goalAmount
+                ? "No puede superar el monto meta."
+                : "Para registrar aportes recibidos fuera del sitio"
+          }
           sx={numberFieldSx()}
         />
 

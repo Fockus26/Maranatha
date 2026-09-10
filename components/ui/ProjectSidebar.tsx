@@ -8,7 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { primary, radius, typography } from "@/theme/tokens";
+import { primary, radius, semantic, typography } from "@/theme/tokens";
 import type { ProjectStatus } from "./ProjectCard";
 
 export interface Encargado {
@@ -76,11 +76,11 @@ export function ProjectSidebar({
           // chip incluso cuando el contraste tonal es bajo. "Completado" se
           // queda en success (verde), ya lo suficientemente distintivo.
           backgroundColor: isCompleted
-            ? theme.palette.success.main
+            ? semantic.successFilled
             : theme.palette.mode === "dark"
               ? primary[600]
               : primary[700],
-          color: isCompleted ? theme.palette.success.contrastText : "#F5F6FA",
+          color: isCompleted ? "#FFFFFF" : "#F5F6FA",
           border: isCompleted ? "none" : `1px solid ${alpha("#F5F6FA", 0.14)}`,
         }}
       >

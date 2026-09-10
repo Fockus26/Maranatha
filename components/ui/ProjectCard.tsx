@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import { primary, radius, typography } from "@/theme/tokens";
+import { primary, radius, semantic, typography } from "@/theme/tokens";
 
 export type ProjectStatus = "active" | "completed";
 
@@ -67,14 +67,14 @@ export function ProjectCard({
         py: 0.75,
         whiteSpace: "nowrap",
         backgroundColor: isCompleted
-          ? theme.palette.success.main
+          ? semantic.successFilled
           : inverted
             ? alpha(theme.palette.common.white, 0.92)
             : theme.palette.mode === "dark"
               ? primary[600]
               : primary[700],
         color: isCompleted
-          ? theme.palette.success.contrastText
+          ? "#FFFFFF"
           : inverted
             ? theme.palette.primary.main
             : "#F5F6FA",

@@ -115,7 +115,7 @@ export default function Navbar() {
                   fontWeight: 600,
                   fontSize: 14,
                   "@media (min-width:1920px)": { fontSize: "16px" },
-                  color: "primary.main",
+                  color: (t) => (t.palette.mode === "dark" ? t.palette.primary.light : t.palette.primary.main),
                 }}
               >
                 Iglesia
