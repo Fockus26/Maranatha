@@ -8,12 +8,16 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Fase 10 (QA): antes solo tenía 3 de las 5 anclas de Home — se completa
 // con Prédicas y Redes para que coincida con `HOME_ANCHOR_ITEMS`
 // (`components/layout/navItems.ts`), la misma fuente que usa el Navbar.
+//
+// Fase QA (functional-qa): los `href` eran relativos (`#areas`) — en toda
+// página que no es Home resolvían a `/proyectos#areas`, un ancla que no
+// existe ahí. Se prefijan con `/` para que naveguen a Home y hagan scroll.
 const NAV_LINKS = [
-  { label: "Áreas", href: "#areas" },
-  { label: "Liderazgo", href: "#liderazgo" },
-  { label: "Prédicas", href: "#predicas" },
-  { label: "Redes", href: "#redes" },
-  { label: "Agenda", href: "#agenda" },
+  { label: "Áreas", href: "/#areas" },
+  { label: "Liderazgo", href: "/#liderazgo" },
+  { label: "Prédicas", href: "/#predicas" },
+  { label: "Redes", href: "/#redes" },
+  { label: "Agenda", href: "/#agenda" },
 ] as const;
 
 // Fase 10 (QA): se quita "Nosotros" → `/nosotros` — esa ruta no existe en

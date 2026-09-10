@@ -26,7 +26,9 @@ let failed = false;
 for (const path of ROUTES) {
   const page = await context.newPage();
   try {
-    await page.goto(BASE + path, { waitUntil: "networkidle", timeout: 30_000 });
+    await page.goto(BASE + path, { waitUntil: "domcontentloaded", timeout: 30_000 });
+    // deja que el store del dashboard/hidrataciones terminen antes de auditar
+    await page.waitForTimeout(2000);
   } catch {
     console.log(`\n⚠️  No se pudo cargar ${path} — ¿está corriendo el server en ${BASE}?`);
     await page.close();

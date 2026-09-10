@@ -51,7 +51,11 @@ html {
   outline-offset: 2px;
 }
 
-:where(a, button, [role="button"], [tabindex]):focus-visible {
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible,
+.MuiButtonBase-root:focus-visible {
   outline: 2px solid #f9750d;
   outline-offset: 2px;
   border-radius: 3px;
@@ -60,6 +64,31 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .skip-link {
     transition: none;
+  }
+}
+
+/*
+ * Alto contraste de Windows (fase QA — hallazgo design-qa): varios botones,
+ * píldoras de estado y barras de progreso definen su forma SOLO con
+ * `background-color` y en `forced-colors` el fondo se descarta, dejándolos
+ * como texto plano sin affordance. Un borde explícito con los colores del
+ * sistema los devuelve a ser controles reconocibles.
+ */
+@media (forced-colors: active) {
+  .MuiButton-contained,
+  .MuiButton-outlined,
+  button[type="submit"],
+  button[type="button"] {
+    border: 1px solid ButtonText;
+  }
+
+  .MuiLinearProgress-root {
+    border: 1px solid CanvasText;
+    forced-color-adjust: none;
+    background-color: Canvas;
+  }
+  .MuiLinearProgress-bar {
+    background-color: Highlight;
   }
 }
 

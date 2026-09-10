@@ -138,6 +138,10 @@ export default function MobileMenuOverlay({
             transition: "background-color 0.2s ease",
             display: { xs: "flex", md: "none" },
             flexDirection: "column",
+            // Fase QA (design-qa, crítico): en viewports bajos (teléfono en
+            // horizontal) el CTA "Diezmo" y el toggle quedaban fuera de
+            // pantalla sin forma de llegar. Ahora el overlay scrollea.
+            overflowY: "auto",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
@@ -148,13 +152,17 @@ export default function MobileMenuOverlay({
 
           <Box
             component="nav"
+            aria-label="Navegación del menú"
             sx={{
               flex: 1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
-              gap: 4,
+              // `safe center`: centra si entra, pero no recorta el borde
+              // superior cuando el contenido es más alto que el viewport.
+              justifyContent: "safe center",
+              gap: { xs: 2.5, sm: 4 },
+              py: 3,
             }}
           >
             {links.map((link, index) => {

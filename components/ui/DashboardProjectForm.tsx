@@ -113,6 +113,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
   const [budget, setBudget] = useState<BudgetLineInput[]>(initialValues?.budget ?? []);
   const [encargados, setEncargados] = useState<EncargadoInput[]>(initialValues?.encargados ?? []);
   const [touched, setTouched] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const titleValid = title.trim().length > 0;
   const goalValid = goalAmount > 0;
@@ -142,8 +143,22 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
   function handleSubmit(event?: FormEvent) {
     event?.preventDefault();
     setTouched(true);
-    if (!formValid) return;
-    onSubmit({ title, description, imageUrl, imageFile, goalAmount, currentAmount, deadline, budget, encargados });
+    if (!formValid || submitting) return;
+    // Guard contra doble/triple submit (fase QA — functional-qa: 3 clics
+    // rápidos creaban 3 proyectos). `currentAmount` se acota a ≥ 0 (un
+    // negativo daba "-80%" en la tabla).
+    setSubmitting(true);
+    onSubmit({
+      title: title.trim(),
+      description,
+      imageUrl,
+      imageFile,
+      goalAmount,
+      currentAmount: Math.max(currentAmount, 0),
+      deadline,
+      budget,
+      encargados,
+    });
   }
 
   return (
@@ -366,7 +381,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
           <Button type="button" variant="outlined" color="primary" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button type="submit" variant="contained" color="primary" sx={{ color: "#FFFFFF" }}>
+          <Button type="submit" variant="contained" color="primary" disabled={submitting} sx={{ color: "#FFFFFF" }}>
             Guardar
           </Button>
         </Box>

@@ -60,7 +60,11 @@ function formatCurrency(value: number) {
 }
 
 function progressOf(row: DashboardProjectRow) {
-  return Math.min((row.currentAmount / row.goalAmount) * 100, 100);
+  // Fase QA (functional-qa): acota a 0-100. Sin el piso en 0, un
+  // `currentAmount` negativo mostraba "-80%" en la tabla; sin el techo, uno
+  // mayor a la meta pasaba de 100. Un `goalAmount` de 0 daría NaN → 0.
+  const raw = (row.currentAmount / row.goalAmount) * 100;
+  return Number.isFinite(raw) ? Math.min(Math.max(raw, 0), 100) : 0;
 }
 
 const SKELETON_ROWS = [0, 1, 2];

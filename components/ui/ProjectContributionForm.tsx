@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { radius, typography } from "@/theme/tokens";
+import { isValidEmail } from "@/lib/validation";
 import { AmountSelector } from "./AmountSelector";
 import { DonationFormCard } from "./DonationFormCard";
 
@@ -74,16 +75,19 @@ export function ProjectContributionForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount]);
 
+  const [submitting, setSubmitting] = useState(false);
   const amountValid = amount > 0;
   const nameValid = name.trim().length > 0;
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailValid = isValidEmail(email);
   const formValid = amountValid && nameValid && emailValid;
 
   function handleSubmit(event?: FormEvent) {
     event?.preventDefault();
     setTouched(true);
-    if (!formValid) return;
-    onSubmit({ amount, name, email });
+    if (!formValid || submitting) return;
+    // Guard contra doble/triple submit (fase QA — functional-qa).
+    setSubmitting(true);
+    onSubmit({ amount, name: name.trim(), email: email.trim() });
   }
 
   const barTransition = theme.transitions.create(["width", "background-color"], {
@@ -187,7 +191,7 @@ export function ProjectContributionForm({
       </Box>
 
       <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>
-        <Button fullWidth type="submit" variant="contained" color="secondary">
+        <Button fullWidth type="submit" variant="contained" color="secondary" disabled={submitting}>
           Continuar al pago
         </Button>
       </Box>
