@@ -57,7 +57,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <TitheModal />
           </TitheModalProvider>
         </ThemeRegistry>
-        <Analytics />
+        {/* Solo en Vercel: fuera de ahí el script `/_vercel/insights` da 404. */}
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );
