@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+import Image from "next/image";
 import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -41,12 +43,15 @@ export function ProjectCard({
   const percent = Math.min(Math.round((currentAmount / goalAmount) * 100), 100);
   const resolvedCtaLabel = ctaLabel ?? (isCompleted ? "Ver proyecto" : "Aportar");
 
-  const photoStyle = {
-    backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
-    backgroundColor: imageUrl ? undefined : theme.palette.primary.dark,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
+  // Foto de la card vía `next/image` (optimización/AVIF/tamaños por
+  // dispositivo). `sx` da el marco (medida, radios, fallback navy); la
+  // imagen la cubre con `fill`.
+  const CardPhoto = ({ sx, sizes, children }: { sx: object; sizes: string; children?: ReactNode }) => (
+    <Box sx={{ position: "relative", overflow: "hidden", flexShrink: 0, backgroundColor: theme.palette.primary.dark, ...sx }}>
+      {imageUrl && <Image src={imageUrl} alt="" fill sizes={sizes} style={{ objectFit: "cover" }} />}
+      {children}
+    </Box>
+  );
 
   // Chip "Activo" (rama sin foto, layout `horizontal` del listado): navy
   // fijo en vez de `theme.palette.primary.main`, mismo motivo que el chip de
@@ -154,7 +159,7 @@ export function ProjectCard({
           backgroundColor: theme.palette.background.paper,
         }}
       >
-        <Box sx={{ width: { xs: "100%", sm: 200 }, height: { xs: 180, sm: "auto" }, flexShrink: 0, ...photoStyle }} />
+        <CardPhoto sx={{ width: { xs: "100%", sm: 200 }, height: { xs: 180, sm: "auto" } }} sizes="(max-width: 600px) 100vw, 200px" />
         <Box
           sx={{
             p: { xs: 4, sm: 5 },
@@ -206,11 +211,11 @@ export function ProjectCard({
         height: "100%",
       }}
     >
-      <Box sx={{ height: 140, flexShrink: 0, position: "relative", ...photoStyle }}>
-        <Box sx={{ position: "absolute", top: 3, left: 3 }}>
+      <CardPhoto sx={{ height: 140 }} sizes="(max-width: 900px) 100vw, 400px">
+        <Box sx={{ position: "absolute", top: 3, left: 3, zIndex: 1 }}>
           <StatusChip inverted={true} />
         </Box>
-      </Box>
+      </CardPhoto>
 
       <Box sx={{ p: 4, display: "flex", flexDirection: "column", flex: 1 }}>
         <Typography

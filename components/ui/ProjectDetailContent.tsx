@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -28,15 +29,25 @@ export function ProjectDetailContent({ title, description, imageUrl, budget }: P
     <Box>
       <Box
         sx={{
+          position: "relative",
           height: 320,
           borderRadius: `${radius.lg}px`,
+          overflow: "hidden",
           mb: 5,
-          backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
-          backgroundColor: imageUrl ? undefined : theme.palette.primary.dark,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundColor: theme.palette.primary.dark,
         }}
-      />
+      >
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            priority
+            sizes="(max-width: 900px) 100vw, 1000px"
+            style={{ objectFit: "cover" }}
+          />
+        )}
+      </Box>
 
       <Typography component="h1" sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 700, fontSize: "22px", color: theme.palette.text.primary, mb: 2 }}>
         {title}

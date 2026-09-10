@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -44,18 +45,10 @@ export function PhotoAnchorBand({ eyebrow, value, label, imageUrl }: PhotoAnchor
     >
       <motion.div
         aria-hidden
-        style={{
-          position: "absolute",
-          top: "-12%",
-          bottom: "-12%",
-          left: 0,
-          right: 0,
-          backgroundImage: `url(${imageUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          y,
-        }}
-      />
+        style={{ position: "absolute", top: "-12%", bottom: "-12%", left: 0, right: 0, y }}
+      >
+        <Image src={imageUrl} alt="" fill sizes="100vw" style={{ objectFit: "cover" }} />
+      </motion.div>
       <Box sx={{ position: "absolute", inset: 0, backgroundColor: alpha(primary[900], 0.68) }} />
       <Box
         sx={{
