@@ -10,7 +10,8 @@ import { Agenda } from "@/components/sections/Agenda";
 import { History } from "@/components/sections/History";
 import { PhotoAnchorBand } from "@/components/ui/PhotoAnchorBand";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { organizationJsonLd, webSiteJsonLd } from "@/lib/jsonLd";
+import { organizationJsonLd, webSiteJsonLd, sermonsJsonLd } from "@/lib/jsonLd";
+import { getLatestSermons } from "@/lib/youtube";
 
 export const metadata: Metadata = {
   // El title queda como el `default` de la plantilla (app/layout.tsx).
@@ -24,10 +25,13 @@ export const metadata: Metadata = {
  * repetía el mismo tratamiento bordered/plano seguido. Contenido (foto y
  * stat) placeholder, mismo criterio que el resto del sitio.
  */
-export default function Home() {
+export default async function Home() {
+  const sermons = await getLatestSermons(3);
+  const sermonsLd = sermonsJsonLd(sermons);
+
   return (
     <>
-      <JsonLd data={[organizationJsonLd(), webSiteJsonLd()]} />
+      <JsonLd data={[organizationJsonLd(), webSiteJsonLd(), ...(sermonsLd ? [sermonsLd] : [])]} />
       <Navbar />
       <main id="main-content">
       <Hero />
@@ -39,7 +43,7 @@ export default function Home() {
         imageUrl="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=1920&h=1080&fit=crop&q=80"
       />
       <Leaders />
-      <Sermons />
+      <Sermons videos={sermons} />
       <SocialLinks />
       <Agenda />
       <PhotoAnchorBand

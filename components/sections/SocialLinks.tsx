@@ -27,50 +27,50 @@ import { Reveal } from "@/components/ui/Reveal";
  * que ya resuelve el panel. Las portadas de posts pasan de 1:1 a 4:5
  * (más altura, más parecido al grid real de Instagram).
  *
- * Sin reproducción de reels ni integración con la API oficial de Meta
- * (fuera de alcance, a pedido explícito del usuario) — cada portada es
- * solo un link que abre el post real en Instagram en una pestaña nueva.
- *
- * NOTA DE CONTENIDO: handles, URLs y portadas de posts son placeholders
- * (gradientes de marcador, no capturas reales) — pendientes de que el
- * cliente entregue las cuentas y el contenido reales.
+ * Instagram no ofrece una API pública gratuita para traer las últimas
+ * publicaciones (Graph API requiere app review + token). Las cuentas,
+ * handles y el botón "Seguir" apuntan a los perfiles reales; las 4 celdas
+ * del grid son ventanas decorativas al perfil (cada una lo abre en una
+ * pestaña nueva), no capturas de posts individuales.
  */
+
+const IG = "https://www.instagram.com";
 
 const ACCOUNTS = [
   {
     id: "maranatha",
-    label: "Iglesia Maranatha",
-    handle: "@iglesia.maranatha",
-    href: "https://instagram.com/iglesia.maranatha",
-    posts: [
-      { id: "m1", href: "https://instagram.com/p/placeholder-m1", gradient: "radial-gradient(400px 400px at 70% 20%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)" },
-      { id: "m2", href: "https://instagram.com/p/placeholder-m2", gradient: "radial-gradient(400px 400px at 30% 70%, #8894C2 0%, #37447A 55%, #101B45 100%)" },
-      { id: "m3", href: "https://instagram.com/p/placeholder-m3", gradient: "radial-gradient(400px 400px at 70% 70%, #FCA355 0%, #B34C02 55%, #0B1433 100%)" },
-      { id: "m4", href: "https://instagram.com/p/placeholder-m4", gradient: "radial-gradient(400px 400px at 30% 20%, #AFB7D6 0%, #434A63 55%, #0B1433 100%)" },
+    label: "Maranatha San Cristóbal",
+    handle: "@maranathasancristobal",
+    href: `${IG}/maranathasancristobal/`,
+    gradients: [
+      "radial-gradient(400px 400px at 70% 20%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 30% 70%, #8894C2 0%, #37447A 55%, #101B45 100%)",
+      "radial-gradient(400px 400px at 70% 70%, #FCA355 0%, #B34C02 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 30% 20%, #AFB7D6 0%, #434A63 55%, #0B1433 100%)",
     ],
   },
   {
     id: "evangelio",
     label: "El Evangelio Cambia",
-    handle: "@elevangeliocambia",
-    href: "https://instagram.com/elevangeliocambia",
-    posts: [
-      { id: "e1", href: "https://instagram.com/p/placeholder-e1", gradient: "radial-gradient(400px 400px at 70% 20%, #FA8A2E 0%, #8A3B03 55%, #0B1433 100%)" },
-      { id: "e2", href: "https://instagram.com/p/placeholder-e2", gradient: "radial-gradient(400px 400px at 30% 70%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)" },
-      { id: "e3", href: "https://instagram.com/p/placeholder-e3", gradient: "radial-gradient(400px 400px at 70% 70%, #8894C2 0%, #37447A 55%, #101B45 100%)" },
-      { id: "e4", href: "https://instagram.com/p/placeholder-e4", gradient: "radial-gradient(400px 400px at 30% 20%, #FCA355 0%, #B34C02 55%, #0B1433 100%)" },
+    handle: "@eectachira.sc",
+    href: `${IG}/eectachira.sc/`,
+    gradients: [
+      "radial-gradient(400px 400px at 70% 20%, #FA8A2E 0%, #8A3B03 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 30% 70%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 70% 70%, #8894C2 0%, #37447A 55%, #101B45 100%)",
+      "radial-gradient(400px 400px at 30% 20%, #FCA355 0%, #B34C02 55%, #0B1433 100%)",
     ],
   },
   {
     id: "generacion-jef",
     label: "Generación JEF",
     handle: "@generacionjef",
-    href: "https://instagram.com/generacionjef",
-    posts: [
-      { id: "g1", href: "https://instagram.com/p/placeholder-g1", gradient: "radial-gradient(400px 400px at 70% 20%, #AFB7D6 0%, #434A63 55%, #0B1433 100%)" },
-      { id: "g2", href: "https://instagram.com/p/placeholder-g2", gradient: "radial-gradient(400px 400px at 30% 70%, #FA8A2E 0%, #8A3B03 55%, #0B1433 100%)" },
-      { id: "g3", href: "https://instagram.com/p/placeholder-g3", gradient: "radial-gradient(400px 400px at 70% 70%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)" },
-      { id: "g4", href: "https://instagram.com/p/placeholder-g4", gradient: "radial-gradient(400px 400px at 30% 20%, #8894C2 0%, #37447A 55%, #101B45 100%)" },
+    href: `${IG}/generacionjef/`,
+    gradients: [
+      "radial-gradient(400px 400px at 70% 20%, #AFB7D6 0%, #434A63 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 30% 70%, #FA8A2E 0%, #8A3B03 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 70% 70%, #5B6B9E 0%, #1E2B5C 55%, #0B1433 100%)",
+      "radial-gradient(400px 400px at 30% 20%, #8894C2 0%, #37447A 55%, #101B45 100%)",
     ],
   },
 ] as const;
@@ -225,14 +225,14 @@ export function SocialLinks() {
             gap: "16px",
           }}
         >
-          {active.posts.map((post) => (
+          {active.gradients.map((gradient, i) => (
             <Box
-              key={post.id}
+              key={`${active.id}-${i}`}
               component="a"
-              href={post.href}
+              href={active.href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Ver publicación en Instagram de ${active.label}`}
+              aria-label={`Abrir el perfil de Instagram de ${active.label} (pestaña nueva)`}
               sx={{
                 position: "relative",
                 display: "block",
@@ -245,7 +245,7 @@ export function SocialLinks() {
                 "&:hover": { borderColor: "secondary.main" },
               }}
             >
-              <Box sx={{ position: "absolute", inset: 0, background: post.gradient }} />
+              <Box sx={{ position: "absolute", inset: 0, background: gradient }} />
               <InstagramIcon
                 sx={{
                   position: "absolute",

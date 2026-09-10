@@ -12,41 +12,26 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { alpha, useTheme } from "@mui/material/styles";
 import { YoutubeEmbedCard } from "@/components/ui/YoutubeEmbedCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { YOUTUBE_CHANNEL_URL } from "@/lib/siteConfig";
+import type { SermonVideo } from "@/lib/youtube";
 
 /**
- * Sección "Prédicas" (fase 06) — componente + datos en un solo archivo
- * (D030). Heading — mismo patrón izquierda/centrado que Áreas de Servicio
- * y Liderazgo (D032).
- *
- * NOTA DE CONTENIDO: `videoId` y `YOUTUBE_CHANNEL_URL` son placeholders —
- * el cliente aún no entregó IDs de video ni el handle real del canal.
- * Reemplazar antes de producción.
+ * Sección "Prédicas" — los 3 últimos videos vienen del feed RSS del canal
+ * de YouTube (`lib/youtube.ts`, resuelto en `app/page.tsx`). Si el feed
+ * falla o no llega nada, cae a `FALLBACK_SERMONS`.
  */
 
-const YOUTUBE_CHANNEL_URL = "https://youtube.com/@iglesia-maranatha";
+const FALLBACK_SERMONS: SermonVideo[] = [
+  { videoId: "sermon-placeholder-1", title: "El poder de la fe en tiempos de incertidumbre", publishedAt: "18 de agosto de 2026", publishedIso: "2026-08-18" },
+  { videoId: "sermon-placeholder-2", title: "Servir con propósito: una vida entregada a los demás", publishedAt: "11 de agosto de 2026", publishedIso: "2026-08-11" },
+  { videoId: "sermon-placeholder-3", title: "Gracia y comunidad: caminar juntos en fe", publishedAt: "4 de agosto de 2026", publishedIso: "2026-08-04" },
+];
 
-const SERMONS = [
-  {
-    videoId: "sermon-placeholder-1",
-    title: "El poder de la fe en tiempos de incertidumbre",
-    publishedAt: "18 de agosto, 2026",
-  },
-  {
-    videoId: "sermon-placeholder-2",
-    title: "Servir con propósito: una vida entregada a los demás",
-    publishedAt: "11 de agosto, 2026",
-  },
-  {
-    videoId: "sermon-placeholder-3",
-    title: "Gracia y comunidad: caminar juntos en fe",
-    publishedAt: "4 de agosto, 2026",
-  },
-] as const;
-
-export function Sermons() {
+export function Sermons({ videos }: { videos?: SermonVideo[] }) {
   const theme = useTheme();
+  const sermons = videos && videos.length > 0 ? videos : FALLBACK_SERMONS;
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
-  const activeSermon = SERMONS.find((s) => s.videoId === activeVideoId);
+  const activeSermon = sermons.find((s) => s.videoId === activeVideoId);
 
   return (
     <Box component="section" id="predicas" sx={{ py: { xs: 8, md: 12 } }}>
@@ -116,19 +101,14 @@ export function Sermons() {
               mb: { xs: 5, md: 6 },
             }}
           >
-            {SERMONS.map((sermon, index) => (
-              // Feedback de cliente: cuando el grid cae a 2 columnas (`sm`) y
-              // hay un número impar de elementos, la última fila queda con
-              // un solo item y una celda vacía al lado — mismo problema que
-              // se resolvió en Áreas de Servicio. Con solo 3 videos, el único
-              // caso posible es el último elemento solo en su fila: se le da
-              // `gridColumn: "1 / -1"` para que ocupe el ancho completo en
-              // vez de dejar un hueco. A partir de `md` (3 columnas, 3 items)
-              // ya no sobra ninguna celda, así que vuelve a ocupar 1 columna.
+            {sermons.map((sermon, index) => (
+              // Con 3 videos y grid de 2 columnas en `sm`, el último queda
+              // solo en su fila — se estira a ancho completo para no dejar
+              // hueco. Desde `md` (3 columnas) vuelve a ocupar 1.
               <Box
                 key={sermon.videoId}
                 sx={
-                  index === SERMONS.length - 1
+                  index === sermons.length - 1
                     ? { gridColumn: { sm: "1 / -1", md: "auto" } }
                     : undefined
                 }

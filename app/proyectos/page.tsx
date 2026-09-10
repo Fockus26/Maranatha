@@ -2,13 +2,17 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import IconButton from "@mui/material/IconButton";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
+import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import PageNavbar from "@/components/layout/PageNavbar";
 import Footer from "@/components/layout/Footer";
 import { ProjectCard } from "@/components/ui/ProjectCard";
@@ -36,12 +40,18 @@ import { breadcrumbJsonLd } from "@/lib/jsonLd";
  */
 
 type FilterTab = "all" | "active" | "completed";
+type ViewMode = "list" | "grid";
 
 const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 export default function ProyectosPage() {
+  const theme = useTheme();
   const router = useRouter();
   const [tab, setTab] = useState<FilterTab>("all");
+  // Toggle lista / cuadrícula (D016 — `ProjectCard` ya tiene ambos layouts).
+  // Solo se muestra desde `sm` en adelante; en mobile no aparece y siempre
+  // se renderiza en cuadrícula (`vertical`, una columna) — que es el default.
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const filtered = useMemo(() => {
     if (tab === "all") return PROJECTS;
@@ -111,6 +121,8 @@ export default function ProyectosPage() {
             sx={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
               mb: { xs: 4, md: 5 },
             }}
           >
@@ -153,6 +165,52 @@ export default function ProyectosPage() {
               <Tab value="active" label={`Activos (${PROJECTS.filter((p) => p.status === "active").length})`} />
               <Tab value="completed" label={`Completados (${PROJECTS.filter((p) => p.status === "completed").length})`} />
             </Tabs>
+
+            {/* Toggle lista / cuadrícula — oculto en mobile (< sm). */}
+            <Box
+              role="group"
+              aria-label="Vista del listado"
+              sx={{
+                display: { xs: "none", sm: "inline-flex" },
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: "8px",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}
+            >
+              <IconButton
+                onClick={() => setViewMode("list")}
+                aria-label="Ver en lista"
+                aria-pressed={viewMode === "list"}
+                size="small"
+                sx={{
+                  borderRadius: 0,
+                  px: 1.25,
+                  color: viewMode === "list" ? "primary.main" : "text.secondary",
+                  backgroundColor: viewMode === "list" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
+                  "&:hover": { color: "primary.main", backgroundColor: alpha(theme.palette.primary.main, 0.08) },
+                }}
+              >
+                <ViewListRoundedIcon fontSize="small" />
+              </IconButton>
+              <Box sx={{ width: "1px", backgroundColor: "divider" }} />
+              <IconButton
+                onClick={() => setViewMode("grid")}
+                aria-label="Ver en cuadrícula"
+                aria-pressed={viewMode === "grid"}
+                size="small"
+                sx={{
+                  borderRadius: 0,
+                  px: 1.25,
+                  color: viewMode === "grid" ? "primary.main" : "text.secondary",
+                  backgroundColor: viewMode === "grid" ? alpha(theme.palette.primary.main, 0.08) : "transparent",
+                  "&:hover": { color: "primary.main", backgroundColor: alpha(theme.palette.primary.main, 0.08) },
+                }}
+              >
+                <GridViewRoundedIcon fontSize="small" />
+              </IconButton>
+            </Box>
           </Box>
 
           {filtered.length === 0 ? (
@@ -165,14 +223,22 @@ export default function ProyectosPage() {
             />
           ) : (
             // `layout` en el contenedor y en cada card anima con FLIP
-            // (framer-motion) el reflow al cambiar de tab (entran/salen
-            // proyectos filtrados) — mismo criterio de easing/duración que
-            // el resto de animaciones del sitio (`Reveal.tsx`, `Agenda.tsx`).
-            //
-            // Antes existía un toggle "lista"/"cuadrícula" (fase 07); el
-            // cliente pidió quitarlo y dejar una sola visualización — la que
-            // estaba por defecto (layout `horizontal`, una columna).
-            <Box component={motion.div} layout transition={{ duration: 0.45, ease: EASE }} sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            // (framer-motion) el reflow al cambiar de tab o de vista — mismo
+            // criterio de easing/duración que el resto del sitio.
+            <Box
+              component={motion.div}
+              layout
+              transition={{ duration: 0.45, ease: EASE }}
+              sx={
+                viewMode === "grid"
+                  ? {
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
+                      gap: "24px",
+                    }
+                  : { display: "flex", flexDirection: "column", gap: 3 }
+              }
+            >
               <AnimatePresence mode="popLayout">
                 {filtered.map((project) => (
                   <Box
@@ -185,7 +251,7 @@ export default function ProyectosPage() {
                     transition={{ duration: 0.35, ease: EASE }}
                   >
                     <ProjectCard
-                      layout="horizontal"
+                      layout={viewMode === "grid" ? "vertical" : "horizontal"}
                       title={project.title}
                       description={project.description}
                       imageUrl={project.imageUrl}

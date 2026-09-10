@@ -27,8 +27,8 @@ const RESOURCE_LINKS = [
 ] as const;
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://instagram.com", icon: InstagramIcon },
-  { label: "YouTube", href: "https://youtube.com", icon: YouTubeIcon },
+  { label: "Instagram", href: "https://www.instagram.com/maranathasancristobal/", icon: InstagramIcon },
+  { label: "YouTube", href: "https://www.youtube.com/channel/UCT2A5hFBhTJ5T0CykeCKX7w", icon: YouTubeIcon },
 ] as const;
 
 function FooterColumn({
