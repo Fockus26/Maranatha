@@ -1,12 +1,6 @@
 import { ImageResponse } from "next/og";
 import { SITE_NAME } from "@/lib/siteConfig";
 
-/**
- * Imagen OpenGraph por defecto (fase QA — SEO). Placeholder generado con
- * `ImageResponse` — navy de marca + marca denominativa — hasta que el
- * cliente entregue un arte de OG real (CONTENT_CHECKLIST.md). Sin esto,
- * cualquier enlace compartido en WhatsApp/redes se ve roto.
- */
 export const alt = `${SITE_NAME} — comunidad de fe y propósito`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
