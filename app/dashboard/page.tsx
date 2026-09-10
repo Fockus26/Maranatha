@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { visuallyHidden } from "@mui/utils";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
@@ -53,6 +54,11 @@ export default function DashboardResumenPage() {
 
   return (
     <DashboardShell>
+      {/* La página no tiene un título visible (el diseño arranca directo con
+          la banda de KPIs); un h1 accesible da el encabezado de la página. */}
+      <Typography component="h1" sx={visuallyHidden}>
+        Resumen del dashboard
+      </Typography>
       <DashboardStatBand
         loading={isLoading}
         stats={[

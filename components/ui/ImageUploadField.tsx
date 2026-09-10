@@ -58,7 +58,7 @@ export function ImageUploadField({ label, value, onChange }: ImageUploadFieldPro
         {!value && <ImageOutlinedIcon sx={{ fontSize: 40, color: "rgba(255,255,255,0.4)" }} />}
       </Box>
 
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ minHeight: 32, mb: 1.5 }}>
+      <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="Origen de la imagen" sx={{ minHeight: 32, mb: 1.5 }}>
         <Tab value="upload" label="Subir archivo" sx={{ minHeight: 32, py: 0.5, fontSize: "12px" }} />
         <Tab value="url" label="URL" sx={{ minHeight: 32, py: 0.5, fontSize: "12px" }} />
       </Tabs>
@@ -75,6 +75,7 @@ export function ImageUploadField({ label, value, onChange }: ImageUploadFieldPro
         <>
           <input ref={inputRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
           <Button
+            type="button"
             variant="outlined"
             color="primary"
             onClick={() => inputRef.current?.click()}
@@ -86,6 +87,8 @@ export function ImageUploadField({ label, value, onChange }: ImageUploadFieldPro
       ) : (
         <TextField
           placeholder="https://..."
+          aria-label={`${label} — URL`}
+          type="url"
           fullWidth
           value={value}
           onChange={(e) => onChange(e.target.value)}

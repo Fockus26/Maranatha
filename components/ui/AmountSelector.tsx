@@ -52,15 +52,21 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
           return (
             <Box
               key={value}
+              component="button"
+              type="button"
               onClick={() => handlePresetClick(value)}
+              aria-pressed={active}
+              aria-label={`Monto ${formatCurrency(value)}`}
               sx={{
                 position: "relative",
                 textAlign: "center",
                 py: 2.5,
                 borderRadius: `${radius.sm}px`,
+                fontFamily: "var(--font-body)",
                 fontSize: "13px",
                 fontWeight: 500,
                 cursor: "pointer",
+                backgroundColor: "transparent",
                 // Borde y texto ya no dependen de una animación compartida
                 // entre presets (ver abajo) — cambian de golpe, es el fondo
                 // el que hace la transición.
@@ -118,7 +124,9 @@ export function AmountSelector({ presets, onChange, customLabel = "Otro monto", 
       </Box>
       <TextField
         placeholder={customLabel}
+        aria-label={customLabel}
         type="number"
+        inputMode="numeric"
         fullWidth
         size="small"
         value={customAmount}

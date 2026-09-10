@@ -123,7 +123,7 @@ export default function Navbar() {
             </Box>
 
             {/* Links de escritorio: anclas + páginas */}
-            <Box component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
+            <Box component="nav" aria-label="Principal" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
               {HOME_ANCHOR_ITEMS.map((item) => {
                 const isActive = activeAnchor === item.id;
                 return (

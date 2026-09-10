@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Box, IconButton, Button, useTheme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -53,6 +53,11 @@ export default function MobileMenuOverlay({
 }: MobileMenuOverlayProps) {
   const theme = useTheme();
   const isLight = theme.palette.mode === "light";
+  const reduceMotion = useReducedMotion();
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  // Elemento que tenía el foco al abrir — se le devuelve al cerrar (WCAG 2.4.3).
+  const openerRef = React.useRef<Element | null>(null);
 
   const overlayBg = isLight ? theme.palette.background.default : primary[900];
   const textColor = isLight ? theme.palette.text.primary : "#FFFFFF";
@@ -60,20 +65,45 @@ export default function MobileMenuOverlay({
   const hoverBg = isLight ? theme.palette.action.hover : "rgba(255,255,255,0.12)";
   const dividerColor = isLight ? theme.palette.divider : "rgba(255,255,255,0.24)";
 
-  // Cierra con Escape y bloquea el scroll del body mientras está abierto.
+  // Cierra con Escape, bloquea el scroll del body, atrapa el foco dentro del
+  // overlay mientras está abierto y lo devuelve al abridor al cerrar.
   React.useEffect(() => {
     if (!open) return;
 
+    openerRef.current = document.activeElement;
+    // Mueve el foco al botón de cerrar al abrir.
+    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusables = containerRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusables || focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", handleKeyDown);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
+      window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
+      // Devuelve el foco al elemento que abrió el menú.
+      if (openerRef.current instanceof HTMLElement) openerRef.current.focus();
     };
   }, [open, onClose]);
 
@@ -91,6 +121,7 @@ export default function MobileMenuOverlay({
     <AnimatePresence>
       {open && (
         <Box
+          ref={containerRef}
           component={motion.div}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -98,6 +129,7 @@ export default function MobileMenuOverlay({
           transition={{ duration: 0.2, ease: "easeInOut" }}
           role="dialog"
           aria-modal="true"
+          aria-label="Menú de navegación"
           sx={{
             position: "fixed",
             inset: 0,
@@ -109,7 +141,7 @@ export default function MobileMenuOverlay({
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
-            <IconButton onClick={onClose} aria-label="Cerrar menú" sx={{ color: textColor }}>
+            <IconButton ref={closeButtonRef} onClick={onClose} aria-label="Cerrar menú" sx={{ color: textColor }}>
               <CloseRoundedIcon />
             </IconButton>
           </Box>
@@ -133,9 +165,9 @@ export default function MobileMenuOverlay({
                 <Box
                   key={key}
                   component={motion.div}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.25, delay: index * 0.05 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.25, delay: reduceMotion ? 0 : index * 0.05 }}
                 >
                   {link.kind === "anchor" ? (
                     <Box

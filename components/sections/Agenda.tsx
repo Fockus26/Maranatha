@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { Reveal } from "@/components/ui/Reveal";
 import { secondary } from "@/theme/tokens";
@@ -371,6 +371,7 @@ const AGENDA_GRID_SX = {
 } as const;
 
 export function Agenda() {
+  const reduceMotion = useReducedMotion();
   const agenda = useMemo(() => buildMonthlyAgenda(), []);
   const tileSizes = useMemo(() => assignTileSizes(agenda), [agenda]);
   const accentKey = useMemo(() => findAccentKey(agenda), [agenda]);
@@ -500,7 +501,7 @@ export function Agenda() {
           <Box
             component={motion.div}
             animate={{ height: targetHeight ?? "auto" }}
-            transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
             sx={{ overflow: "hidden" }}
           >
             <Box sx={AGENDA_GRID_SX}>
@@ -522,6 +523,7 @@ export function Agenda() {
                 variant="text"
                 color="primary"
                 onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
                 endIcon={
                   <motion.span
                     style={{ display: "inline-flex" }}

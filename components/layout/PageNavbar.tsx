@@ -135,7 +135,7 @@ export default function PageNavbar() {
                 era suficientemente explícito. Se agrega "Inicio" siempre
                 primero, con el mismo tratamiento de píldora que el resto
                 (Opción 1 del comparador de navbar, /design). */}
-            <Box component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1.25 }}>
+            <Box component="nav" aria-label="Principal" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1.25 }}>
               <Box component={Link} href="/" sx={pillSx(false)}>
                 <HomeRoundedIcon sx={{ fontSize: 13 }} />
                 Inicio

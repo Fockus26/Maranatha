@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -103,13 +103,15 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
   const formValid = amountValid && nameValid && emailValid;
   const displayAmount = useAnimatedAmount(amount);
 
-  function handleSubmit() {
+  function handleSubmit(event?: FormEvent) {
+    event?.preventDefault();
     setTouched(true);
     if (!formValid) return;
     onSubmit({ type, amount, frequency, name, email });
   }
 
   return (
+    <Box component="form" noValidate onSubmit={handleSubmit}>
     <DonationFormCard width={width}>
       <Box sx={{ textAlign: "center", pb: 4.5, mb: 4.5, borderBottom: `1px solid ${theme.palette.divider}` }}>
         {/*
@@ -209,10 +211,11 @@ export function TitheForm({ presetAmounts = [25, 50, 100], width, onSubmit }: Ti
       </Box>
 
       <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, mt: 4.5, pt: 4.5 }}>
-        <Button fullWidth variant="contained" color="secondary" onClick={handleSubmit}>
+        <Button fullWidth type="submit" variant="contained" color="secondary">
           Continuar al pago
         </Button>
       </Box>
     </DonationFormCard>
+    </Box>
   );
 }

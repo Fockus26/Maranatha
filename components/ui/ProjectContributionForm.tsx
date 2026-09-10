@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -79,7 +79,8 @@ export function ProjectContributionForm({
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const formValid = amountValid && nameValid && emailValid;
 
-  function handleSubmit() {
+  function handleSubmit(event?: FormEvent) {
+    event?.preventDefault();
     setTouched(true);
     if (!formValid) return;
     onSubmit({ amount, name, email });
@@ -95,6 +96,7 @@ export function ProjectContributionForm({
   });
 
   return (
+    <Box component="form" noValidate onSubmit={handleSubmit}>
     <DonationFormCard>
       <Box sx={{ display: "flex", gap: 2.5, alignItems: "center", pb: 4, mb: 4.5, borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Box
@@ -185,10 +187,11 @@ export function ProjectContributionForm({
       </Box>
 
       <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>
-        <Button fullWidth variant="contained" color="secondary" onClick={handleSubmit}>
+        <Button fullWidth type="submit" variant="contained" color="secondary">
           Continuar al pago
         </Button>
       </Box>
     </DonationFormCard>
+    </Box>
   );
 }

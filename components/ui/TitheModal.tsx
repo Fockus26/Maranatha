@@ -111,6 +111,7 @@ export function TitheModal() {
       open={open}
       onClose={closeTithe}
       fullScreen
+      aria-labelledby="tithe-modal-title"
       slotProps={{
         paper: {
           // `elevation: 0` es la parte que realmente importa acá: el Dialog
@@ -156,6 +157,7 @@ export function TitheModal() {
           backgroundImage:
             "repeating-linear-gradient(135deg, rgba(245,246,250,0.05) 0px, rgba(245,246,250,0.05) 1px, transparent 1px, transparent 40px)",
           animation: `${patternPan} 24s linear infinite`,
+          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
         }}
       />
 
@@ -232,6 +234,7 @@ export function TitheModal() {
 
             <Typography
               component="h2"
+              id="tithe-modal-title"
               sx={{
                 fontFamily: "var(--font-heading)",
                 fontWeight: 800,

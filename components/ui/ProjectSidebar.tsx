@@ -97,6 +97,7 @@ export function ProjectSidebar({
       <LinearProgress
         variant="determinate"
         value={percent}
+        aria-label={`${percent}% recaudado de la meta`}
         color={isCompleted ? "success" : "secondary"}
         sx={{ height: 6, borderRadius: "20px", mb: 1.5, backgroundColor: theme.palette.action.hover }}
       />

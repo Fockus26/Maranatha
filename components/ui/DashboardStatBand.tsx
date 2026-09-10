@@ -48,6 +48,7 @@ export function DashboardStatBand({ stats, loading }: DashboardStatBandProps) {
           backgroundImage:
             "repeating-linear-gradient(135deg, rgba(245,246,250,0.05) 0px, rgba(245,246,250,0.05) 1px, transparent 1px, transparent 40px)",
           animation: `${patternPan} 24s linear infinite`,
+          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
         }}
       />
       <Box sx={{ position: "relative", display: "flex", flexWrap: "wrap", rowGap: 3 }}>

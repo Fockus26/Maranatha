@@ -35,7 +35,7 @@ function FooterColumn({
   links: readonly { label: string; href: string }[];
 }) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+    <Box component="nav" aria-label={title} sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
       <Box
         component="span"
         sx={{
@@ -49,23 +49,26 @@ function FooterColumn({
       >
         {title}
       </Box>
-      {links.map((link) => (
-        <Box
-          key={link.href}
-          component={Link}
-          href={link.href}
-          sx={{
-            fontFamily: "var(--font-body)",
-            fontSize: 12,
-            "@media (min-width:1920px)": { fontSize: "14px" },
-            color: "text.secondary",
-            textDecoration: "none",
-            "&:hover": { color: "secondary.main" },
-          }}
-        >
-          {link.label}
-        </Box>
-      ))}
+      <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0, display: "flex", flexDirection: "column", gap: 0.75 }}>
+        {links.map((link) => (
+          <Box component="li" key={link.href}>
+            <Box
+              component={Link}
+              href={link.href}
+              sx={{
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                "@media (min-width:1920px)": { fontSize: "14px" },
+                color: "text.secondary",
+                textDecoration: "none",
+                "&:hover": { color: "secondary.main" },
+              }}
+            >
+              {link.label}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
@@ -164,7 +167,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={label}
+                  aria-label={`${label} (se abre en una pestaña nueva)`}
                   size="small"
                   sx={{
                     width: 26,

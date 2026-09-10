@@ -90,6 +90,7 @@ export function ProjectCard({
       <LinearProgress
         variant="determinate"
         value={percent}
+        aria-label={`${percent}% recaudado de la meta`}
         color={isCompleted ? "success" : "secondary"}
         sx={{
           height: 6,

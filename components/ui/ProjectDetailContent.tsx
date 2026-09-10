@@ -38,7 +38,7 @@ export function ProjectDetailContent({ title, description, imageUrl, budget }: P
         }}
       />
 
-      <Typography sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 700, fontSize: "22px", color: theme.palette.text.primary, mb: 2 }}>
+      <Typography component="h1" sx={{ fontFamily: typography.fontFamily.heading, fontWeight: 700, fontSize: "22px", color: theme.palette.text.primary, mb: 2 }}>
         {title}
       </Typography>
 

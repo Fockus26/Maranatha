@@ -294,6 +294,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                         <IconButton
                           size="small"
                           onClick={() => onEdit(row.id)}
+                          aria-label={`Editar ${row.title}`}
                           sx={{
                             border: `1px solid ${theme.palette.divider}`,
                             borderRadius: `${radius.sm}px`,
@@ -307,6 +308,7 @@ export function DashboardTable({ projects, onEdit, onDelete, loading, onCreate }
                       <IconButton
                         size="small"
                         onClick={() => setDeleteTarget(row)}
+                        aria-label={`Eliminar ${row.title}`}
                         sx={{
                           border: `1px solid ${theme.palette.divider}`,
                           borderRadius: `${radius.sm}px`,

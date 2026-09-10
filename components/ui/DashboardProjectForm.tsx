@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useTheme, type Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -139,7 +139,8 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
     setEncargados((prev) => prev.filter((item) => item.id !== id));
   }
 
-  function handleSubmit() {
+  function handleSubmit(event?: FormEvent) {
+    event?.preventDefault();
     setTouched(true);
     if (!formValid) return;
     onSubmit({ title, description, imageUrl, imageFile, goalAmount, currentAmount, deadline, budget, encargados });
@@ -147,6 +148,9 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
 
   return (
     <Box
+      component="form"
+      noValidate
+      onSubmit={handleSubmit}
       sx={
         bare
           ? { width: "100%" }
@@ -231,7 +235,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
         <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography sx={sectionLabelSx(theme)}>Presupuesto</Typography>
-            <Button size="small" startIcon={<AddIcon />} onClick={addBudgetLine}>
+            <Button type="button" size="small" startIcon={<AddIcon />} onClick={addBudgetLine}>
               Agregar línea
             </Button>
           </Box>
@@ -254,6 +258,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                 >
                   <TextField
                     placeholder="Concepto"
+                    aria-label="Concepto de la línea de presupuesto"
                     size="small"
                     value={line.label}
                     onChange={(e) => updateBudgetLine(line.id, { label: e.target.value })}
@@ -261,13 +266,21 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                   />
                   <TextField
                     placeholder="Monto"
+                    aria-label="Monto de la línea de presupuesto"
                     type="number"
+                    inputMode="numeric"
                     size="small"
                     value={line.amount || ""}
                     onChange={(e) => updateBudgetLine(line.id, { amount: Number(e.target.value) })}
                     sx={numberFieldSx()}
                   />
-                  <IconButton size="small" onClick={() => removeBudgetLine(line.id)} sx={{ color: theme.palette.text.secondary }}>
+                  <IconButton
+                    type="button"
+                    size="small"
+                    onClick={() => removeBudgetLine(line.id)}
+                    aria-label={line.label ? `Eliminar línea "${line.label}"` : "Eliminar línea de presupuesto"}
+                    sx={{ color: theme.palette.text.secondary }}
+                  >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
                 </Box>
@@ -279,7 +292,7 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
         <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography sx={sectionLabelSx(theme)}>Encargados</Typography>
-            <Button size="small" startIcon={<AddIcon />} onClick={addEncargado}>
+            <Button type="button" size="small" startIcon={<AddIcon />} onClick={addEncargado}>
               Agregar encargado
             </Button>
           </Box>
@@ -333,7 +346,13 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
                       onChange={(e) => updateEncargado(encargado.id, { instagramUrl: e.target.value })}
                       sx={fieldSx()}
                     />
-                    <IconButton size="small" onClick={() => removeEncargado(encargado.id)} sx={{ color: theme.palette.text.secondary }}>
+                    <IconButton
+                      type="button"
+                      size="small"
+                      onClick={() => removeEncargado(encargado.id)}
+                      aria-label={encargado.name ? `Eliminar a ${encargado.name}` : "Eliminar encargado"}
+                      sx={{ color: theme.palette.text.secondary }}
+                    >
                       <DeleteOutlineIcon fontSize="small" />
                     </IconButton>
                   </Box>
@@ -344,10 +363,10 @@ export function DashboardProjectForm({ initialValues, onSubmit, onCancel, bare }
         </Box>
 
         <Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, pt: 4.5, display: "flex", gap: 2.5, justifyContent: "flex-end" }}>
-          <Button variant="outlined" color="primary" onClick={onCancel}>
+          <Button type="button" variant="outlined" color="primary" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ color: "#FFFFFF" }}>
+          <Button type="submit" variant="contained" color="primary" sx={{ color: "#FFFFFF" }}>
             Guardar
           </Button>
         </Box>

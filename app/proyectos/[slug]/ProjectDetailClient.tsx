@@ -88,6 +88,7 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
         onClose={() => setContributeOpen(false)}
         maxWidth="xs"
         fullWidth
+        aria-label={`Aportar a "${project.title}"`}
         slotProps={{ paper: { sx: { backgroundImage: "none", m: { xs: 2, sm: 4 } } } }}
       >
         <IconButton
