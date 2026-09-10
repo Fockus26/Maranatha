@@ -15,6 +15,8 @@ import { ProjectDetailContent } from "@/components/ui/ProjectDetailContent";
 import { ProjectSidebar } from "@/components/ui/ProjectSidebar";
 import { ProjectContributionForm, type ProjectContributionFormValues } from "@/components/ui/ProjectContributionForm";
 import type { ProjectRecord } from "@/lib/projectsData";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/jsonLd";
 
 /**
  * Parte interactiva de la página de detalle: botón "Aportar" del sidebar
@@ -41,9 +43,16 @@ export function ProjectDetailClient({ project }: { project: ProjectRecord }) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Proyectos", path: "/proyectos" },
+          { name: project.title, path: `/proyectos/${project.slug}` },
+        ])}
+      />
       <PageNavbar />
 
-      <Box component="main" sx={{ py: { xs: 6, md: 9 } }}>
+      <Box component="main" id="main-content" sx={{ py: { xs: 6, md: 9 } }}>
         <Container maxWidth="lg">
           <Box
             sx={{

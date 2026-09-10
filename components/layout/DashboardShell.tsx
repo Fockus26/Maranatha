@@ -38,7 +38,7 @@ export function DashboardShell({ onLogout, children }: DashboardShellProps) {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
       <DashboardTopbar onLogout={onLogout} />
-      <Box component="main">{children}</Box>
+      <Box component="main" id="main-content">{children}</Box>
     </Box>
   );
 }

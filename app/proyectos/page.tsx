@@ -15,6 +15,8 @@ import { ProjectCard } from "@/components/ui/ProjectCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PROJECTS } from "@/lib/projectsData";
 import { secondary } from "@/theme/tokens";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/jsonLd";
 
 /**
  * Página "Proyectos" (`/proyectos`, fase 07, D044) — listado completo, a
@@ -48,9 +50,15 @@ export default function ProyectosPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Proyectos", path: "/proyectos" },
+        ])}
+      />
       <PageNavbar />
 
-      <Box component="main" sx={{ py: { xs: 8, md: 12 } }}>
+      <Box component="main" id="main-content" sx={{ py: { xs: 8, md: 12 } }}>
         <Container maxWidth="lg">
           <Box sx={{ maxWidth: 640, mb: { xs: 5, md: 7 } }}>
             <Typography
@@ -109,6 +117,7 @@ export default function ProyectosPage() {
             <Tabs
               value={tab}
               onChange={(_, value: FilterTab) => setTab(value)}
+              aria-label="Filtrar proyectos por estado"
               // El indicador (línea inferior) sí usa el naranja de marca a toda
               // intensidad vía el prop nativo `indicatorColor` — es una línea
               // delgada de 2px, no compite. El TEXTO del tab activo, en cambio,

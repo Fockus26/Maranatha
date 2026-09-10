@@ -15,6 +15,54 @@ html {
   }
 }
 
+/*
+ * Accesibilidad (fase QA — a11y):
+ *
+ * 1. Skip link (WCAG 2.4.1). Fuera de pantalla hasta recibir foco por
+ *    teclado; ahí baja a la esquina superior izquierda por encima del
+ *    navbar sticky (z-index del modal). Contraste navy/blanco = AA.
+ * 2. Anillo de foco de respaldo (WCAG 2.4.7) para los elementos
+ *    interactivos que NO son componentes de MUI (varios `Box component="a"`
+ *    / `Box component="button"` del sitio) — MUI ya trae su propio
+ *    `focus-visible`, esto cubre el resto sin depender del outline del
+ *    navegador, que algunos resets aplanan.
+ */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  transform: translateY(-120%);
+  padding: 12px 20px;
+  background-color: #060a1d;
+  color: #ffffff;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus-visible,
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid #f9750d;
+  outline-offset: 2px;
+}
+
+:where(a, button, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid #f9750d;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

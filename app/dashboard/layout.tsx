@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import { DashboardProjectsProvider } from "@/lib/dashboardProjectsStore";
 import { DashboardProjectModalProvider } from "@/lib/dashboardProjectModalStore";
 import { DashboardProjectModal } from "@/components/ui/DashboardProjectModal";
+
+/**
+ * El dashboard es privado (fase QA — SEO): no debe indexarse ni seguirse.
+ * `robots.ts` además lo bloquea a nivel de crawl; esto cubre el caso de una
+ * URL de dashboard que llegue por otro camino.
+ */
+export const metadata: Metadata = {
+  title: "Dashboard",
+  robots: { index: false, follow: false },
+};
 
 /**
  * Layout de `/dashboard` (fase 07, D045) — provee el estado compartido de
